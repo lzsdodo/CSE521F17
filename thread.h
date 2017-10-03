@@ -89,7 +89,7 @@ struct thread
 
     /*******************************************************************/
     struct lock *targetLock;            /* the lock that the thread is try to acquire but cannot obtain for now */
-    struct lock *donatedLock;		/* To store the lock for which the thread has been conated last priority *///------added-----//
+    struct lock *donatedLock;		    /*  lock for which the thread has been donated priority due to it*/
     struct list listOfInfo;				/* To store the infos in a list */
     /*******************************************************************/
 #ifdef USERPROG
@@ -103,8 +103,8 @@ struct thread
 /*******************************************************************/
 struct info
 {
-    int priority;
-    struct lock *lock;
+    int histPriority;
+    struct lock* histDonatedlock;
     struct list_elem elem;
 };
 /*******************************************************************/
@@ -150,6 +150,7 @@ int thread_get_load_avg (void);
 
 
 void removeHistoryLocks(struct list priList,  struct lock* targetLock);
+void checkYield(struct thread* t);
 
 
 //**************************************************added----//

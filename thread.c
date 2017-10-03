@@ -60,7 +60,6 @@ static unsigned thread_ticks;   /* # of timer ticks since last yield. */
    If true, use multi-level feedback queue scheduler.
    Controlled by kernel command-line option "-o mlfqs". */
 bool thread_mlfqs;
-
 static void kernel_thread (thread_func *, void *aux);
 
 static void idle (void *aux UNUSED);
@@ -73,9 +72,8 @@ static void schedule (void);
 void schedule_tail (struct thread *prev);
 static tid_t allocate_tid (void);
 
-void thread_change_priority(struct thread *t, int priority, struct lock *lock);
 
-
+void refreshPriority(struct thread *t, int priority, struct lock *lock);
 /* Initializes the threading system by transforming the code
    that's currently running into a thread.  This can't work in
    general and it is possible in this case only because loader.S
@@ -308,14 +306,7 @@ void thread_yield (void)
     struct thread *cur = thread_current ();
     enum intr_level old_level = intr_disable ();
     ASSERT (!intr_context ());
-    if (cur != idle_thread)
-    {
-
-     //   list_insert_ordered(&ready_list, &cur->elem, cmpPriority, NULL);
-        list_push_back(&ready_list, &cur->elem);
-
-    }
-
+    if (cur != idle_thread)  list_push_back(&ready_list, &cur->elem);
     cur->status = THREAD_READY;
     schedule ();
     intr_set_level (old_level);
@@ -339,30 +330,27 @@ void thread_foreach (thread_action_func *func, void *aux)
 
 /* Sets the current thread's priority to NEW_PRIORITY. */
 /************************************************************************************
-If the thread wants to increase its priority, ok
-If it wants to lower its priority:
-            If it has been donated some priority, then its actual starting priority is set to the value.
+If the thread wants to increase  priority, ok
+If the thread wants to lower priority:
+            If it has been donated priority, then its actual starting priority is set to the value.
             If it has not been donated, set its priority to new_priority and yield to cpu
 **************************************************************************************/
-void thread_set_priority (int new_priority)
-{
+void thread_set_priority (int new_priority) {
     struct thread *cur=thread_current();
-
-
     /*** if the current threads's priority is larger than the value to reset, checks are performed***/
     if(new_priority < cur->priority)
     {
-        /*** if the current threads has not been donated priority, set it to new priority**/
+        /*** if the current threads has not been donated locks and thus priority, set it to new priority**/
         if(!cur->donatedLock)
         {
             cur->priority = new_priority;
             list_sort(&ready_list,cmpPriority,NULL);
             struct thread *topThread = list_entry(list_begin(&ready_list), struct thread, elem);
-            if(new_priority < topThread->priority)
-                thread_yield();
+            /*** perform yield on current thread**/
+            if(new_priority < topThread->priority)thread_yield();
         }
         else {
-            list_entry( list_back(&cur->listOfInfo), struct info, elem)->priority = new_priority;
+            list_entry( list_back(&cur->listOfInfo), struct info, elem)-> histPriority = new_priority;
         }
     }
         /** if it wants to incrase priority no problem*/
@@ -606,75 +594,62 @@ uint32_t thread_stack_ofs = offsetof (struct thread, stack);
 
 
 /*********************************************************************************
-Part of priority donation nested
+Part of priority donation nested, called in lock_acquire, lock_release
 ******************************************************************************************/
-void thread_change_priority(struct thread *t, int priority, struct lock *lock)
-{
-    enum intr_level old_level;
-    struct info *prevPri;
+void refreshPriority(struct thread *t, int targetP, struct lock *dueTolock) {
+
     struct list_elem *e;
+    struct info *tempInfo = (struct info *)malloc(sizeof(struct info *));
+
+    /**************  store the donation information in an info struct ************************************************************/
+    tempInfo->histPriority = t-> priority;
+    tempInfo->histDonatedlock= t->donatedLock;
+
+
+    /****************************************************************************************************
+     * If t's priority is to be increased , then create  a info structure of previous priority,
+       if the thread was donated a priority for this particular lock before, remove that from the list,
+       an and if the lock is a new one, push it in the threads priority list. Then**/
+
+    if(t->priority < targetP)
+    {
+        enum intr_level old_level=intr_disable();
+        /**************  serach t's info history to discard any previous donation history of this lock ***
+         * *********************************************************/
+
+        removeTargetLockFromPList(dueTolock, t);
+
+        /****** insert this donation history in infoList ************************************************************/
+
+        if(t->donatedLock != dueTolock )list_push_front(&t->listOfInfo, &tempInfo->elem);
+        else free(tempInfo);
+        t->priority = targetP;
+        t->donatedLock = dueTolock;
+        checkYield(t);
+
+    }
 
     /**
-     * If priority is to be increased , then create  a info structure of previous priority,
-       if the thread was donated a priority for this particular lock before, remove that from the list,
-       an
-        and if the lock is a new one, push it in
-        the threads priority list. Then
-     * ***/
-    if(t->priority < priority)
-    {
-        /**************  initialize the info ************************************************************/
-        prevPri = (struct info *)malloc(sizeof(struct info *));
-        prevPri->priority = t->priority;
-        prevPri->lock = t->donatedLock;
-        e = list_begin(&t->listOfInfo);
-        while (e != list_end(&t->listOfInfo)) {
-            struct info *previous = list_entry(e, struct info, elem);
-            if(previous->lock == lock)
-            {
-                list_remove(e);
-                break;
-            }
-            e = list_next(e);
-        }
-        if(prevPri->lock != lock ) list_push_front(&t->listOfInfo, &prevPri->elem);
-  //      else free(prev_pri);
-        t->priority = priority;
-        t->donatedLock = lock;
+     * releasing the dueTo lock
+     */
 
-      //  if(t->status==THREAD_READY) list_sort(&ready_list, less, NULL);
-
-        if(t->status == THREAD_RUNNING)
-        {
-            list_sort(&ready_list, cmpPriority, NULL);
-            struct thread *nextThread= list_entry(list_begin(&ready_list), struct thread, elem);
-            if(priority < nextThread ->priority)
-                thread_yield();
-        }
-
-        intr_set_level(old_level);
-    }
-
-//    If the priority is to be decreased (else case), simple decrease
-//    the priority and set the lock. This is done when a thread is releasing  lock.
     else
     {
-        t->donatedLock = lock;
-        t->priority = priority;
-        /**
-         *
-         *  update the threads parameters, lock and priority. If the thread was in ready state
-            do nothing as next_thread_to_run already gives the highest priority thread.
-            As a last check if the thread is in running state, check if it needs to yield the cpu.
-         *
-         */
-         if(t->status == THREAD_RUNNING)
-        {
-            struct thread *top_ready_thread = list_entry(list_begin(&ready_list), struct thread, elem);
-            if(priority < top_ready_thread->priority)
-                thread_yield();
-        }
+        enum intr_level old_level=intr_disable();
+        t->donatedLock = dueTolock;
+        t->priority = targetP;
+
+        checkYield(t);
+        intr_set_level(old_level);
     }
+}
+
+/**  if t is running and for some fucking sake we discover it has  smaller priority than the buddy
+ * at the front of ready queue. let it run, but have to ensure this cannot happen again*/
+void checkYield(struct thread* t){
+        struct thread *nextThread= list_entry(list_begin(&ready_list), struct thread, elem);
+        if(t->priority < nextThread ->priority)
+            thread_yield();
 }
 
 

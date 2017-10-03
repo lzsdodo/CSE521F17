@@ -11,6 +11,13 @@ struct semaphore
     struct list waiters;        /* List of waiting threads. */
 };
 
+/* One semaphore in a list. */
+struct semaphore_elem
+{
+    struct list_elem elem;              /* List element. */
+    struct semaphore semaphore;         /* This semaphore. */
+};
+
 /* Lock. */
 struct lock
 {
