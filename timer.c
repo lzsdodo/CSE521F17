@@ -3,8 +3,8 @@
 #include <inttypes.h>
 #include <round.h>
 #include <stdio.h>
-#include "devices/pit.h"
 #include "threads/interrupt.h"
+#include "threads/io.h"
 #include "threads/synch.h"
 #include "threads/thread.h"
 
@@ -19,9 +19,8 @@
 
 /* Number of timer ticks since OS booted. */
 static int64_t ticks;
-static int64_t skipped;
 
-static struct list sleepList;
+
 
 /* Number of loops per timer tick.
    Initialized by timer_calibrate(). */
@@ -33,19 +32,27 @@ static void busy_wait (int64_t loops);
 static void real_time_sleep (int64_t num, int32_t denom);
 static void real_time_delay (int64_t num, int32_t denom);
 
-/* Sets up the timer to interrupt TIMER_FREQ times per second,
-   and registers the corresponding interrupt. */
-void timer_init (void)
+/* Sets up the 8254 Programmable Interval Timer (PIT) to
+   interrupt PIT_FREQ times per second, and registers the
+   corresponding interrupt. */
+void
+timer_init (void)
 {
-    pit_configure_channel (0, 2, TIMER_FREQ);
-    intr_register_ext (0x20, timer_interrupt, "8254 Timer");
+    /* 8254 input frequency divided by TIMER_FREQ, rounded to
+       nearest. */
 
-    list_init(&sleepList);
-    skipped = 0;
+    uint16_t count = (1193180 + TIMER_FREQ / 2) / TIMER_FREQ;
+
+    outb (0x43, 0x34);    /* CW: counter 0, LSB then MSB, mode 2, binary. */
+    outb (0x40, count & 0xff);
+    outb (0x40, count >> 8);
+
+    intr_register_ext (0x20, timer_interrupt, "8254 Timer");
 }
 
 /* Calibrates loops_per_tick, used to implement brief delays. */
-void timer_calibrate (void)
+void
+timer_calibrate (void)
 {
     unsigned high_bit, test_bit;
 
@@ -71,11 +78,13 @@ void timer_calibrate (void)
 }
 
 /* Returns the number of timer ticks since the OS booted. */
-int64_t timer_ticks (void)
+int64_t
+timer_ticks (void)
 {
     enum intr_level old_level = intr_disable ();
     int64_t t = ticks;
     intr_set_level (old_level);
+    barrier ();
     return t;
 }
 
@@ -87,18 +96,90 @@ timer_elapsed (int64_t then)
     return timer_ticks () - then;
 }
 
-/* Sleeps for approximately MS milliseconds.  Interrupts must be
-   turned on. */
-void
-timer_msleep (int64_t ms)
-{
+/************************   alarm       **************************/
+void timer_sleep (int64_t ticks) {
+/****************************************************************
+	//alarm
+***********************************************************/
+
+    struct list_elem *e;
+
+    struct thread *cur=thread_current();
+    enum intr_level  old_level=intr_disable();
+    if(ticks <= 0){
+        return;
+    }
+
+    cur->ticksRemain=ticks;
+    list_insert_ordered (&sleep_list, &cur->elem,  (list_less_func *)&ticks_cmp, NULL);
+
+    thread_block();
+    intr_set_level(old_level);
+
+}
+
+
+/************************   alarm       **************************/
+timer_interrupt (struct intr_frame *args UNUSED) {
+    enum intr_level old_level=intr_disable();
+    ticks++;
+    thread_tick ();
+
+    if(!list_empty(&sleep_list))
+    {
+        bool key = updateTicks(&sleep_list);
+        // avoid unncessary iteration if no thread can be awake.
+        if(key) wakeUpThreads(key,&sleep_list);
+        else return;
+    }
+    intr_set_level(old_level);
+}
+
+bool ticks_cmp( const struct list_elem *a,const struct list_elem *b, void *aux UNUSED) {
+    struct thread *ta = list_entry(a, struct thread, elem);
+    struct thread *tb = list_entry(b, struct thread, elem);
+
+    if ((ta -> ticksRemain) > (tb -> ticksRemain)) {
+        return false;
+    } else {
+        return true;
+    }
+}
+void wakeUpThreads(bool key, struct list* sleepList){
+    ASSERT(key);
+    struct list_elem *e = list_begin (&sleep_list);
+    while ( e != list_end (&sleep_list))
+    {
+        struct thread *curr = list_entry (e, struct thread, elem);
+
+        if(curr ->ticksRemain  == 0)
+        {
+            e =list_remove(e);
+            thread_unblock(curr);
+        }
+        else break;
+    }
+}
+bool updateTicks( struct list* sleepList){
+    struct list_elem *e;
+    struct thread *curr;
+    bool ans = false;
+    for (e = list_begin (&sleep_list); e != list_end (&sleep_list); e = list_next(e))
+    {
+        curr = list_entry (e, struct thread, elem);
+        if(curr->ticksRemain>0){
+            curr->ticksRemain--;
+            if(curr->ticksRemain == 0) ans = true;
+        }
+
+    }
+    return ans;
+}
+void timer_msleep (int64_t ms) {
     real_time_sleep (ms, 1000);
 }
 
-/* Sleeps for approximately US microseconds.  Interrupts must be
-   turned on. */
-void
-timer_usleep (int64_t us)
+void timer_usleep (int64_t us)
 {
     real_time_sleep (us, 1000 * 1000);
 }
@@ -113,7 +194,6 @@ timer_nsleep (int64_t ns)
 
 /* Busy-waits for approximately MS milliseconds.  Interrupts need
    not be turned on.
-
    Busy waiting wastes CPU cycles, and busy waiting with
    interrupts off for the interval between timer ticks or longer
    will cause timer ticks to be lost.  Thus, use timer_msleep()
@@ -126,7 +206,6 @@ timer_mdelay (int64_t ms)
 
 /* Sleeps for approximately US microseconds.  Interrupts need not
    be turned on.
-
    Busy waiting wastes CPU cycles, and busy waiting with
    interrupts off for the interval between timer ticks or longer
    will cause timer ticks to be lost.  Thus, use timer_usleep()
@@ -139,7 +218,6 @@ timer_udelay (int64_t us)
 
 /* Sleeps execution for approximately NS nanoseconds.  Interrupts
    need not be turned on.
-
    Busy waiting wastes CPU cycles, and busy waiting with
    interrupts off for the interval between timer ticks or longer
    will cause timer ticks to be lost.  Thus, use timer_nsleep()
@@ -160,8 +238,7 @@ timer_print_stats (void)
 
 /* Returns true if LOOPS iterations waits for more than one timer
    tick, otherwise false. */
-static bool
-too_many_loops (unsigned loops)
+static bool too_many_loops (unsigned loops)
 {
     /* Wait for a timer tick. */
     int64_t start = ticks;
@@ -179,13 +256,11 @@ too_many_loops (unsigned loops)
 
 /* Iterates through a simple loop LOOPS times, for implementing
    brief delays.
-
    Marked NO_INLINE because code alignment can significantly
    affect timings, so that if this function was inlined
    differently in different places the results would be difficult
    to predict. */
-static void NO_INLINE
-busy_wait (int64_t loops)
+static void NO_INLINE busy_wait (int64_t loops)
 {
 while (loops-- > 0)
 barrier ();
@@ -219,8 +294,7 @@ real_time_delay (num, denom);
 }
 
 /* Busy-wait for approximately NUM/DENOM seconds. */
-static void
-        real_time_delay (int64_t num, int32_t denom)
+static void real_time_delay (int64_t num, int32_t denom)
 {
 /* Scale the numerator and denominator down by 1000 to avoid
    the possibility of overflow. */
@@ -231,56 +305,44 @@ busy_wait (loops_per_tick * num / 1000 * TIMER_FREQ / (denom / 1000));
 
 
 
-/* Sleeps for approximately TICKS timer ticks.  Interrupts must
-   be turned on. */
-void timer_sleep(int64_t ticks) {
-    ASSERT (intr_get_level () == INTR_ON);
-
-    if(ticks < 0){
-        return;
-}
 
 
-        enum intr_level old_level = intr_disable();
-        struct thread *currThread = thread_current();
-        currThread -> ticksRemain = ticks + timer_ticks();
-
-//        list_insert_ordered( &sleepList,
-//                            &currThread-> elem,(list_less_func *)&cmpTicksRemain,
-//                            NULL);
-        list_push_back (&sleepList, &currThread->elem);
-        list_sort (&sleepList, (list_less_func *)&cmpTicksRemain, NULL);
-
-        thread_block();
-        intr_set_level(old_level);
-}
-
-/* Timer interrupt handler. */
-static void timer_interrupt(struct intr_frame *args UNUSED) {
-
-    ticks++;
-    thread_tick();
-    struct list_elem *curr = list_begin(&sleepList);
 
 
-      enum intr_level old_level = intr_disable();
+//void timer_sleep(int64_t ticks) {
+//    ASSERT (intr_get_level () == INTR_ON);
+//
+//    if(ticks <= 0){
+//        return;
+//}
+//
+//
+//        enum intr_level old_level = intr_disable();
+//        struct thread *currThread = thread_current();
+//        currThread -> ticksRemain = ticks + timer_ticks();
+//
+////        list_insert_ordered( &sleepList,
+////                            &currThread-> elem,(list_less_func *)&cmpTicksRemain,
+////                            NULL);
 
-            while (curr != list_end (&sleepList))
-            {
-       //         struct list_elem *minimum = list_min(&sleepList, (list_less_func *) &cmpTicksRemain, NULL);
-                struct thread *t = list_entry(curr,struct thread, elem);
+//
+//        thread_block();
+//        intr_set_level(old_level);
+//}
 
-                if (ticks < t->ticksRemain) {
-                    break;
-                }
-                else if (ticks == t -> ticksRemain && t->status == THREAD_BLOCKED){
-                    list_remove(curr);
-                    thread_unblock(t);
-                    curr = list_begin(&sleepList);
-                }
-            }
-
-    intr_set_level(old_level);
+///* Timer interrupt handler. */
+//static void timer_interrupt(struct intr_frame *args UNUSED) {
+//
+//    ticks++;
+//    thread_tick();
+//    struct list_elem *curr = list_begin(&sleepList);
+//
+//
+//      enum intr_level old_level = intr_disable();
+//
+//
+//
+//    intr_set_level(old_level);
 
 //
 //        for (curr = list_begin (&sleepList); curr != list_end (&sleepList); curr = list_next (curr)) {
@@ -296,7 +358,7 @@ static void timer_interrupt(struct intr_frame *args UNUSED) {
 //        }
 
     // thread_foreach(thread_checkAwake,NULL);
-}
+//}
 
 
 
