@@ -10,6 +10,7 @@
 #include "threads/palloc.h"
 #include "threads/switch.h"
 #include "threads/synch.h"
+#include "threads/fix-point.h"
 #include "threads/vaddr.h"
 #ifdef USERPROG
 #include "userprog/process.h"
@@ -60,6 +61,7 @@ static unsigned thread_ticks;   /* # of timer ticks since last yield. */
    If true, use multi-level feedback queue scheduler.
    Controlled by kernel command-line option "-o mlfqs". */
 bool thread_mlfqs;
+fixed_t load_avg;
 static void kernel_thread (thread_func *, void *aux);
 
 static void idle (void *aux UNUSED);
@@ -84,8 +86,7 @@ void refreshPriority(struct thread *t, int priority, struct lock *lock);
    thread_create().
    It is not safe to call thread_current() until this function
    finishes. */
-void thread_init (void)
-{
+void thread_init (void) {
     ASSERT (intr_get_level () == INTR_OFF);
 
     lock_init (&tid_lock);
@@ -103,6 +104,7 @@ void thread_init (void)
    Also creates the idle thread. */
 void thread_start (void)
 {
+    load_avg = FP_CONST(0);
     /* Create the idle thread. */
     struct semaphore idle_started;
     sema_init (&idle_started, 0);
@@ -365,32 +367,6 @@ int thread_get_priority (void)
     return thread_current ()->priority;
 }
 
-/* Sets the current thread's nice value to NICE. */
-void thread_set_nice (int nice UNUSED)
-{
-    /* Not yet implemented. */
-}
-
-/* Returns the current thread's nice value. */
-int thread_get_nice (void) {
-    /* Not yet implemented. */
-    return 0;
-}
-
-/* Returns 100 times the system load average. */
-int thread_get_load_avg (void)
-{
-    /* Not yet implemented. */
-    return 0;
-}
-
-/* Returns 100 times the current thread's recent_cpu value. */
-int thread_get_recent_cpu (void)
-{
-    /* Not yet implemented. */
-    return 0;
-}
-
 /* Idle thread.  Executes when no other thread is ready to run.
    The idle thread is initially put on the ready list by
    thread_start().  It will be scheduled once initially, at which
@@ -477,6 +453,9 @@ static void init_thread (struct thread *t, const char *name, int priority)
     t->targetLock = NULL;
     t->donatedLock = NULL;
     list_init(&t->listOfInfo);
+
+    t->nice = 0;
+    t->recent_cpu = FP_CONST (0);
 
     list_push_back (&all_list, &t->allelem);
 }
@@ -586,8 +565,6 @@ static tid_t allocate_tid (void)
     return tid;
 }
 
-/* Offset of `stack' member within `struct thread'.
-   Used by switch.S, which can't figure it out on its own. */
 uint32_t thread_stack_ofs = offsetof (struct thread, stack);
 
 
@@ -651,6 +628,140 @@ void checkYield(struct thread* t){
         if(t->priority < nextThread ->priority)
             thread_yield();
 }
+
+
+
+
+/* ready_threads is the number of threads that are
+  either running or ready to run at time of update
+  (not including the idle thread) */
+int thread_get_ready_threads(void)
+{
+    if (thread_current() != idle_thread)
+        return list_size(&ready_list) + 1;
+    else
+        return list_size(&ready_list);
+}
+
+
+
+/* Every second (timer_ticks () % TIMER_FREQ == 0)
+   Recent CPU is updated for all threads using this formula
+   (whether running, ready, or blocked)
+   recent_cpu = (2*load_avg) / (2*load_avg+1) * recent_cpu + nice */
+fixed_t calculate_recent_cpu(struct thread *thread)
+{
+    return FP_ADD_MIX (FP_MULT (FP_DIV (FP_MULT_MIX (load_avg, 2), FP_ADD_MIX (FP_MULT_MIX(load_avg, 2), 1)), thread->recent_cpu), thread->nice);
+}
+
+
+/* Increase recent cpu of the running thread by 1 */
+void thread_mlfqs_increase_recent_cpu(void)
+{
+    ASSERT (thread_mlfqs);
+    ASSERT (intr_context ());
+
+    struct thread *cur = thread_current();
+    if (cur == idle_thread)return;
+    else cur->recent_cpu = FP_ADD_MIX(cur->recent_cpu, 1);
+}
+
+
+
+
+
+
+/* Updated every second (timer_ticks () % TIMER_FREQ == 0)
+   load_avg = (59/60) * load_avg + (1/60) * ready_threads */
+fixed_t calculate_load_avg(int ready_threads)
+{
+    return FP_ADD (FP_DIV_MIX (FP_MULT_MIX (load_avg, 59), 60), \
+         FP_DIV_MIX (FP_CONST (ready_threads), 60));
+}
+
+
+
+
+/* Every 4th tick (timer_ticks () % TIME_SLICE == 0)
+   Priority for all threads is recalculated
+   (running and ready threads is enough)
+   priority = PRI_MAX - (recent_cpu / 4) - (nice * 2) */
+int calculate_priority(struct thread *thread)
+{
+    int p= FP_INT_PART (FP_SUB_MIX (FP_SUB (FP_CONST (PRI_MAX), FP_DIV_MIX (thread->recent_cpu, 4)), 2 * thread->nice));
+    if( p < PRI_MIN) return PRI_MIN;
+    else if(p > PRI_MAX) return PRI_MAX;
+    else return p;
+}
+
+
+/* Update priority */
+void thread_mlfqs_update_priority(struct thread *thread)
+{
+    ASSERT(thread_mlfqs);
+    if (thread != idle_thread)
+        thread->priority = calculate_priority(thread);
+}
+
+
+/* Update 2 parameters: recent_cpu and load_avg */
+void thread_mlfqs_update_args(void)
+{
+    ASSERT (thread_mlfqs);
+    ASSERT (intr_context ());
+
+    int ready_threads = list_size (&ready_list);
+    if (thread_current () != idle_thread) ready_threads++;
+    load_avg = calculate_load_avg(ready_threads);
+
+
+   struct list_elem *e = list_begin(&all_list);
+
+    for( e = list_begin(&all_list); e!=list_end(&all_list); e = list_next(e))
+    {
+        struct thread *temo = list_entry(e, struct thread, allelem);
+        if(temo!= idle_thread) {
+            temo->recent_cpu = calculate_recent_cpu(temo);
+            thread_mlfqs_update_priority(temo);
+        }
+    }
+}
+/* Sets the current thread's nice value to NICE. */
+void thread_set_nice (int nice UNUSED)
+{
+    /* Every thread has a nice value between -20 and 20 directly
+    under its control. 0 is neutral, +20 means be very generous
+    and give away your time, -20 means grab as much CPU as you can. */
+    thread_current()->nice = nice;
+    thread_mlfqs_update_priority(thread_current());
+    thread_yield();
+}
+
+/* Returns the current thread's nice value. */
+int thread_get_nice (void) {
+    return thread_current()->nice;
+}
+
+/* Returns 100 times the system load average. */
+int thread_get_load_avg (void)
+{
+    return FP_ROUND(FP_MULT_MIX(load_avg, 100));
+}
+
+/* Returns 100 times the current thread's recent_cpu value. */
+int thread_get_recent_cpu (void)
+{
+    /* Not yet implemented. */
+    return FP_ROUND(FP_MULT_MIX(thread_current()->recent_cpu, 100));
+}
+
+
+
+
+
+
+
+
 
 
 

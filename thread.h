@@ -4,7 +4,7 @@
 #include <debug.h>
 #include <list.h>
 #include <stdint.h>
-
+#include "threads/fix-point.h"
 /* States in a thread's life cycle. */
 enum thread_status
 {
@@ -24,56 +24,6 @@ typedef int tid_t;
 #define PRI_DEFAULT 31                  /* Default priority. */
 #define PRI_MAX 63                      /* Highest priority. */
 
-/* A kernel thread or user process.
-   Each thread structure is stored in its own 4 kB page.  The
-   thread structure itself sits at the very bottom of the page
-   (at offset 0).  The rest of the page is reserved for the
-   thread's kernel stack, which grows downward from the top of
-   the page (at offset 4 kB).  Here's an illustration:
-        4 kB +---------------------------------+
-             |          kernel stack           |
-             |                |                |
-             |                |                |
-             |                V                |
-             |         grows downward          |
-             |                                 |
-             |                                 |
-             |                                 |
-             |                                 |
-             |                                 |
-             |                                 |
-             |                                 |
-             |                                 |
-             +---------------------------------+
-             |              magic              |
-             |                :                |
-             |                :                |
-             |               name              |
-             |              status             |
-        0 kB +---------------------------------+
-   The upshot of this is twofold:
-      1. First, `struct thread' must not be allowed to grow too
-         big.  If it does, then there will not be enough room for
-         the kernel stack.  Our base `struct thread' is only a
-         few bytes in size.  It probably should stay well under 1
-         kB.
-      2. Second, kernel stacks must not be allowed to grow too
-         large.  If a stack overflows, it will corrupt the thread
-         state.  Thus, kernel functions should not allocate large
-         structures or arrays as non-static local variables.  Use
-         dynamic allocation with malloc() or palloc_get_page()
-         instead.
-   The first symptom of either of these problems will probably be
-   an assertion failure in thread_current(), which checks that
-   the `magic' member of the running thread's `struct thread' is
-   set to THREAD_MAGIC.  Stack overflow will normally change this
-   value, triggering the assertion. */
-/* The `elem' member has a dual purpose.  It can be an element in
-   the run queue (thread.c), or it can be an element in a
-   semaphore wait list (synch.c).  It can be used these two ways
-   only because they are mutually exclusive: only a thread in the
-   ready state is on the run queue, whereas only a thread in the
-   blocked state is on a semaphore wait list. */
 struct thread
 {
     /* Owned by thread.c. */
@@ -83,15 +33,21 @@ struct thread
     uint8_t *stack;                     /* Saved stack pointer. */
     int priority;                       /* Priority. */
     struct list_elem allelem;           /* List element for all threads list. */
+
+
     /*****************************ticks to sleep **************************************/
     int64_t ticksRemain;				/* to store the ticks to sleep */
     struct list_elem elem;              /* List element. */
 
-    /*******************************************************************/
+    /* MLFQS */
+    int nice;
+    fixed_t recent_cpu;
+
+    /*********************   lock    *********************************/
     struct lock *targetLock;            /* the lock that the thread is try to acquire but cannot obtain for now */
     struct lock *donatedLock;		    /*  lock for which the thread has been donated priority due to it*/
     struct list listOfInfo;				/* To store the infos in a list */
-    /*******************************************************************/
+
 #ifdef USERPROG
     /* Owned by userprog/process.c. */
     uint32_t *pagedir;                  /* Page directory. */
@@ -147,6 +103,15 @@ int thread_get_nice (void);
 void thread_set_nice (int);
 int thread_get_recent_cpu (void);
 int thread_get_load_avg (void);
+/* MLFQS */
+int thread_get_ready_threads(void);
+fixed_t calculate_load_avg(int ready_threads);
+fixed_t calculate_recent_cpu(struct thread *thread);
+int calculate_priority(struct thread *thread);
+
+void thread_mlfqs_increase_recent_cpu(void);
+void thread_mlfqs_update_priority(struct thread *thread);
+void thread_mlfqs_update_args(void);
 
 
 void removeHistoryLocks(struct list priList,  struct lock* targetLock);

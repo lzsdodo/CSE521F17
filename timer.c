@@ -119,20 +119,29 @@ void timer_sleep (int64_t ticks) {
 }
 
 
-/************************   alarm       **************************/
+/************************   alarm   & mlfqs    **************************/
 timer_interrupt (struct intr_frame *args UNUSED) {
     enum intr_level old_level=intr_disable();
     ticks++;
     thread_tick ();
 
+    if (thread_mlfqs) {
+        thread_mlfqs_increase_recent_cpu();
+      if (ticks % 4 == 0) thread_mlfqs_update_priority(thread_current());
+      else if (ticks % TIMER_FREQ == 0) { thread_mlfqs_update_args(); }
+    }
+
     if(!list_empty(&sleep_list))
     {
         bool key = updateTicks(&sleep_list);
         // avoid unncessary iteration if no thread can be awake.
-        if(key) wakeUpThreads(key,&sleep_list);
+        if(key)wakeUpThreads(key,&sleep_list);
         else return;
     }
     intr_set_level(old_level);
+
+
+
 }
 
 bool ticks_cmp( const struct list_elem *a,const struct list_elem *b, void *aux UNUSED) {
@@ -178,7 +187,6 @@ bool updateTicks( struct list* sleepList){
 void timer_msleep (int64_t ms) {
     real_time_sleep (ms, 1000);
 }
-
 void timer_usleep (int64_t us)
 {
     real_time_sleep (us, 1000 * 1000);
