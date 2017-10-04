@@ -99,11 +99,12 @@ void thread_foreach (thread_action_func *, void *);
 int thread_get_priority (void);
 void thread_set_priority (int);
 
+/* MLFQS */
 int thread_get_nice (void);
 void thread_set_nice (int);
 int thread_get_recent_cpu (void);
 int thread_get_load_avg (void);
-/* MLFQS */
+
 int thread_get_ready_threads(void);
 fixed_t calculate_load_avg(int ready_threads);
 fixed_t calculate_recent_cpu(struct thread *thread);
@@ -112,7 +113,7 @@ int calculate_priority(struct thread *thread);
 void thread_mlfqs_increase_recent_cpu(void);
 void thread_mlfqs_update_priority(struct thread *thread);
 void thread_mlfqs_update_args(void);
-
+/* MLFQS */
 
 void removeHistoryLocks(struct list priList,  struct lock* targetLock);
 void checkYield(struct thread* t);
