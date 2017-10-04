@@ -29,7 +29,7 @@ static struct list ready_list;
    when they are first scheduled and removed when they exit. */
 static struct list all_list;
 
-struct list sleep_list;
+static struct list sleep_list;
 
 /* Idle thread. */
 static struct thread *idle_thread;
@@ -61,7 +61,11 @@ static unsigned thread_ticks;   /* # of timer ticks since last yield. */
    If true, use multi-level feedback queue scheduler.
    Controlled by kernel command-line option "-o mlfqs". */
 bool thread_mlfqs;
+<<<<<<< HEAD
 fixed_t load_avg;
+=======
+static fixed_t load_avg;
+>>>>>>> 2e42349b0b8301c3273e867a3895c11a33d0bf83
 
 static void kernel_thread (thread_func *, void *aux);
 
@@ -93,7 +97,10 @@ void thread_init (void) {
     lock_init (&tid_lock);
     list_init (&ready_list);
     list_init (&all_list);
+<<<<<<< HEAD
     list_init (&sleep_list);
+=======
+>>>>>>> 2e42349b0b8301c3273e867a3895c11a33d0bf83
 
     /* Set up a thread structure for the running thread. */
     initial_thread = running_thread ();
