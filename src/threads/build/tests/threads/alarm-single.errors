@@ -1,0 +1,5 @@
+Use of literal control characters in variable names is deprecated at /usr/local/bin/pintos line 911.
+Prototype mismatch: sub main::SIGVTALRM () vs none at /usr/local/bin/pintos line 935.
+Constant subroutine SIGVTALRM redefined at /usr/local/bin/pintos line 927.
+Can't exec "qemu": No such file or directory at /usr/local/bin/pintos line 923.
+command failed

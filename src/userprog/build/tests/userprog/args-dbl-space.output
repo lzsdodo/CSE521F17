@@ -1,0 +1,38 @@
+Copying tests/userprog/args-dbl-space to scratch partition...
+squish-pty bochs -q
+PiLo hda1
+Loading............
+Kernel command line: -q -f extract run 'args-dbl-space two  spaces!'
+Pintos booting with 4,096 kB RAM...
+383 pages available in kernel pool.
+383 pages available in user pool.
+Calibrating timer...  204,600 loops/s.
+hda: 5,040 sectors (2 MB), model "BXHD00011", serial "Generic 1234"
+hda1: 192 sectors (96 kB), Pintos OS kernel (20)
+hda2: 4,096 sectors (2 MB), Pintos file system (21)
+hda3: 94 sectors (47 kB), Pintos scratch (22)
+filesys: using hda2
+scratch: using hda3
+Formatting file system...done.
+Boot complete.
+Extracting ustar archive from scratch device into file system...
+Putting 'args-dbl-space' into the file system...
+Erasing ustar archive...
+Executing 'args-dbl-space two  spaces!':
+(args) begin
+(args) argc = 3
+(args) argv[0] = 'args-dbl-space'
+(args) argv[1] = 'two'
+(args) argv[2] = 'spaces!'
+(args) argv[3] = null
+(args) end
+args-dbl-space: exit(0)
+Execution of 'args-dbl-space two  spaces!' complete.
+Timer: 210 ticks
+Thread: 30 idle ticks, 150 kernel ticks, 33 user ticks
+hda2 (filesys): 65 reads, 192 writes
+hda3 (scratch): 93 reads, 2 writes
+Console: 1062 characters output
+Keyboard: 0 keys pressed
+Exception: 0 page faults
+Powering off..
