@@ -1,0 +1,32 @@
+Copying tests/userprog/exit to scratch partition...
+squish-pty bochs -q
+PiLo hda1
+Loading............
+Kernel command line: -q -f extract run exit
+Pintos booting with 4,096 kB RAM...
+383 pages available in kernel pool.
+383 pages available in user pool.
+Calibrating timer...  204,600 loops/s.
+hda: 5,040 sectors (2 MB), model "BXHD00011", serial "Generic 1234"
+hda1: 192 sectors (96 kB), Pintos OS kernel (20)
+hda2: 4,096 sectors (2 MB), Pintos file system (21)
+hda3: 95 sectors (47 kB), Pintos scratch (22)
+filesys: using hda2
+scratch: using hda3
+Formatting file system...done.
+Boot complete.
+Extracting ustar archive from scratch device into file system...
+Putting 'exit' into the file system...
+Erasing ustar archive...
+Executing 'exit':
+(exit) begin
+exit: exit(57)
+Execution of 'exit' complete.
+Timer: 187 ticks
+Thread: 30 idle ticks, 147 kernel ticks, 15 user ticks
+hda2 (filesys): 65 reads, 194 writes
+hda3 (scratch): 94 reads, 2 writes
+Console: 839 characters output
+Keyboard: 0 keys pressed
+Exception: 0 page faults
+Powering off..

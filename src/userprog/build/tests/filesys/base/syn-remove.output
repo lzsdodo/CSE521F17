@@ -1,0 +1,40 @@
+Copying tests/filesys/base/syn-remove to scratch partition...
+squish-pty bochs -q
+PiLo hda1
+Loading............
+Kernel command line: -q -f extract run syn-remove
+Pintos booting with 4,096 kB RAM...
+383 pages available in kernel pool.
+383 pages available in user pool.
+Calibrating timer...  204,600 loops/s.
+hda: 5,040 sectors (2 MB), model "BXHD00011", serial "Generic 1234"
+hda1: 192 sectors (96 kB), Pintos OS kernel (20)
+hda2: 4,096 sectors (2 MB), Pintos file system (21)
+hda3: 100 sectors (50 kB), Pintos scratch (22)
+filesys: using hda2
+scratch: using hda3
+Formatting file system...done.
+Boot complete.
+Extracting ustar archive from scratch device into file system...
+Putting 'syn-remove' into the file system...
+Erasing ustar archive...
+Executing 'syn-remove':
+(syn-remove) begin
+(syn-remove) create "deleteme"
+(syn-remove) open "deleteme"
+(syn-remove) remove "deleteme"
+(syn-remove) write "deleteme"
+(syn-remove) seek "deleteme" to 0
+(syn-remove) read "deleteme"
+(syn-remove) close "deleteme"
+(syn-remove) end
+syn-remove: exit(0)
+Execution of 'syn-remove' complete.
+Timer: 239 ticks
+Thread: 30 idle ticks, 151 kernel ticks, 60 user ticks
+hda2 (filesys): 91 reads, 217 writes
+hda3 (scratch): 99 reads, 2 writes
+Console: 1106 characters output
+Keyboard: 0 keys pressed
+Exception: 0 page faults
+Powering off..
