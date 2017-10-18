@@ -178,38 +178,58 @@ syscall_handler (struct intr_frame *f UNUSED)
 	}
 }
 
+/**
+ * Runs the executable whose name is given in cmd_line, passing any given arguments, and returns the new process's program id (pid).
+ * Must return pid -1, which otherwise should not be a valid pid, if the program cannot load or run for any reason.
+ * Thus, the parent process cannot return from the exec until it knows whether the child process successfully loaded its executable.
+ * You must use appropriate synchronization to ensure this.
+ * @param file_name
+ * @return
+ */
+
 int exec_proc(char *file_name)
 {
 	acquire_filesys_lock();
+	// allocate space
 	char * fn_cp = malloc (strlen(file_name)+1);
+	// TODO: what's this?
 	  strlcpy(fn_cp, file_name, strlen(file_name)+1);
 	  
 	  char * save_ptr;
+	//TODO: which token does it return
 	  fn_cp = strtok_r(fn_cp," ",&save_ptr);
 
-	 struct file* f = filesys_open (fn_cp);
+	// open file with given name
+	 struct file* currFile = filesys_open (fn_cp);
 
-	  if(f==NULL)
+		// if program cannot load the file
+	  if(!currFile)
 	  {
 	  	release_filesys_lock();
 	  	return -1;
 	  }
 	  else
 	  {
-	  	file_close(f);
+	  	file_close(currFile);
 	  	release_filesys_lock();
+		  // return pid
 	  	return process_execute(file_name);
 	  }
 }
 
+/**
+ * Terminates the current user program, returning status to the kernel.
+ * 	// TODO: how return status to kernel?
+ * If the process's parent waits for it (see below), this is the status that will be returned.
+ * Conventionally, a status of 0 indicates success and nonzero values indicate errors.
+ * @param status
+ */
 void exit_proc(int status)
 {
-	//printf("Exit : %s %d %d\n",thread_current()->name, thread_current()->tid, status);
 	struct list_elem *e;
-
+	// Iterate over current threads' parent's child process List,
       for (e = list_begin (&thread_current()->parent->child_proc); e != list_end (&thread_current()->parent->child_proc);
-           e = list_next (e))
-        {
+           e = list_next (e)) {
           struct child *f = list_entry (e, struct child, elem);
           if(f->tid == thread_current()->tid)
           {
@@ -218,9 +238,8 @@ void exit_proc(int status)
           }
         }
 
-
 	thread_current()->exit_error = status;
-
+		// if current thread's parent is waiting on current thread, make the semaphore now obtainable
 	if(thread_current()->parent->waitingon == thread_current()->tid)
 		sema_up(&thread_current()->parent->child_lock);
 

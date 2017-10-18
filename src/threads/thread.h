@@ -41,7 +41,7 @@ struct thread
     int64_t waketick;
 
     bool success;
-    
+    //TODO: what is this?
     int exit_error;
 
     struct list child_proc;
@@ -51,8 +51,9 @@ struct thread
 
     struct list files;
     int fd_count;
-
+    // the semaphore for its child lock
     struct semaphore child_lock;
+    // the threadId that the current thread is waiting on
     int waitingon;
 
 #ifdef USERPROG
@@ -64,12 +65,13 @@ struct thread
     unsigned magic;                     /* Detects stack overflow. */
   };
 
-  struct child {
+//TODO: what is this
+struct child {
       int tid;
       struct list_elem elem;
       int exit_error;
       bool used;
-    };
+};
 
 /* If false (default), use round-robin scheduler.
    If true, use multi-level feedback queue scheduler.
