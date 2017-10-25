@@ -27,8 +27,7 @@ extern struct list all_list;
    FILENAME.  The new thread may be scheduled (and may even exit)
    before process_execute() returns.  Returns the new process's
    thread id, or TID_ERROR if the thread cannot be created. */
-tid_t
-process_execute (const char *file_name) 
+tid_t process_execute (const char *file_name)
 {
   char *fn_copy;
   char *f_name;
@@ -37,24 +36,26 @@ process_execute (const char *file_name)
   /* Make a copy of FILE_NAME.
      Otherwise there's a race between the caller and load(). */
   fn_copy = palloc_get_page (0);
-  if (fn_copy == NULL)
-    return TID_ERROR;
+
+    // if you cannot find the filename in the page directory, return error
+  if (!fn_copy) return TID_ERROR;
+
   strlcpy (fn_copy, file_name, PGSIZE);
+
   char *save_ptr;
   f_name = malloc(strlen(file_name)+1);
   strlcpy (f_name, file_name, strlen(file_name)+1);
   f_name = strtok_r (f_name," ",&save_ptr);
-  /* Create a new thread to execute FILE_NAME. */
-  //printf("%d\n", thread_current()->tid);
+
+  /* Create a child thread to execute FILE_NAME. */
   tid = thread_create (f_name, PRI_DEFAULT, start_process, fn_copy);
   free(f_name);
-  if (tid == TID_ERROR)
-    palloc_free_page (fn_copy);
+  if (tid == TID_ERROR) palloc_free_page (fn_copy);
 
   sema_down(&thread_current()->child_lock);
 
-  if(!thread_current()->success)
-    return -1;
+  if(thread_current()->success == false)
+    tid = -1;
 
   return tid;
 }
@@ -109,12 +110,11 @@ start_process (void *file_name_)
 
    This function will be implemented in problem 2-2.  For now, it
    does nothing. */
-int
-process_wait (tid_t child_tid) 
+int process_wait (tid_t child_tid)
 {
   //printf("Wait : %s %d\n",thread_current()->name, child_tid);
-  struct list_elem *e;
 
+  struct list_elem *e;
   struct child *ch=NULL;
   struct list_elem *e1=NULL;
 
@@ -138,7 +138,7 @@ process_wait (tid_t child_tid)
   if(!ch->used)
     sema_down(&thread_current()->child_lock);
 
-  int temp = ch->exit_error;
+  int temp = ch->return_record;
   list_remove(e1);
   
   return temp;
@@ -152,10 +152,10 @@ process_exit (void)
   uint32_t *pd;
 
 
-    if(cur->exit_error==-100)
+    if(cur->return_record==-100)
       exit_proc(-1);
 
-    int exit_code = cur->exit_error;
+    int exit_code = cur->return_record;
     printf("%s: exit(%d)\n",cur->name,exit_code);
 
     acquire_filesys_lock();
@@ -271,8 +271,7 @@ static bool load_segment (struct file *file, off_t ofs, uint8_t *upage,
    Stores the executable's entry point into *EIP
    and its initial stack pointer into *ESP.
    Returns true if successful, false otherwise. */
-bool
-load (const char *file_name, void (**eip) (void), void **esp) 
+bool load (const char *file_name, void (**eip) (void), void **esp)
 {
   //printf("In load\n");
   struct thread *t = thread_current ();

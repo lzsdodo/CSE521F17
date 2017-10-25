@@ -10,7 +10,7 @@ Calibrating timer...  204,600 loops/s.
 hda: 5,040 sectors (2 MB), model "BXHD00011", serial "Generic 1234"
 hda1: 192 sectors (96 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
-hda3: 94 sectors (47 kB), Pintos scratch (22)
+hda3: 95 sectors (47 kB), Pintos scratch (22)
 filesys: using hda2
 scratch: using hda3
 Formatting file system...done.
@@ -27,10 +27,10 @@ Executing 'args-single onearg':
 (args) end
 args-single: exit(0)
 Execution of 'args-single onearg' complete.
-Timer: 206 ticks
-Thread: 30 idle ticks, 150 kernel ticks, 29 user ticks
-hda2 (filesys): 65 reads, 192 writes
-hda3 (scratch): 93 reads, 2 writes
+Timer: 207 ticks
+Thread: 30 idle ticks, 151 kernel ticks, 28 user ticks
+hda2 (filesys): 65 reads, 194 writes
+hda3 (scratch): 94 reads, 2 writes
 Console: 1002 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults

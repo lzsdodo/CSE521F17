@@ -10,7 +10,7 @@ Calibrating timer...  204,600 loops/s.
 hda: 5,040 sectors (2 MB), model "BXHD00011", serial "Generic 1234"
 hda1: 192 sectors (96 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
-hda3: 101 sectors (50 kB), Pintos scratch (22)
+hda3: 102 sectors (51 kB), Pintos scratch (22)
 filesys: using hda2
 scratch: using hda3
 Formatting file system...done.
@@ -29,9 +29,9 @@ Executing 'lg-random':
 lg-random: exit(0)
 Execution of 'lg-random' complete.
 Timer: 564 ticks
-Thread: 30 idle ticks, 151 kernel ticks, 385 user ticks
-hda2 (filesys): 235 reads, 510 writes
-hda3 (scratch): 100 reads, 2 writes
+Thread: 30 idle ticks, 150 kernel ticks, 386 user ticks
+hda2 (filesys): 235 reads, 512 writes
+hda3 (scratch): 101 reads, 2 writes
 Console: 1054 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults

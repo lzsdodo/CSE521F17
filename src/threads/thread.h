@@ -37,13 +37,9 @@ struct thread
 
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
-
     int64_t waketick;
-
+    int return_record;
     bool success;
-    //TODO: what is this?
-    int exit_error;
-
     struct list child_proc;
     struct thread* parent;
 
@@ -53,6 +49,9 @@ struct thread
     int fd_count;
     // the semaphore for its child lock
     struct semaphore child_lock;
+    struct semaphore tsem;
+
+
     // the threadId that the current thread is waiting on
     int waitingon;
 
@@ -69,7 +68,7 @@ struct thread
 struct child {
       int tid;
       struct list_elem elem;
-      int exit_error;
+      int return_record;
       bool used;
 };
 

@@ -8,8 +8,9 @@
 #include "process.h"
 
 static void syscall_handler (struct intr_frame *);
-void* check_addr(const void*);
+void* confirm_user_address(const void*);
 struct proc_file* list_search(struct list* files, int fd);
+void exit_error(int input);
 
 extern bool running;
 
@@ -30,44 +31,41 @@ syscall_handler (struct intr_frame *f UNUSED)
 {
   int * p = f->esp;
 
-	check_addr(p);
-
-
-
+	confirm_user_address(p);
   int system_call = * p;
+
 	switch (system_call)
 	{
 		case SYS_HALT:
 		shutdown_power_off();
 		break;
-
 		case SYS_EXIT:
-		check_addr(p+1);
+		confirm_user_address(p+1);
 		exit_proc(*(p+1));
 		break;
 
 		case SYS_EXEC:
-		check_addr(p+1);
-		check_addr(*(p+1));
+		confirm_user_address(p+1);
+		confirm_user_address(*(p+1));
 		f->eax = exec_proc(*(p+1));
 		break;
 
 		case SYS_WAIT:
-		check_addr(p+1);
+		confirm_user_address(p+1);
 		f->eax = process_wait(*(p+1));
 		break;
 
 		case SYS_CREATE:
-		check_addr(p+5);
-		check_addr(*(p+4));
+		confirm_user_address(p+5);
+		confirm_user_address(*(p+4));
 		acquire_filesys_lock();
 		f->eax = filesys_create(*(p+4),*(p+5));
 		release_filesys_lock();
 		break;
 
 		case SYS_REMOVE:
-		check_addr(p+1);
-		check_addr(*(p+1));
+		confirm_user_address(p+1);
+		confirm_user_address(*(p+1));
 		acquire_filesys_lock();
 		if(filesys_remove(*(p+1))==NULL)
 			f->eax = false;
@@ -77,8 +75,8 @@ syscall_handler (struct intr_frame *f UNUSED)
 		break;
 
 		case SYS_OPEN:
-		check_addr(p+1);
-		check_addr(*(p+1));
+		confirm_user_address(p+1);
+		confirm_user_address(*(p+1));
 
 		acquire_filesys_lock();
 		struct file* fptr = filesys_open (*(p+1));
@@ -98,15 +96,15 @@ syscall_handler (struct intr_frame *f UNUSED)
 		break;
 
 		case SYS_FILESIZE:
-		check_addr(p+1);
+		confirm_user_address(p+1);
 		acquire_filesys_lock();
 		f->eax = file_length (list_search(&thread_current()->files, *(p+1))->ptr);
 		release_filesys_lock();
 		break;
 
 		case SYS_READ:
-		check_addr(p+7);
-		check_addr(*(p+6));
+		confirm_user_address(p+7);
+		confirm_user_address(*(p+6));
 		if(*(p+5)==0)
 		{
 			int i;
@@ -130,8 +128,8 @@ syscall_handler (struct intr_frame *f UNUSED)
 		break;
 
 		case SYS_WRITE:
-		check_addr(p+7);
-		check_addr(*(p+6));
+		confirm_user_address(p+7);
+		confirm_user_address(*(p+6));
 		if(*(p+5)==1)
 		{
 			putbuf(*(p+6),*(p+7));
@@ -152,21 +150,21 @@ syscall_handler (struct intr_frame *f UNUSED)
 		break;
 
 		case SYS_SEEK:
-		check_addr(p+5);
+		confirm_user_address(p+5);
 		acquire_filesys_lock();
 		file_seek(list_search(&thread_current()->files, *(p+4))->ptr,*(p+5));
 		release_filesys_lock();
 		break;
 
 		case SYS_TELL:
-		check_addr(p+1);
+		confirm_user_address(p+1);
 		acquire_filesys_lock();
 		f->eax = file_tell(list_search(&thread_current()->files, *(p+1))->ptr);
 		release_filesys_lock();
 		break;
 
 		case SYS_CLOSE:
-		check_addr(p+1);
+		confirm_user_address(p+1);
 		acquire_filesys_lock();
 		close_file(&thread_current()->files,*(p+1));
 		release_filesys_lock();
@@ -217,6 +215,12 @@ int exec_proc(char *file_name)
 	  }
 }
 
+void exit_error(int status){
+    thread_current() -> return_record = status;
+    thread_exit();
+}
+
+
 /**
  * Terminates the current user program, returning status to the kernel.
  * 	// TODO: how return status to kernel?
@@ -224,43 +228,58 @@ int exec_proc(char *file_name)
  * Conventionally, a status of 0 indicates success and nonzero values indicate errors.
  * @param status
  */
+// validate a user address, JZ's work
+void* confirm_user_address(const void *user_address)
+{
+//	if (!is_user_vaddr(user_address))
+//	{
+//		exit_proc(-1);
+//		return 0;
+//	}
+//	void *ptr = pagedir_get_page(thread_current()->pagedir, user_address);
+//	if (!is_kernel_vaddr(ptr))
+//	{
+//		exit_proc(-1);
+//		return 0;
+//	}
+//	return ptr;
+    if (is_user_vaddr(user_address))
+    {
+        void *ptr = pagedir_get_page(thread_current()->pagedir, user_address);
+        if (is_kernel_vaddr(ptr))
+        {
+            return ptr;
+        }
+    }
+    exit_proc(-1);
+//    exit_error(-1);
+    return 0;
+
+}
+
 void exit_proc(int status)
 {
-	struct list_elem *e;
-	// Iterate over current threads' parent's child process List,
-      for (e = list_begin (&thread_current()->parent->child_proc); e != list_end (&thread_current()->parent->child_proc);
-           e = list_next (e)) {
-          struct child *f = list_entry (e, struct child, elem);
-          if(f->tid == thread_current()->tid)
-          {
-          	f->used = true;
-          	f->exit_error = status;
-          }
+    struct list_elem *e;
+    // Iterate over current threads' parent's child process List,
+    for (e = list_begin (&thread_current()->parent->child_proc); e != list_end (&thread_current()->parent->child_proc); e = list_next (e))
+    {
+        struct child *f = list_entry (e, struct child, elem);
+        if(f->tid == thread_current()->tid)
+        {
+            f->used = true;
+            f->return_record = status;
         }
+    }
 
-	thread_current()->exit_error = status;
-		// if current thread's parent is waiting on current thread, make the semaphore now obtainable
-	if(thread_current()->parent->waitingon == thread_current()->tid)
-		sema_up(&thread_current()->parent->child_lock);
+    thread_current()->return_record = status;
+    // if current thread's parent is waiting on current thread, make the semaphore now obtainable
+    if(thread_current()->parent->waitingon == thread_current()->tid)
+        sema_up(&thread_current()->parent->child_lock);
 
-	thread_exit();
+    thread_exit();
 }
 
-void* check_addr(const void *vaddr)
-{
-	if (!is_user_vaddr(vaddr))
-	{
-		exit_proc(-1);
-		return 0;
-	}
-	void *ptr = pagedir_get_page(thread_current()->pagedir, vaddr);
-	if (!ptr)
-	{
-		exit_proc(-1);
-		return 0;
-	}
-	return ptr;
-}
+
 
 struct proc_file* list_search(struct list* files, int fd)
 {

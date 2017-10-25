@@ -8,7 +8,7 @@ pass tests/userprog/sc-bad-arg
 pass tests/userprog/sc-boundary
 pass tests/userprog/sc-boundary-2
 pass tests/userprog/halt
-pass tests/userprog/exit
+FAIL tests/userprog/exit
 pass tests/userprog/create-normal
 pass tests/userprog/create-empty
 pass tests/userprog/create-null

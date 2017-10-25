@@ -10,7 +10,7 @@ Calibrating timer...  204,600 loops/s.
 hda: 5,040 sectors (2 MB), model "BXHD00011", serial "Generic 1234"
 hda1: 192 sectors (96 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
-hda3: 95 sectors (47 kB), Pintos scratch (22)
+hda3: 96 sectors (48 kB), Pintos scratch (22)
 filesys: using hda2
 scratch: using hda3
 Formatting file system...done.
@@ -25,9 +25,9 @@ Executing 'create-long':
 create-long: exit(0)
 Execution of 'create-long' complete.
 Timer: 201 ticks
-Thread: 30 idle ticks, 149 kernel ticks, 24 user ticks
-hda2 (filesys): 66 reads, 198 writes
-hda3 (scratch): 94 reads, 2 writes
+Thread: 30 idle ticks, 149 kernel ticks, 25 user ticks
+hda2 (filesys): 66 reads, 200 writes
+hda3 (scratch): 95 reads, 2 writes
 Console: 930 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults

@@ -11,7 +11,7 @@ Calibrating timer...  204,600 loops/s.
 hda: 5,040 sectors (2 MB), model "BXHD00011", serial "Generic 1234"
 hda1: 192 sectors (96 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
-hda3: 187 sectors (93 kB), Pintos scratch (22)
+hda3: 188 sectors (94 kB), Pintos scratch (22)
 filesys: using hda2
 scratch: using hda3
 Formatting file system...done.
@@ -32,10 +32,10 @@ child-args: exit(0)
 (exec-arg) end
 exec-arg: exit(0)
 Execution of 'exec-arg' complete.
-Timer: 286 ticks
-Thread: 30 idle ticks, 208 kernel ticks, 51 user ticks
-hda2 (filesys): 134 reads, 380 writes
-hda3 (scratch): 186 reads, 2 writes
+Timer: 287 ticks
+Thread: 30 idle ticks, 209 kernel ticks, 50 user ticks
+hda2 (filesys): 134 reads, 382 writes
+hda3 (scratch): 187 reads, 2 writes
 Console: 1065 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults

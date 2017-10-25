@@ -20,13 +20,17 @@ Putting 'exit' into the file system...
 Erasing ustar archive...
 Executing 'exit':
 (exit) begin
+-------------
+-------------
+-------------
+-------------
 exit: exit(57)
 Execution of 'exit' complete.
-Timer: 187 ticks
-Thread: 30 idle ticks, 147 kernel ticks, 15 user ticks
+Timer: 195 ticks
+Thread: 30 idle ticks, 147 kernel ticks, 24 user ticks
 hda2 (filesys): 65 reads, 194 writes
 hda3 (scratch): 94 reads, 2 writes
-Console: 839 characters output
+Console: 895 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off..

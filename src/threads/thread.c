@@ -37,6 +37,8 @@ static struct thread *initial_thread;
 /* Lock used by allocate_tid(). */
 static struct lock tid_lock;
 
+
+// this is the lock that is going to be sema_down at process_exec
 struct lock filesys_lock;
 
 /* Stack frame for kernel_thread(). */
@@ -190,7 +192,7 @@ thread_create (const char *name, int priority,
   tid = t->tid = allocate_tid ();
   struct child* c = malloc(sizeof(*c));
   c->tid = tid;
-  c->exit_error = t->exit_error;
+  c->return_record = t->return_record;
   c->used = false;
   list_push_back (&running_thread()->child_proc, &c->elem);
 
@@ -489,7 +491,7 @@ init_thread (struct thread *t, const char *name, int priority)
   t->parent = running_thread();
   list_init (&t->files);
   t->fd_count=2;
-  t->exit_error = -100;
+  t->return_record = -100;
   sema_init(&t->child_lock,0);
   t->waitingon=0;
   t->self=NULL;
