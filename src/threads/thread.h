@@ -38,18 +38,42 @@ struct thread
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
     int64_t waketick;
+
+
+//    /**
+//     *
+//     * suggested by TA
+//     * uinit32_t *pagedirec
+//     * struct file* exec
+//     * struct list process_files
+//     * struct thread *parent
+//     * struct list child_list
+//     * struct p_info
+//     *      semaphore load_sema
+//     *      bool load_bool
+//     *      struct semaphore wait_sema
+//     *      bool waited
+//     *      bool is_alive
+//     *      bool parent_alive
+//     *
+//     * /
     int return_record;
     bool success;
     struct list child_proc;
     struct thread* parent;
-
     struct file *self;
-
     struct list files;
     int fd_count;
     // the semaphore for its child lock
     struct semaphore child_lock;
-    struct semaphore tsem;
+
+    //TODO: what is this
+    struct child {
+        int tid;
+        struct list_elem elem;
+        int return_record;
+        bool used;
+    };
 
 
     // the threadId that the current thread is waiting on
@@ -64,13 +88,7 @@ struct thread
     unsigned magic;                     /* Detects stack overflow. */
   };
 
-//TODO: what is this
-struct child {
-      int tid;
-      struct list_elem elem;
-      int return_record;
-      bool used;
-};
+
 
 /* If false (default), use round-robin scheduler.
    If true, use multi-level feedback queue scheduler.

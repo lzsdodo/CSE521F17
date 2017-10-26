@@ -8,15 +8,15 @@
 #include "process.h"
 
 static void syscall_handler (struct intr_frame *);
+struct file_info* list_search(struct list* files, int handle);
+void exit_error();
 void* confirm_user_address(const void*);
-struct proc_file* list_search(struct list* files, int fd);
-void exit_error(int input);
 
 extern bool running;
 
-struct proc_file {
-	struct file* ptr;
-	int fd;
+struct file_info {
+	struct file* target_file;
+	int handle;
 	struct list_elem elem;
 };
 
@@ -32,48 +32,56 @@ syscall_handler (struct intr_frame *f UNUSED)
   int * p = f->esp;
 
 	confirm_user_address(p);
-  int system_call = * p;
+
+    int system_call = *((int*) f->esp);
 
 	switch (system_call)
 	{
+        //shut down
 		case SYS_HALT:
 		shutdown_power_off();
 		break;
+
 		case SYS_EXIT:
 		confirm_user_address(p+1);
 		exit_proc(*(p+1));
 		break;
 
+         // execute program
 		case SYS_EXEC:
 		confirm_user_address(p+1);
 		confirm_user_address(*(p+1));
 		f->eax = exec_proc(*(p+1));
 		break;
-
+            // wait for child process to finish
 		case SYS_WAIT:
 		confirm_user_address(p+1);
 		f->eax = process_wait(*(p+1));
 		break;
-
+        // create new file
 		case SYS_CREATE:
 		confirm_user_address(p+5);
 		confirm_user_address(*(p+4));
-		acquire_filesys_lock();
+//		acquire_filesys_lock();
 		f->eax = filesys_create(*(p+4),*(p+5));
-		release_filesys_lock();
+//		release_filesys_lock();
 		break;
 
+            // delete file, seems like p + 1 is the place where file is stored.
+            // EZ  XD~~
 		case SYS_REMOVE:
 		confirm_user_address(p+1);
 		confirm_user_address(*(p+1));
-		acquire_filesys_lock();
-		if(filesys_remove(*(p+1))==NULL)
-			f->eax = false;
-		else
-			f->eax = true;
-		release_filesys_lock();
+//		acquire_filesys_lock();
+          f -> eax = filesys_remove(*(p+1));
+//		if(filesys_remove(*(p+1))==NULL)
+//			f->eax = false;
+//		else
+//			f->eax = true;
+//		release_filesys_lock();
 		break;
 
+            // open a file
 		case SYS_OPEN:
 		confirm_user_address(p+1);
 		confirm_user_address(*(p+1));
@@ -85,23 +93,33 @@ syscall_handler (struct intr_frame *f UNUSED)
 			f->eax = -1;
 		else
 		{
-			struct proc_file *pfile = malloc(sizeof(*pfile));
-			pfile->ptr = fptr;
-			pfile->fd = thread_current()->fd_count;
+			struct file_info *pfile = malloc(sizeof(*pfile));
+			pfile->target_file = fptr;
+			pfile->handle = thread_current()->fd_count;
 			thread_current()->fd_count++;
 			list_push_back (&thread_current()->files, &pfile->elem);
-			f->eax = pfile->fd;
+			f->eax = pfile->handle;
 
 		}
 		break;
 
+            // close the file
+        case SYS_CLOSE:
+            confirm_user_address(p+1);
+            acquire_filesys_lock();
+            close_file(&thread_current()->files,*(p+1));
+            release_filesys_lock();
+            break;
+
+            // return size of file
 		case SYS_FILESIZE:
 		confirm_user_address(p+1);
 		acquire_filesys_lock();
-		f->eax = file_length (list_search(&thread_current()->files, *(p+1))->ptr);
+		f->eax = file_length (list_search(&thread_current()->files, *(p+1))->target_file);
 		release_filesys_lock();
 		break;
 
+            // read the file
 		case SYS_READ:
 		confirm_user_address(p+7);
 		confirm_user_address(*(p+6));
@@ -115,18 +133,18 @@ syscall_handler (struct intr_frame *f UNUSED)
 		}
 		else
 		{
-			struct proc_file* fptr = list_search(&thread_current()->files, *(p+5));
+			struct file_info* fptr = list_search(&thread_current()->files, *(p+5));
 			if(fptr==NULL)
 				f->eax=-1;
 			else
 			{
 				acquire_filesys_lock();
-				f->eax = file_read (fptr->ptr, *(p+6), *(p+7));
+				f->eax = file_read (fptr->target_file, *(p+6), *(p+7));
 				release_filesys_lock();
 			}
 		}
 		break;
-
+        // printf and write into file
 		case SYS_WRITE:
 		confirm_user_address(p+7);
 		confirm_user_address(*(p+6));
@@ -137,38 +155,35 @@ syscall_handler (struct intr_frame *f UNUSED)
 		}
 		else
 		{
-			struct proc_file* fptr = list_search(&thread_current()->files, *(p+5));
+			struct file_info* fptr = list_search(&thread_current()->files, *(p+5));
 			if(fptr==NULL)
 				f->eax=-1;
 			else
 			{
 				acquire_filesys_lock();
-				f->eax = file_write (fptr->ptr, *(p+6), *(p+7));
+				f->eax = file_write (fptr->target_file, *(p+6), *(p+7));
 				release_filesys_lock();
 			}
 		}
 		break;
 
+            // move file pointer
 		case SYS_SEEK:
 		confirm_user_address(p+5);
 		acquire_filesys_lock();
-		file_seek(list_search(&thread_current()->files, *(p+4))->ptr,*(p+5));
+		file_seek(list_search(&thread_current()->files, *(p+4))->target_file,*(p+5));
 		release_filesys_lock();
 		break;
 
+            // return file pointer
 		case SYS_TELL:
 		confirm_user_address(p+1);
 		acquire_filesys_lock();
-		f->eax = file_tell(list_search(&thread_current()->files, *(p+1))->ptr);
+		f->eax = file_tell(list_search(&thread_current()->files, *(p+1))->target_file);
 		release_filesys_lock();
 		break;
 
-		case SYS_CLOSE:
-		confirm_user_address(p+1);
-		acquire_filesys_lock();
-		close_file(&thread_current()->files,*(p+1));
-		release_filesys_lock();
-		break;
+
 
 
 		default:
@@ -215,8 +230,8 @@ int exec_proc(char *file_name)
 	  }
 }
 
-void exit_error(int status){
-    thread_current() -> return_record = status;
+void exit_error(){
+    thread_current() -> return_record = -1;
     thread_exit();
 }
 
@@ -236,23 +251,23 @@ void* confirm_user_address(const void *user_address)
 //		exit_proc(-1);
 //		return 0;
 //	}
-//	void *ptr = pagedir_get_page(thread_current()->pagedir, user_address);
-//	if (!is_kernel_vaddr(ptr))
+//	void *target_file = pagedir_get_page(thread_current()->pagedir, user_address);
+//	if (!is_kernel_vaddr(target_file))
 //	{
 //		exit_proc(-1);
 //		return 0;
 //	}
-//	return ptr;
+//	return target_file;
     if (is_user_vaddr(user_address))
     {
-        void *ptr = pagedir_get_page(thread_current()->pagedir, user_address);
-        if (is_kernel_vaddr(ptr))
+        void *target_file = pagedir_get_page(thread_current()->pagedir, user_address);
+        if (is_kernel_vaddr(target_file))
         {
-            return ptr;
+            return target_file;
         }
     }
     exit_proc(-1);
-//    exit_error(-1);
+//    exit_error();
     return 0;
 
 }
@@ -281,35 +296,35 @@ void exit_proc(int status)
 
 
 
-struct proc_file* list_search(struct list* files, int fd)
+struct file_info* list_search(struct list* files, int handle)
 {
-
+//	struct list* target_files  =& thread_current() -> files;
 	struct list_elem *e;
 
       for (e = list_begin (files); e != list_end (files);
            e = list_next (e))
         {
-          struct proc_file *f = list_entry (e, struct proc_file, elem);
-          if(f->fd == fd)
+          struct file_info *f = list_entry (e, struct file_info, elem);
+          if(f->handle == handle)
           	return f;
         }
    return NULL;
 }
 
-void close_file(struct list* files, int fd)
+void close_file(struct list* files, int handle)
 {
 
 	struct list_elem *e;
 
-	struct proc_file *f;
+	struct file_info *f;
 
       for (e = list_begin (files); e != list_end (files);
            e = list_next (e))
         {
-          f = list_entry (e, struct proc_file, elem);
-          if(f->fd == fd)
+          f = list_entry (e, struct file_info, elem);
+          if(f->handle == handle)
           {
-          	file_close(f->ptr);
+          	file_close(f->target_file);
           	list_remove(e);
           }
         }
@@ -326,9 +341,9 @@ void close_all_files(struct list* files)
 	{
 		e = list_pop_front(files);
 
-		struct proc_file *f = list_entry (e, struct proc_file, elem);
+		struct file_info *f = list_entry (e, struct file_info, elem);
           
-	      	file_close(f->ptr);
+	      	file_close(f->target_file);
 	      	list_remove(e);
 	      	free(f);
 

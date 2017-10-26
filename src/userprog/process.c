@@ -62,8 +62,7 @@ tid_t process_execute (const char *file_name)
 
 /* A thread function that loads a user process and starts it
    running. */
-static void
-start_process (void *file_name_)
+static void start_process (void *file_name_)
 {
   //printf("In start_process\n");
   char *file_name = file_name_;
@@ -145,37 +144,24 @@ int process_wait (tid_t child_tid)
 }
 
 /* Free the current process's resources. */
-void
-process_exit (void)
+void process_exit (void)
 {
   struct thread *cur = thread_current ();
   uint32_t *pd;
+//    if(cur->return_record==-100) exit_proc(-1);
 
-
-    if(cur->return_record==-100)
-      exit_proc(-1);
-
-    int exit_code = cur->return_record;
-    printf("%s: exit(%d)\n",cur->name,exit_code);
+    int exit_output = cur->return_record;
+    printf("%s: exit(%d)\n",cur->name,exit_output);
 
     acquire_filesys_lock();
     file_close(thread_current()->self);
     close_all_files(&thread_current()->files);
     release_filesys_lock();
 
-  
-  /* Destroy the current process's page directory and switch back
-     to the kernel-only page directory. */
+
   pd = cur->pagedir;
   if (pd != NULL) 
     {
-      /* Correct ordering here is crucial.  We must set
-         cur->pagedir to NULL before switching page directories,
-         so that a timer interrupt can't switch back to the
-         process page directory.  We must activate the base page
-         directory before destroying the process's page
-         directory, or our active page directory will be one
-         that's been freed (and cleared). */
       cur->pagedir = NULL;
       pagedir_activate (NULL);
       pagedir_destroy (pd);
@@ -508,8 +494,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 
 /* Create a minimal stack by mapping a zeroed page at the top of
    user virtual memory. */
-static bool
-setup_stack (void **esp, char * file_name) 
+static bool setup_stack (void **esp, char * file_name)
 {
   uint8_t *kpage;
   bool success = false;
