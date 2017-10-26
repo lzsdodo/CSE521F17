@@ -8,7 +8,7 @@
 #include "process.h"
 
 static void syscall_handler (struct intr_frame *);
-struct file_info* list_search(struct list* files, int handle);
+struct file_info* look_up(int handle);
 void exit_error();
 void* confirm_user_address(const void*);
 
@@ -20,8 +20,7 @@ struct file_info {
 	struct list_elem elem;
 };
 
-void
-syscall_init (void) 
+void syscall_init (void)
 {
   intr_register_int (0x30, 3, INTR_ON, syscall_handler, "syscall");
 }
@@ -115,7 +114,7 @@ syscall_handler (struct intr_frame *f UNUSED)
 		case SYS_FILESIZE:
 		confirm_user_address(p+1);
 		acquire_filesys_lock();
-		f->eax = file_length (list_search(&thread_current()->files, *(p+1))->target_file);
+		f->eax = file_length (look_up( *(p+1))->target_file);
 		release_filesys_lock();
 		break;
 
@@ -133,7 +132,7 @@ syscall_handler (struct intr_frame *f UNUSED)
 		}
 		else
 		{
-			struct file_info* fptr = list_search(&thread_current()->files, *(p+5));
+			struct file_info* fptr = look_up( *(p+5));
 			if(fptr==NULL)
 				f->eax=-1;
 			else
@@ -155,7 +154,7 @@ syscall_handler (struct intr_frame *f UNUSED)
 		}
 		else
 		{
-			struct file_info* fptr = list_search(&thread_current()->files, *(p+5));
+			struct file_info* fptr = look_up(*(p+5));
 			if(fptr==NULL)
 				f->eax=-1;
 			else
@@ -171,7 +170,7 @@ syscall_handler (struct intr_frame *f UNUSED)
 		case SYS_SEEK:
 		confirm_user_address(p+5);
 		acquire_filesys_lock();
-		file_seek(list_search(&thread_current()->files, *(p+4))->target_file,*(p+5));
+		file_seek(look_up(*(p+4))->target_file,*(p+5));
 		release_filesys_lock();
 		break;
 
@@ -179,7 +178,7 @@ syscall_handler (struct intr_frame *f UNUSED)
 		case SYS_TELL:
 		confirm_user_address(p+1);
 		acquire_filesys_lock();
-		f->eax = file_tell(list_search(&thread_current()->files, *(p+1))->target_file);
+		f->eax = file_tell(look_up(*(p+1))->target_file);
 		release_filesys_lock();
 		break;
 
@@ -296,9 +295,9 @@ void exit_proc(int status)
 
 
 
-struct file_info* list_search(struct list* files, int handle)
+struct file_info* look_up( int handle)
 {
-//	struct list* target_files  =& thread_current() -> files;
+	struct list* files  =& thread_current() -> files;
 	struct list_elem *e;
 
       for (e = list_begin (files); e != list_end (files);
