@@ -25,8 +25,7 @@ void syscall_init (void)
   intr_register_int (0x30, 3, INTR_ON, syscall_handler, "syscall");
 }
 
-static void
-syscall_handler (struct intr_frame *f UNUSED) 
+static void syscall_handler (struct intr_frame *f UNUSED)
 {
   int * p = f->esp;
 
@@ -43,7 +42,26 @@ syscall_handler (struct intr_frame *f UNUSED)
 
 		case SYS_EXIT:
 		confirm_user_address(p+1);
-		exit_proc(*(p+1));
+			int status = *(p+1);
+		exit_proc(status);
+//            struct list_elem *e;
+//            // Iterate over current threads' parent's child process List,
+//            for (e = list_begin (&thread_current()->parent->child_process); e != list_end (&thread_current()->parent->child_process); e = list_next (e))
+//            {
+//                struct child *f = list_entry (e, struct child, elem);
+//                if(f->tid == thread_current()->tid)
+//                {
+//                    f->used = true;
+//                    f->return_record = status;
+//                }
+//            }
+//
+//            thread_current()->return_record = status;
+//            // if current thread's parent is waiting on current thread, make the semaphore now obtainable
+//            if(thread_current()->parent->waitingon == thread_current()->tid)
+//                sema_up(&thread_current()->parent->child_lock);
+//
+//            thread_exit();
 		break;
 
          // execute program
@@ -96,7 +114,7 @@ syscall_handler (struct intr_frame *f UNUSED)
 			pfile->target_file = fptr;
 			pfile->handle = thread_current()->fd_count;
 			thread_current()->fd_count++;
-			list_push_back (&thread_current()->files, &pfile->elem);
+			list_push_back (&thread_current()->process_files, &pfile->elem);
 			f->eax = pfile->handle;
 
 		}
@@ -106,7 +124,7 @@ syscall_handler (struct intr_frame *f UNUSED)
         case SYS_CLOSE:
             confirm_user_address(p+1);
             acquire_filesys_lock();
-            close_file(&thread_current()->files,*(p+1));
+            close_file(&thread_current()->process_files,*(p+1));
             release_filesys_lock();
             break;
 
@@ -182,9 +200,6 @@ syscall_handler (struct intr_frame *f UNUSED)
 		release_filesys_lock();
 		break;
 
-
-
-
 		default:
 		printf("Default %d\n",*p);
 	}
@@ -237,7 +252,6 @@ void exit_error(){
 
 /**
  * Terminates the current user program, returning status to the kernel.
- * 	// TODO: how return status to kernel?
  * If the process's parent waits for it (see below), this is the status that will be returned.
  * Conventionally, a status of 0 indicates success and nonzero values indicate errors.
  * @param status
@@ -275,7 +289,7 @@ void exit_proc(int status)
 {
     struct list_elem *e;
     // Iterate over current threads' parent's child process List,
-    for (e = list_begin (&thread_current()->parent->child_proc); e != list_end (&thread_current()->parent->child_proc); e = list_next (e))
+    for (e = list_begin (&thread_current()->parent->child_process); e != list_end (&thread_current()->parent->child_process); e = list_next (e))
     {
         struct child *f = list_entry (e, struct child, elem);
         if(f->tid == thread_current()->tid)
@@ -293,31 +307,14 @@ void exit_proc(int status)
     thread_exit();
 }
 
-
-
-struct file_info* look_up( int handle)
-{
-	struct list* files  =& thread_current() -> files;
-	struct list_elem *e;
-
-      for (e = list_begin (files); e != list_end (files);
-           e = list_next (e))
-        {
-          struct file_info *f = list_entry (e, struct file_info, elem);
-          if(f->handle == handle)
-          	return f;
-        }
-   return NULL;
-}
-
-void close_file(struct list* files, int handle)
+void close_file(struct list* process_files, int handle)
 {
 
 	struct list_elem *e;
 
 	struct file_info *f;
 
-      for (e = list_begin (files); e != list_end (files);
+      for (e = list_begin (process_files); e != list_end (process_files);
            e = list_next (e))
         {
           f = list_entry (e, struct file_info, elem);
@@ -331,14 +328,14 @@ void close_file(struct list* files, int handle)
     free(f);
 }
 
-void close_all_files(struct list* files)
+void close_all_files(struct list* process_files)
 {
 
 	struct list_elem *e;
 
-	while(!list_empty(files))
+	while(!list_empty(process_files))
 	{
-		e = list_pop_front(files);
+		e = list_pop_front(process_files);
 
 		struct file_info *f = list_entry (e, struct file_info, elem);
           
@@ -350,4 +347,20 @@ void close_all_files(struct list* files)
 	}
 
       
+}
+
+
+struct file_info* look_up( int handle)
+{
+    struct list* process_files  =& thread_current() -> process_files;
+    struct list_elem *e;
+
+    for (e = list_begin (process_files); e != list_end (process_files);
+         e = list_next (e))
+    {
+        struct file_info *f = list_entry (e, struct file_info, elem);
+        if(f->handle == handle)
+            return f;
+    }
+    return NULL;
 }

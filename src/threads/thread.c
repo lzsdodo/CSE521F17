@@ -39,7 +39,7 @@ static struct lock tid_lock;
 
 
 // this is the lock that is going to be sema_down at process_exec
-struct lock filesys_lock;
+static struct lock filesys_lock;
 
 /* Stack frame for kernel_thread(). */
 struct kernel_thread_frame 
@@ -88,8 +88,7 @@ static tid_t allocate_tid (void);
 
    It is not safe to call thread_current() until this function
    finishes. */
-void
-thread_init (void) 
+void thread_init (void)
 {
   ASSERT (intr_get_level () == INTR_OFF);
 
@@ -169,8 +168,7 @@ thread_print_stats (void)
    The code provided sets the new thread's `priority' member to
    PRIORITY, but no actual priority scheduling is implemented.
    Priority scheduling is the goal of Problem 1-3. */
-tid_t
-thread_create (const char *name, int priority,
+tid_t thread_create (const char *name, int priority,
                thread_func *function, void *aux) 
 {
   struct thread *t;
@@ -192,9 +190,9 @@ thread_create (const char *name, int priority,
   tid = t->tid = allocate_tid ();
   struct child* c = malloc(sizeof(*c));
   c->tid = tid;
-  c->return_record = t->return_record;
+ c->return_record = t->return_record;
   c->used = false;
-  list_push_back (&running_thread()->child_proc, &c->elem);
+  list_push_back (&running_thread()->child_process, &c->elem);
 
   /* Prepare thread for first run by initializing its stack.
      Do this atomically so intermediate values for the 'stack' 
@@ -310,8 +308,8 @@ thread_exit (void)
      and schedule another process.  That process will destroy us
      when it calls thread_schedule_tail(). */
 
-    while(!list_empty(&thread_current()->child_proc)){
-      struct file_info *f = list_entry (list_pop_front(&thread_current()->child_proc), struct child, elem);
+    while(!list_empty(&thread_current()->child_process)){
+      struct file_info *f = list_entry (list_pop_front(&thread_current()->child_process), struct child, elem);
       free(f);
     }
 
@@ -487,9 +485,9 @@ init_thread (struct thread *t, const char *name, int priority)
   t->stack = (uint8_t *) t + PGSIZE;
   t->priority = priority;
   t->magic = THREAD_MAGIC;
-  list_init (&t->child_proc);
+  list_init (&t->child_process);
   t->parent = running_thread();
-  list_init (&t->files);
+  list_init (&t->process_files);
   t->fd_count=2;
   t->return_record = -100;
   sema_init(&t->child_lock,0);

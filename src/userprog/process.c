@@ -48,14 +48,14 @@ tid_t process_execute (const char *file_name)
   f_name = strtok_r (f_name," ",&save_ptr);
 
   /* Create a child thread to execute FILE_NAME. */
+  /*Start process will make this sema avaliable if load successful*/
   tid = thread_create (f_name, PRI_DEFAULT, start_process, fn_copy);
   free(f_name);
   if (tid == TID_ERROR) palloc_free_page (fn_copy);
 
   sema_down(&thread_current()->child_lock);
 
-  if(thread_current()->success == false)
-    tid = -1;
+  if(thread_current()->load_success == false)tid = -1;
 
   return tid;
 }
@@ -80,13 +80,13 @@ static void start_process (void *file_name_)
   palloc_free_page (file_name);
   if (!success) {
     //printf("%d %d\n",thread_current()->tid, thread_current()->parent->tid);
-    thread_current()->parent->success=false;
+    thread_current()->parent->load_success=false;
     sema_up(&thread_current()->parent->child_lock);
     thread_exit();
   }
   else
   {
-    thread_current()->parent->success=true;
+    thread_current()->parent->load_success=true;
     sema_up(&thread_current()->parent->child_lock);
   }
 
@@ -117,7 +117,7 @@ int process_wait (tid_t child_tid)
   struct child *ch=NULL;
   struct list_elem *e1=NULL;
 
-  for (e = list_begin (&thread_current()->child_proc); e != list_end (&thread_current()->child_proc);
+  for (e = list_begin (&thread_current()->child_process); e != list_end (&thread_current()->child_process);
            e = list_next (e))
         {
           struct child *f = list_entry (e, struct child, elem);
@@ -155,7 +155,7 @@ void process_exit (void)
 
     acquire_filesys_lock();
     file_close(thread_current()->self);
-    close_all_files(&thread_current()->files);
+    close_all_files(&thread_current()->process_files);
     release_filesys_lock();
 
 

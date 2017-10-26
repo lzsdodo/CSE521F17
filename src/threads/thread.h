@@ -57,32 +57,35 @@ struct thread
 //     *      bool parent_alive
 //     *
 //     * /
-    int return_record;
-    bool success;
-    struct list child_proc;
-    struct thread* parent;
-    struct file *self;
-    struct list files;
-    int fd_count;
-    // the semaphore for its child lock
-    struct semaphore child_lock;
 
-    //TODO: what is this
+
+
+    uint32_t *pagedir;                  /* Page directory. */
+    struct file *self;
+    struct list process_files;
+    struct thread* parent;
+    struct list child_process;
+    int return_record;
+
+    bool load_success;
+    int fd_count;
+
+    //TODO: split child_lock into sema load, sema wait
+    struct semaphore child_lock;
+    struct semaphore wait_sema;
+
     struct child {
-        int tid;
+        tid_t tid;
         struct list_elem elem;
-        int return_record;
+       int return_record;
         bool used;
     };
 
 
     // the threadId that the current thread is waiting on
-    int waitingon;
+    tid_t waitingon;
 
-#ifdef USERPROG
-    /* Owned by userprog/process.c. */
-    uint32_t *pagedir;                  /* Page directory. */
-#endif
+
 
     /* Owned by thread.c. */
     unsigned magic;                     /* Detects stack overflow. */
