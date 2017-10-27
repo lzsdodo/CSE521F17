@@ -1,6 +1,6 @@
 FAIL
 Kernel panic in run: PANIC at ../../userprog/exception.c:101 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc00277e6 0xc0029a90
+Call stack: 0xc00277e6 0xc0029a7e
 Translation of call stack:
 0xc00277e6: debug_panic (.../../lib/kernel/debug.c:38)
-0xc0029a90: setup_stack (...../userprog/process.c:530)
+0xc0029a7e: setup_stack (...../userprog/process.c:528)

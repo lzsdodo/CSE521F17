@@ -80,8 +80,7 @@ sema_down (struct semaphore *sema)
    decremented, false otherwise.
 
    This function may be called from an interrupt handler. */
-bool
-sema_try_down (struct semaphore *sema) 
+bool sema_try_down (struct semaphore *sema)
 {
   enum intr_level old_level;
   bool success;

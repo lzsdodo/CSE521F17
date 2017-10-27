@@ -30,7 +30,7 @@ Interrupt 0x0e (#PF Page-Fault Exception) at eip=0x8048097
 bad-read2: exit(-1)
 Execution of 'bad-read2' complete.
 Timer: 229 ticks
-Thread: 30 idle ticks, 148 kernel ticks, 54 user ticks
+Thread: 30 idle ticks, 147 kernel ticks, 54 user ticks
 hda2 (filesys): 65 reads, 194 writes
 hda3 (scratch): 94 reads, 2 writes
 Console: 1242 characters output

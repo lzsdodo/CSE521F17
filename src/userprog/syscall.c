@@ -58,8 +58,8 @@ static void syscall_handler (struct intr_frame *f UNUSED)
 //
 //            thread_current()->return_record = status;
 //            // if current thread's parent is waiting on current thread, make the semaphore now obtainable
-//            if(thread_current()->parent->waitingon == thread_current()->tid)
-//                sema_up(&thread_current()->parent->child_lock);
+//            if(thread_current()->parent->waiting_for_t == thread_current()->tid)
+//                sema_up(&thread_current()->parent->load_process_sema);
 //
 //            thread_exit();
 		break;
@@ -219,11 +219,9 @@ int exec_proc(char *file_name)
 	acquire_filesys_lock();
 	// allocate space
 	char * fn_cp = malloc (strlen(file_name)+1);
-	// TODO: what's this?
 	  strlcpy(fn_cp, file_name, strlen(file_name)+1);
 	  
 	  char * save_ptr;
-	//TODO: which token does it return
 	  fn_cp = strtok_r(fn_cp," ",&save_ptr);
 
 	// open file with given name
@@ -288,21 +286,21 @@ void* confirm_user_address(const void *user_address)
 void exit_proc(int status)
 {
     struct list_elem *e;
-    // Iterate over current threads' parent's child process List,
+
     for (e = list_begin (&thread_current()->parent->child_process); e != list_end (&thread_current()->parent->child_process); e = list_next (e))
     {
-        struct child *f = list_entry (e, struct child, elem);
+        struct p_info *f = list_entry (e, struct p_info, elem);
         if(f->tid == thread_current()->tid)
         {
-            f->used = true;
+            f->is_over = true;
             f->return_record = status;
         }
     }
 
     thread_current()->return_record = status;
     // if current thread's parent is waiting on current thread, make the semaphore now obtainable
-    if(thread_current()->parent->waitingon == thread_current()->tid)
-        sema_up(&thread_current()->parent->child_lock);
+    if(thread_current()->parent->waiting_for_t == thread_current()->tid)
+        sema_up(&thread_current()->parent-> load_process_sema);
 
     thread_exit();
 }
@@ -364,3 +362,5 @@ struct file_info* look_up( int handle)
     }
     return NULL;
 }
+//TODO 6: create a look_up handle for child
+// look up handle could be used in syscall/ exit process, and process/wait_process.

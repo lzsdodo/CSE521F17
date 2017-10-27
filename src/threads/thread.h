@@ -48,12 +48,12 @@ struct thread
 //     * struct list process_files
 //     * struct thread *parent
 //     * struct list child_list
-//     * struct p_info
+//     * struct child
 //     *      semaphore load_sema
 //     *      bool load_bool
 //     *      struct semaphore wait_sema
 //     *      bool waited
-//     *      bool is_alive
+//     *      bool is_over
 //     *      bool parent_alive
 //     *
 //     * /
@@ -67,23 +67,32 @@ struct thread
     struct list child_process;
     int return_record;
 
+    // TODO 1: from TA's slides, load_success should be in child
     bool load_success;
+    //TODO 2: what is this fd_count? why its initialzied to 2 in thread/init.c? can you change it to something in TA's suggested structure
     int fd_count;
 
-    //TODO: split child_lock into sema load, sema wait
-    struct semaphore child_lock;
-    struct semaphore wait_sema;
+    //TODO 3: if you use 2nd sema, 3/76 unpass, solve this.
+    // if you want to reverse to 2/76, delete this field, and its initialization.
+    struct semaphore load_process_sema;
+//   struct semaphore wait_process_sema;
 
-    struct child {
-        tid_t tid;
-        struct list_elem elem;
-       int return_record;
-        bool used;
-    };
 
 
     // the threadId that the current thread is waiting on
-    tid_t waitingon;
+    // TODO 5: resolve it to a bool with same functionality, try to put it in child
+    tid_t waiting_for_t;
+
+    struct p_info {
+        // used to track the value
+        tid_t tid;
+       int return_record;
+        bool is_over;
+        //TODO 4: is_parent_alive
+        struct list_elem elem;
+    };
+
+
 
 
 

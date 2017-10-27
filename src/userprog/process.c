@@ -53,8 +53,7 @@ tid_t process_execute (const char *file_name)
   free(f_name);
   if (tid == TID_ERROR) palloc_free_page (fn_copy);
 
-  sema_down(&thread_current()->child_lock);
-
+  sema_down(&thread_current()->load_process_sema);
   if(thread_current()->load_success == false)tid = -1;
 
   return tid;
@@ -80,14 +79,15 @@ static void start_process (void *file_name_)
   palloc_free_page (file_name);
   if (!success) {
     //printf("%d %d\n",thread_current()->tid, thread_current()->parent->tid);
-    thread_current()->parent->load_success=false;
-    sema_up(&thread_current()->parent->child_lock);
+      //TODO: use a handle, parse in thread current, thread parent, set current threads' p_info load_success to be false, see if parent contians a process that == currthread's tid
+    thread_current()->parent-> load_success=false;
+    sema_up(&thread_current()->parent->load_process_sema);
     thread_exit();
   }
   else
   {
     thread_current()->parent->load_success=true;
-    sema_up(&thread_current()->parent->child_lock);
+    sema_up(&thread_current()->parent->load_process_sema);
   }
 
   /* Start the user process by simulating a return from an
@@ -112,15 +112,15 @@ static void start_process (void *file_name_)
 int process_wait (tid_t child_tid)
 {
   //printf("Wait : %s %d\n",thread_current()->name, child_tid);
-
   struct list_elem *e;
-  struct child *ch=NULL;
+  struct p_info *ch=NULL;
   struct list_elem *e1=NULL;
 
   for (e = list_begin (&thread_current()->child_process); e != list_end (&thread_current()->child_process);
            e = list_next (e))
         {
-          struct child *f = list_entry (e, struct child, elem);
+          struct p_info *f = list_entry (e, struct p_info, elem);
+            // locate the child process
           if(f->tid == child_tid)
           {
             ch = f;
@@ -128,16 +128,17 @@ int process_wait (tid_t child_tid)
           }
         }
 
+    // return -1 if there is no such child process
+  if(!ch || !e1) return -1;
 
-  if(!ch || !e1)
-    return -1;
-
-  thread_current()->waitingon = ch->tid;
+  thread_current()->waiting_for_t = ch->tid;
     
-  if(!ch->used)
-    sema_down(&thread_current()->child_lock);
+  if(ch->is_over== false)
+    sema_down(&thread_current()-> load_process_sema);
 
   int temp = ch->return_record;
+
+    // otherwise it will not pass wait-twice
   list_remove(e1);
   
   return temp;
@@ -153,29 +154,27 @@ void process_exit (void)
     int exit_output = cur->return_record;
     printf("%s: exit(%d)\n",cur->name,exit_output);
 
-    acquire_filesys_lock();
+//    acquire_filesys_lock();
     file_close(thread_current()->self);
     close_all_files(&thread_current()->process_files);
-    release_filesys_lock();
+//    release_filesys_lock();
+   pd = cur->pagedir;
 
-
-  pd = cur->pagedir;
-  if (pd != NULL) 
-    {
+    //JZ: I cross this out cuz i think pagedirectory cannot be null.
+//  if (pd != NULL)
+//    {
       cur->pagedir = NULL;
       pagedir_activate (NULL);
       pagedir_destroy (pd);
-    }
+//    }
 }
 
 /* Sets up the CPU for running user code in the current
    thread.
    This function is called on every context switch. */
-void
-process_activate (void)
+void process_activate (void)
 {
   struct thread *t = thread_current ();
-
   /* Activate thread's page tables. */
   pagedir_activate (t->pagedir);
 

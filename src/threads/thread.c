@@ -37,8 +37,6 @@ static struct thread *initial_thread;
 /* Lock used by allocate_tid(). */
 static struct lock tid_lock;
 
-
-// this is the lock that is going to be sema_down at process_exec
 static struct lock filesys_lock;
 
 /* Stack frame for kernel_thread(). */
@@ -188,10 +186,10 @@ tid_t thread_create (const char *name, int priority,
   /* Initialize thread. */
   init_thread (t, name, priority);
   tid = t->tid = allocate_tid ();
-  struct child* c = malloc(sizeof(*c));
+  struct p_info* c = malloc(sizeof(*c));
   c->tid = tid;
  c->return_record = t->return_record;
-  c->used = false;
+  c->is_over = false;
   list_push_back (&running_thread()->child_process, &c->elem);
 
   /* Prepare thread for first run by initializing its stack.
@@ -309,7 +307,7 @@ thread_exit (void)
      when it calls thread_schedule_tail(). */
 
     while(!list_empty(&thread_current()->child_process)){
-      struct file_info *f = list_entry (list_pop_front(&thread_current()->child_process), struct child, elem);
+      struct file_info *f = list_entry (list_pop_front(&thread_current()->child_process), struct p_info, elem);
       free(f);
     }
 
@@ -482,6 +480,9 @@ init_thread (struct thread *t, const char *name, int priority)
   memset (t, 0, sizeof *t);
   t->status = THREAD_BLOCKED;
   strlcpy (t->name, name, sizeof t->name);
+
+
+
   t->stack = (uint8_t *) t + PGSIZE;
   t->priority = priority;
   t->magic = THREAD_MAGIC;
@@ -490,16 +491,17 @@ init_thread (struct thread *t, const char *name, int priority)
   list_init (&t->process_files);
   t->fd_count=2;
   t->return_record = -100;
-  sema_init(&t->child_lock,0);
-  t->waitingon=0;
+  sema_init(&t->load_process_sema,0);
+ // sema_init(&t->wait_process_sema,0);
+
+  t->waiting_for_t=0;
   t->self=NULL;
   list_push_back (&all_list, &t->allelem);
 }
 
 /* Allocates a SIZE-byte frame at the top of thread T's stack and
    returns a pointer to the frame's base. */
-static void *
-alloc_frame (struct thread *t, size_t size) 
+static void *alloc_frame (struct thread *t, size_t size)
 {
   /* Stack data is always allocated in word-size units. */
   ASSERT (is_thread (t));

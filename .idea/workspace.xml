@@ -12,7 +12,48 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b07499df-61b8-4eab-9a0e-a8a8b6eb0fff" name="Default" comment="">
+    <list default="true" id="b07499df-61b8-4eab-9a0e-a8a8b6eb0fff" name="Default" comment="about to change child to child_p">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/results" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/lg-create.errors" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/lg-create.output" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/lg-create.result" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/lg-full.errors" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/lg-full.output" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/lg-full.result" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/lg-random.errors" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/lg-random.output" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/lg-random.result" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/lg-seq-block.errors" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/lg-seq-block.output" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/lg-seq-block.result" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/lg-seq-random.errors" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/lg-seq-random.output" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/lg-seq-random.result" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/sm-create.errors" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/sm-create.output" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/sm-create.result" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/sm-full.errors" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/sm-full.output" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/sm-full.result" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/sm-random.errors" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/sm-random.output" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/sm-random.result" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/sm-seq-block.errors" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/sm-seq-block.output" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/sm-seq-block.result" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/sm-seq-random.errors" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/sm-seq-random.output" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/sm-seq-random.result" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/syn-read.errors" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/syn-read.output" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/syn-read.result" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/syn-remove.errors" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/syn-remove.output" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/syn-remove.result" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/syn-write.errors" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/syn-write.output" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/syn-write.result" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/userprog/build/tests/userprog/no-vm/multi-oom.result" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/devices/intq.o" afterPath="$PROJECT_DIR$/src/userprog/build/devices/intq.o" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/devices/serial.o" afterPath="$PROJECT_DIR$/src/userprog/build/devices/serial.o" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/devices/shutdown.o" afterPath="$PROJECT_DIR$/src/userprog/build/devices/shutdown.o" />
@@ -33,13 +74,20 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/userprog/syscall.o" afterPath="$PROJECT_DIR$/src/userprog/build/userprog/syscall.o" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/userprog/tss.o" afterPath="$PROJECT_DIR$/src/userprog/build/userprog/tss.o" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/threads/synch.c" afterPath="$PROJECT_DIR$/src/threads/synch.c" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/threads/thread.c" afterPath="$PROJECT_DIR$/src/threads/thread.c" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/threads/thread.h" afterPath="$PROJECT_DIR$/src/threads/thread.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/bochsout.txt" afterPath="$PROJECT_DIR$/src/userprog/build/bochsout.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/bochsrc.txt" afterPath="$PROJECT_DIR$/src/userprog/build/bochsrc.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/syn-read.output" afterPath="$PROJECT_DIR$/src/userprog/build/tests/filesys/base/syn-read.output" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/tests/userprog/bad-read.output" afterPath="$PROJECT_DIR$/src/userprog/build/tests/userprog/bad-read.output" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/tests/userprog/bad-read2.output" afterPath="$PROJECT_DIR$/src/userprog/build/tests/userprog/bad-read2.output" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/tests/userprog/exec-multiple.output" afterPath="$PROJECT_DIR$/src/userprog/build/tests/userprog/exec-multiple.output" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/tests/userprog/multi-child-fd.output" afterPath="$PROJECT_DIR$/src/userprog/build/tests/userprog/multi-child-fd.output" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/tests/userprog/multi-recurse.output" afterPath="$PROJECT_DIR$/src/userprog/build/tests/userprog/multi-recurse.output" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/tests/userprog/no-vm/multi-oom.errors" afterPath="$PROJECT_DIR$/src/userprog/build/tests/userprog/no-vm/multi-oom.errors" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/tests/userprog/no-vm/multi-oom.output" afterPath="$PROJECT_DIR$/src/userprog/build/tests/userprog/no-vm/multi-oom.output" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/tests/userprog/no-vm/multi-oom.result" afterPath="$PROJECT_DIR$/src/userprog/build/tests/userprog/no-vm/multi-oom.result" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/tests/userprog/open-boundary.output" afterPath="$PROJECT_DIR$/src/userprog/build/tests/userprog/open-boundary.output" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/tests/userprog/wait-simple.output" afterPath="$PROJECT_DIR$/src/userprog/build/tests/userprog/wait-simple.output" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/process.c" afterPath="$PROJECT_DIR$/src/userprog/process.c" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/syscall.c" afterPath="$PROJECT_DIR$/src/userprog/syscall.c" />
     </list>
@@ -56,54 +104,70 @@
       <file leaf-file-name="syscall.c" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/userprog/syscall.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1104">
-              <caret line="77" column="26" lean-forward="false" selection-start-line="77" selection-start-column="26" selection-end-line="77" selection-end-column="26" />
+            <state relative-caret-position="-391">
+              <caret line="10" column="38" lean-forward="false" selection-start-line="10" selection-start-column="38" selection-end-line="10" selection-end-column="38" />
               <folding>
-                <element signature="e#372#456#1" expanded="false" />
                 <element signature="e#459#555#0" expanded="false" />
-                <element signature="e#6088#6171#0" expanded="false" />
-                <element signature="e#6453#7097#0" expanded="false" />
-                <element signature="e#8286#8603#0" expanded="false" />
-                <element signature="e#8606#8997#0" expanded="false" />
-                <marker date="1509050940354" expanded="false" signature="770:800" ph="..." />
-                <marker date="1509050940354" expanded="true" signature="821:1796" ph="..." />
-                <marker date="1509050940354" expanded="false" signature="893:1787" ph="..." />
-                <marker date="1509050940354" expanded="false" signature="1845:1942" ph="..." />
-                <marker date="1509050940354" expanded="false" signature="2008:2078" ph="..." />
-                <marker date="1509050940354" expanded="false" signature="2126:2292" ph="..." />
-                <marker date="1509050940354" expanded="false" signature="2419:2674" ph="..." />
-                <marker date="1509050940354" expanded="false" signature="2721:3194" ph="..." />
-                <marker date="1509050940354" expanded="false" signature="3258:3444" ph="..." />
-                <marker date="1509050940354" expanded="false" signature="3503:3647" ph="..." />
-                <marker date="1509050940354" expanded="false" signature="3697:4130" ph="..." />
-                <marker date="1509050940354" expanded="false" signature="4189:4554" ph="..." />
-                <marker date="1509050940354" expanded="false" signature="4608:4745" ph="..." />
-                <marker date="1509050940354" expanded="false" signature="4801:4940" ph="..." />
-                <marker date="1509050940354" expanded="false" signature="6546:6811" ph="..." />
-                <marker date="1509050940354" expanded="false" signature="7918:8284" ph="{...}" />
+                <element signature="e#557#4997#0" expanded="false" />
+                <element signature="e#4999#6038#0" expanded="false" />
+                <element signature="e#6040#6123#0" expanded="false" />
+                <element signature="e#6126#6404#0" expanded="false" />
+                <element signature="e#6405#7049#0" expanded="false" />
+                <element signature="e#7051#7764#0" expanded="false" />
+                <element signature="e#8190#8507#0" expanded="false" />
+                <marker date="1509063188305" expanded="false" signature="770:800" ph="..." />
+                <marker date="1509063188305" expanded="true" signature="821:1807" ph="..." />
+                <marker date="1509063188305" expanded="false" signature="893:1798" ph="..." />
+                <marker date="1509063188305" expanded="false" signature="1856:1953" ph="..." />
+                <marker date="1509063188305" expanded="false" signature="2019:2089" ph="..." />
+                <marker date="1509063188305" expanded="false" signature="2137:2303" ph="..." />
+                <marker date="1509063188305" expanded="false" signature="2430:2685" ph="..." />
+                <marker date="1509063188305" expanded="false" signature="2732:3205" ph="..." />
+                <marker date="1509063188305" expanded="false" signature="3269:3455" ph="..." />
+                <marker date="1509063188305" expanded="false" signature="3514:3658" ph="..." />
+                <marker date="1509063188305" expanded="false" signature="3708:4141" ph="..." />
+                <marker date="1509063188305" expanded="false" signature="4200:4565" ph="..." />
+                <marker date="1509063188305" expanded="false" signature="4619:4756" ph="..." />
+                <marker date="1509063188305" expanded="false" signature="4812:4951" ph="..." />
+                <marker date="1509063188305" expanded="false" signature="6498:6763" ph="..." />
+                <marker date="1509063188305" expanded="false" signature="7822:8188" ph="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="process.c" pinned="false" current-in-tab="false">
+      <file leaf-file-name="process.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/userprog/process.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="332">
-              <caret line="157" column="39" lean-forward="false" selection-start-line="157" selection-start-column="39" selection-end-line="157" selection-end-column="39" />
+            <state relative-caret-position="374">
+              <caret line="81" column="154" lean-forward="false" selection-start-line="81" selection-start-column="154" selection-end-line="81" selection-end-column="154" />
               <folding>
                 <element signature="e#633#883#0" expanded="false" />
-                <element signature="e#1793#1868#0" expanded="false" />
-                <element signature="e#1793#3094#0" expanded="false" />
-                <element signature="e#3096#3526#0" expanded="false" />
-                <element signature="e#7558#11191#0" expanded="false" />
-                <element signature="e#11286#11399#0" expanded="false" />
-                <element signature="e#11286#12693#0" expanded="false" />
-                <element signature="e#12695#13240#0" expanded="false" />
-                <element signature="e#12695#14569#0" expanded="false" />
-                <element signature="e#14571#16059#0" expanded="false" />
-                <element signature="e#16061#16482#0" expanded="false" />
-                <element signature="e#16061#16820#0" expanded="false" />
+                <element signature="e#1799#1874#0" expanded="false" />
+                <element signature="e#3297#3727#0" expanded="false" />
+                <element signature="e#5247#5604#0" expanded="false" />
+                <element signature="e#6251#6673#1" expanded="false" />
+                <element signature="e#6806#7024#1" expanded="false" />
+                <element signature="e#7992#11625#0" expanded="false" />
+                <element signature="e#11720#11833#0" expanded="false" />
+                <element signature="e#11720#13127#0" expanded="false" />
+                <element signature="e#13129#13674#0" expanded="false" />
+                <element signature="e#13129#15003#0" expanded="false" />
+                <element signature="e#15005#16493#0" expanded="false" />
+                <element signature="e#16495#16916#0" expanded="false" />
+                <element signature="e#16495#17254#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="thread.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/threads/thread.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="213">
+              <caret line="63" column="22" lean-forward="false" selection-start-line="63" selection-start-column="22" selection-end-line="63" selection-end-column="22" />
+              <folding>
+                <element signature="e#162#410#1" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -112,23 +176,12 @@
       <file leaf-file-name="thread.c" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/threads/thread.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="631">
-              <caret line="207" column="39" lean-forward="false" selection-start-line="207" selection-start-column="39" selection-end-line="207" selection-end-column="39" />
+            <state relative-caret-position="230">
+              <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
               <folding>
-                <element signature="e#8537#9235#0" expanded="false" />
-                <element signature="e#9237#9678#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="thread.h" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/threads/thread.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="621">
-              <caret line="71" column="0" lean-forward="false" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
-              <folding>
-                <element signature="e#162#410#1" expanded="false" />
+                <element signature="e#2424#3360#0" expanded="false" />
+                <element signature="e#3799#4256#0" expanded="false" />
+                <element signature="e#4258#4449#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -138,36 +191,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>open</find>
-      <find>syscall_handler</find>
-      <find>intr_frame</find>
-      <find>child</find>
-      <find>is_user_vaddr</find>
-      <find>pagedir_get_page</find>
-      <find>check_addr</find>
-      <find>exit_error</find>
-      <find>process_exit</find>
-      <find>acquire_filesys_lock</find>
-      <find>putbuf</find>
-      <find>filesys_create</find>
-      <find>filesys_remove</find>
-      <find>pfile_pd</find>
-      <find>pfile</find>
-      <find>proc_file</find>
-      <find>ptr</find>
-      <find>file_info</find>
-      <find>fd</find>
-      <find>struct file_info*list_search</find>
-      <find>list_search</find>
-      <find>exit_proc</find>
-      <find>fd_count</find>
-      <find>success</find>
       <find>start_process</find>
       <find>return_record</find>
       <find>pagedir</find>
       <find>child_proc</find>
       <find>files</find>
+      <find>wait_sema</find>
+      <find>wait_process_sema</find>
       <find>child_lock</find>
+      <find>sema_process_load</find>
+      <find>list_init</find>
+      <find>fd_count</find>
+      <find>intr_frame</find>
+      <find>is_active</find>
+      <find>chil</find>
+      <find>waitingon</find>
+      <find>used</find>
+      <find>waiting_for_t</find>
+      <find>-&gt;parent</find>
+      <find>usedis</find>
+      <find>load_succes</find>
+      <find>look_up</find>
+      <find>process_files</find>
+      <find>child_list</find>
+      <find>child_process</find>
+      <find>is_alive</find>
+      <find>parent</find>
+      <find>is_over</find>
+      <find>child</find>
+      <find>load_success</find>
+      <find>p_info</find>
     </findStrings>
     <replaceStrings>
       <replace>targetLock</replace>
@@ -190,6 +243,12 @@
       <replace>look_up</replace>
       <replace>child_process</replace>
       <replace>process_files</replace>
+      <replace>sema_process_load</replace>
+      <replace>load_process_sema</replace>
+      <replace />
+      <replace>waiting_for_t</replace>
+      <replace>is_over</replace>
+      <replace>child</replace>
     </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/src/tests</dir>
@@ -216,17 +275,17 @@
         <option value="$PROJECT_DIR$/src/devices/timer.h" />
         <option value="$PROJECT_DIR$/src/devices/timer.c" />
         <option value="$PROJECT_DIR$/src/threads/fix-point.h" />
-        <option value="$PROJECT_DIR$/src/threads/synch.c" />
         <option value="$PROJECT_DIR$/src/threads/synch.h" />
         <option value="$PROJECT_DIR$/src/userprog/gdt.c" />
         <option value="$PROJECT_DIR$/src/userprog2/exception.h" />
         <option value="$PROJECT_DIR$/src/lib/user/syscall.c" />
         <option value="$PROJECT_DIR$/src/tests/userprog/exit.c" />
         <option value="$PROJECT_DIR$/src/userprog/syscall.h" />
+        <option value="$PROJECT_DIR$/src/threads/synch.c" />
         <option value="$PROJECT_DIR$/src/userprog/syscall.c" />
+        <option value="$PROJECT_DIR$/src/threads/thread.h" />
         <option value="$PROJECT_DIR$/src/threads/thread.c" />
         <option value="$PROJECT_DIR$/src/userprog/process.c" />
-        <option value="$PROJECT_DIR$/src/threads/thread.h" />
       </list>
     </option>
   </component>
@@ -275,7 +334,7 @@
               <item name="PintosP2" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
               <item name="PintosP2" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="userprog" type="462c0819:PsiDirectoryNode" />
+              <item name="threads" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -354,7 +413,7 @@
       <workItem from="1508784085304" duration="5982000" />
       <workItem from="1508912420203" duration="5055000" />
       <workItem from="1508948301848" duration="2867000" />
-      <workItem from="1508951183196" duration="11613000" />
+      <workItem from="1508951183196" duration="20184000" />
     </task>
     <task id="LOCAL-00001" summary="deleted threads2, userprog2">
       <created>1508284582257</created>
@@ -384,11 +443,18 @@
       <option name="project" value="LOCAL" />
       <updated>1508989253230</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Trying to add 2 semaphores to regulate load/wait separately">
+      <created>1509051336393</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1509051336393</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="173255000" />
+    <option name="totallyTimeSpent" value="181826000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -401,8 +467,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="53" y="24" width="2507" height="1311" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.091832586" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16537993" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32975206" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.11322314" sideWeight="0.4985778" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3636733" sideWeight="0.41487604" order="4" side_tool="true" content_ui="tabs" />
@@ -410,7 +477,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3282572" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15034539" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23719008" sideWeight="0.58512396" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36446282" sideWeight="0.58512396" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32954085" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -422,6 +489,27 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
+    <layout-to-restore>
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32975206" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32975206" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.11322314" sideWeight="0.4985778" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3636733" sideWeight="0.41487604" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3282572" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36446282" sideWeight="0.58512396" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16537993" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15371901" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15034539" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32954085" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -444,7 +532,8 @@
     <MESSAGE value="modified validation, 2/76 pass" />
     <MESSAGE value="modified SYS_create, SYS_REMOVE" />
     <MESSAGE value="Modifed data structure based on TA's recitation on 10/23" />
-    <option name="LAST_COMMIT_MESSAGE" value="Modifed data structure based on TA's recitation on 10/23" />
+    <MESSAGE value="Trying to add 2 semaphores to regulate load/wait separately" />
+    <option name="LAST_COMMIT_MESSAGE" value="Trying to add 2 semaphores to regulate load/wait separately" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -536,22 +625,22 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/threads/thread.c</url>
-          <line>111</line>
+          <line>109</line>
           <option name="timeStamp" value="51" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/userprog/process.c</url>
-          <line>65</line>
+          <line>64</line>
           <option name="timeStamp" value="52" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/userprog/syscall.c</url>
-          <line>310</line>
+          <line>308</line>
           <option name="timeStamp" value="53" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/userprog/process.c</url>
-          <line>568</line>
+          <line>567</line>
           <option name="timeStamp" value="61" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
@@ -566,12 +655,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/threads/thread.c</url>
-          <line>326</line>
+          <line>324</line>
           <option name="timeStamp" value="64" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/threads/thread.h</url>
-          <line>69</line>
+          <line>70</line>
           <option name="timeStamp" value="66" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
@@ -581,25 +670,25 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/userprog/syscall.c</url>
-          <line>288</line>
+          <line>286</line>
           <option name="timeStamp" value="68" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/threads/thread.c</url>
+          <line>89</line>
+          <option name="timeStamp" value="69" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/userprog/process.c</url>
+          <line>141</line>
+          <option name="timeStamp" value="70" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="69" />
+      <option name="time" value="71" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/threads2/synch.h" />
-    <entry file="file://$PROJECT_DIR$/src/userprog2/pagedir.c" />
-    <entry file="file://$PROJECT_DIR$/src/userprog2/gdt.c" />
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="349">
-          <caret line="54" column="20" lean-forward="false" selection-start-line="54" selection-start-column="20" selection-end-line="54" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/tests/userprog/bad-jump.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="351">
@@ -780,24 +869,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/threads/synch.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="27" column="5" lean-forward="false" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/lib/user/syscall.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="368">
           <caret line="17" column="31" lean-forward="true" selection-start-line="17" selection-start-column="31" selection-end-line="17" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/threads/synch.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-88">
-          <caret line="192" column="0" lean-forward="false" selection-start-line="192" selection-start-column="0" selection-end-line="192" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -816,91 +891,144 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/threads/interrupt.h">
+    <entry file="file://$PROJECT_DIR$/src/tests/userprog/multi-child-fd.ck">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="53" column="11" lean-forward="false" selection-start-line="53" selection-start-column="11" selection-end-line="53" selection-end-column="11" />
+        <state relative-caret-position="552">
+          <caret line="24" column="5" lean-forward="true" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/userprog/syscall.c">
+    <entry file="file://$PROJECT_DIR$/src/threads/synch.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1104">
-          <caret line="77" column="26" lean-forward="false" selection-start-line="77" selection-start-column="26" selection-end-line="77" selection-end-column="26" />
-          <folding>
-            <element signature="e#372#456#1" expanded="false" />
-            <element signature="e#459#555#0" expanded="false" />
-            <element signature="e#6088#6171#0" expanded="false" />
-            <element signature="e#6453#7097#0" expanded="false" />
-            <element signature="e#8286#8603#0" expanded="false" />
-            <element signature="e#8606#8997#0" expanded="false" />
-            <marker date="1509050940354" expanded="false" signature="770:800" ph="..." />
-            <marker date="1509050940354" expanded="true" signature="821:1796" ph="..." />
-            <marker date="1509050940354" expanded="false" signature="893:1787" ph="..." />
-            <marker date="1509050940354" expanded="false" signature="1845:1942" ph="..." />
-            <marker date="1509050940354" expanded="false" signature="2008:2078" ph="..." />
-            <marker date="1509050940354" expanded="false" signature="2126:2292" ph="..." />
-            <marker date="1509050940354" expanded="false" signature="2419:2674" ph="..." />
-            <marker date="1509050940354" expanded="false" signature="2721:3194" ph="..." />
-            <marker date="1509050940354" expanded="false" signature="3258:3444" ph="..." />
-            <marker date="1509050940354" expanded="false" signature="3503:3647" ph="..." />
-            <marker date="1509050940354" expanded="false" signature="3697:4130" ph="..." />
-            <marker date="1509050940354" expanded="false" signature="4189:4554" ph="..." />
-            <marker date="1509050940354" expanded="false" signature="4608:4745" ph="..." />
-            <marker date="1509050940354" expanded="false" signature="4801:4940" ph="..." />
-            <marker date="1509050940354" expanded="false" signature="6546:6811" ph="..." />
-            <marker date="1509050940354" expanded="false" signature="7918:8284" ph="{...}" />
-          </folding>
+        <state relative-caret-position="483">
+          <caret line="21" column="3" lean-forward="false" selection-start-line="21" selection-start-column="3" selection-end-line="21" selection-end-column="3" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/threads/thread.c">
+    <entry file="file://$PROJECT_DIR$/src/tests/userprog/rox-multichild.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="631">
-          <caret line="207" column="39" lean-forward="false" selection-start-line="207" selection-start-column="39" selection-end-line="207" selection-end-column="39" />
-          <folding>
-            <element signature="e#8537#9235#0" expanded="false" />
-            <element signature="e#9237#9678#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="92">
+          <caret line="4" column="30" lean-forward="false" selection-start-line="4" selection-start-column="30" selection-end-line="4" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/userprog/multi-child-fd.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="9" column="23" lean-forward="false" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/threads/synch.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="41" column="33" lean-forward="false" selection-start-line="41" selection-start-column="33" selection-end-line="41" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/userprog/rox-multichild.ck">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="506">
+          <caret line="22" column="17" lean-forward="false" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/threads/init.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="332">
-          <caret line="360" column="37" lean-forward="false" selection-start-line="360" selection-start-column="37" selection-end-line="360" selection-end-column="37" />
+        <state relative-caret-position="6509">
+          <caret line="361" column="61" lean-forward="true" selection-start-line="361" selection-start-column="61" selection-end-line="361" selection-end-column="61" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/userprog/process.c">
+    <entry file="file://$PROJECT_DIR$/src/threads/interrupt.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="332">
-          <caret line="157" column="39" lean-forward="false" selection-start-line="157" selection-start-column="39" selection-end-line="157" selection-end-column="39" />
+        <state relative-caret-position="276">
+          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/threads/thread.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
           <folding>
-            <element signature="e#633#883#0" expanded="false" />
-            <element signature="e#1793#1868#0" expanded="false" />
-            <element signature="e#1793#3094#0" expanded="false" />
-            <element signature="e#3096#3526#0" expanded="false" />
-            <element signature="e#7558#11191#0" expanded="false" />
-            <element signature="e#11286#11399#0" expanded="false" />
-            <element signature="e#11286#12693#0" expanded="false" />
-            <element signature="e#12695#13240#0" expanded="false" />
-            <element signature="e#12695#14569#0" expanded="false" />
-            <element signature="e#14571#16059#0" expanded="false" />
-            <element signature="e#16061#16482#0" expanded="false" />
-            <element signature="e#16061#16820#0" expanded="false" />
+            <element signature="e#2424#3360#0" expanded="false" />
+            <element signature="e#3799#4256#0" expanded="false" />
+            <element signature="e#4258#4449#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/userprog/syscall.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-391">
+          <caret line="10" column="38" lean-forward="false" selection-start-line="10" selection-start-column="38" selection-end-line="10" selection-end-column="38" />
+          <folding>
+            <element signature="e#459#555#0" expanded="false" />
+            <element signature="e#557#4997#0" expanded="false" />
+            <element signature="e#4999#6038#0" expanded="false" />
+            <element signature="e#6040#6123#0" expanded="false" />
+            <element signature="e#6126#6404#0" expanded="false" />
+            <element signature="e#6405#7049#0" expanded="false" />
+            <element signature="e#7051#7764#0" expanded="false" />
+            <element signature="e#8190#8507#0" expanded="false" />
+            <marker date="1509063188305" expanded="false" signature="770:800" ph="..." />
+            <marker date="1509063188305" expanded="true" signature="821:1807" ph="..." />
+            <marker date="1509063188305" expanded="false" signature="893:1798" ph="..." />
+            <marker date="1509063188305" expanded="false" signature="1856:1953" ph="..." />
+            <marker date="1509063188305" expanded="false" signature="2019:2089" ph="..." />
+            <marker date="1509063188305" expanded="false" signature="2137:2303" ph="..." />
+            <marker date="1509063188305" expanded="false" signature="2430:2685" ph="..." />
+            <marker date="1509063188305" expanded="false" signature="2732:3205" ph="..." />
+            <marker date="1509063188305" expanded="false" signature="3269:3455" ph="..." />
+            <marker date="1509063188305" expanded="false" signature="3514:3658" ph="..." />
+            <marker date="1509063188305" expanded="false" signature="3708:4141" ph="..." />
+            <marker date="1509063188305" expanded="false" signature="4200:4565" ph="..." />
+            <marker date="1509063188305" expanded="false" signature="4619:4756" ph="..." />
+            <marker date="1509063188305" expanded="false" signature="4812:4951" ph="..." />
+            <marker date="1509063188305" expanded="false" signature="6498:6763" ph="..." />
+            <marker date="1509063188305" expanded="false" signature="7822:8188" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/threads/thread.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="621">
-          <caret line="71" column="0" lean-forward="false" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
+        <state relative-caret-position="213">
+          <caret line="63" column="22" lean-forward="false" selection-start-line="63" selection-start-column="22" selection-end-line="63" selection-end-column="22" />
           <folding>
             <element signature="e#162#410#1" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/userprog/process.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="81" column="154" lean-forward="false" selection-start-line="81" selection-start-column="154" selection-end-line="81" selection-end-column="154" />
+          <folding>
+            <element signature="e#633#883#0" expanded="false" />
+            <element signature="e#1799#1874#0" expanded="false" />
+            <element signature="e#3297#3727#0" expanded="false" />
+            <element signature="e#5247#5604#0" expanded="false" />
+            <element signature="e#6251#6673#1" expanded="false" />
+            <element signature="e#6806#7024#1" expanded="false" />
+            <element signature="e#7992#11625#0" expanded="false" />
+            <element signature="e#11720#11833#0" expanded="false" />
+            <element signature="e#11720#13127#0" expanded="false" />
+            <element signature="e#13129#13674#0" expanded="false" />
+            <element signature="e#13129#15003#0" expanded="false" />
+            <element signature="e#15005#16493#0" expanded="false" />
+            <element signature="e#16495#16916#0" expanded="false" />
+            <element signature="e#16495#17254#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -910,6 +1038,7 @@
     <states>
       <state key="ScopeChooserConfigurable.UI">
         <settings>
+          <last-edited>child to info</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
