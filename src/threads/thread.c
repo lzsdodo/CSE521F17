@@ -186,6 +186,9 @@ tid_t thread_create (const char *name, int priority,
   /* Initialize thread. */
   init_thread (t, name, priority);
   tid = t->tid = allocate_tid ();
+
+
+
   struct p_info* c = malloc(sizeof(*c));
   c->tid = tid;
  c->return_record = t->return_record;
@@ -489,10 +492,10 @@ init_thread (struct thread *t, const char *name, int priority)
   list_init (&t->child_process);
   t->parent = running_thread();
   list_init (&t->process_files);
-  t->fd_count=2;
+  t->fd_count=100;
   t->return_record = -100;
   sema_init(&t->load_process_sema,0);
- // sema_init(&t->wait_process_sema,0);
+  sema_init(&t->wait_process_sema,0);
 
   t->waiting_for_t=0;
   t->self=NULL;

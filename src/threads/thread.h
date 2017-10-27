@@ -75,9 +75,9 @@ struct thread
     //TODO 3: if you use 2nd sema, 3/76 unpass, solve this.
     // if you want to reverse to 2/76, delete this field, and its initialization.
     struct semaphore load_process_sema;
-//   struct semaphore wait_process_sema;
+    struct semaphore wait_process_sema;
 
-// TODO: why do we need a parent alive ? 
+// TODO: why do we need a parent alive ?
 
     // the threadId that the current thread is waiting on
     // TODO 5: resolve it to a bool with same functionality, try to put it in child

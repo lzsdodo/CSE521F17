@@ -305,18 +305,18 @@ Interrupt 0x0e (#PF Page-Fault Exception) at eip=0x8048100
  cs=001b ds=0023 es=0023 ss=0023
 multi-oom: exit(-1)
 Page fault at 0xfffffff6: not present error writing page in kernel context.
-Interrupt 0x0e (#PF Page-Fault Exception) at eip=0xc0029a7e
+Interrupt 0x0e (#PF Page-Fault Exception) at eip=0xc0029a91
  cr2=fffffff6 error=00000002
- eax=c0152000 ebx=c0150a5c ecx=0000000a edx=fffffff6
- esi=c0152000 edi=fffffff6 esp=00000000 ebp=c0150a5c
+ eax=c0151000 ebx=c0150a5c ecx=0000000a edx=fffffff6
+ esi=c0151000 edi=fffffff6 esp=00000000 ebp=c0150a5c
  cs=0008 ds=0010 es=0010 ss=0900
 Kernel PANIC at ../../userprog/exception.c:101 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc00277e6 0xc0029a7e.
+Call stack: 0xc00277f7 0xc0029a91.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
 Timer: 10155 ticks
-Thread: 30 idle ticks, 504 kernel ticks, 9621 user ticks
+Thread: 30 idle ticks, 514 kernel ticks, 9611 user ticks
 hda2 (filesys): 15907 reads, 228 writes
 hda3 (scratch): 111 reads, 2 writes
 Console: 14796 characters output

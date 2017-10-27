@@ -293,7 +293,6 @@ void exit_proc(int status)
         if(f->tid == thread_current()->tid)
         {
             f->is_over = true;
-            //TODO: set its child process,s parent_isOver to true.
             f->return_record = status;
         }
     }
@@ -301,7 +300,7 @@ void exit_proc(int status)
     thread_current()->return_record = status;
     // if current thread's parent is waiting on current thread, make the semaphore now obtainable
     if(thread_current()->parent->waiting_for_t == thread_current()->tid)
-        sema_up(&thread_current()->parent-> load_process_sema);
+        sema_up(&thread_current()->parent-> wait_process_sema);
 
     thread_exit();
 }

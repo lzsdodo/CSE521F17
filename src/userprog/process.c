@@ -83,14 +83,11 @@ static void start_process (void *file_name_)
   if (!success) {
     //printf("%d %d\n",thread_current()->tid, thread_current()->parent->tid);
     thread_current()->parent-> load_success=false;
-    sema_up(&thread_current()->parent->load_process_sema);
+//    sema_up(&thread_current()->parent->load_process_sema);
     thread_exit();
   }
-  else
-  {
-    thread_current()->parent->load_success=true;
-    sema_up(&thread_current()->parent->load_process_sema);
-  }
+  else { thread_current()->parent->load_success=true; }
+  sema_up(&thread_current()->parent->load_process_sema);
 
 
   /* Start the user process by simulating a return from an
@@ -137,7 +134,7 @@ int process_wait (tid_t child_tid)
   thread_current()->waiting_for_t = ch->tid;
     
   if(ch->is_over== false)
-    sema_down(&thread_current()-> load_process_sema);
+    sema_down(&thread_current()-> wait_process_sema);
 
   int temp = ch->return_record;
 
