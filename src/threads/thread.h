@@ -77,7 +77,7 @@ struct thread
     struct semaphore load_process_sema;
 //   struct semaphore wait_process_sema;
 
-
+// TODO: why do we need a parent alive ? 
 
     // the threadId that the current thread is waiting on
     // TODO 5: resolve it to a bool with same functionality, try to put it in child

@@ -293,6 +293,7 @@ void exit_proc(int status)
         if(f->tid == thread_current()->tid)
         {
             f->is_over = true;
+            //TODO: set its child process,s parent_isOver to true.
             f->return_record = status;
         }
     }

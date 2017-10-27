@@ -50,6 +50,9 @@ tid_t process_execute (const char *file_name)
   /* Create a child thread to execute FILE_NAME. */
   /*Start process will make this sema avaliable if load successful*/
   tid = thread_create (f_name, PRI_DEFAULT, start_process, fn_copy);
+    //TODO: find the process that has this tid in the child_list of current process. reassign the value
+
+
   free(f_name);
   if (tid == TID_ERROR) palloc_free_page (fn_copy);
 
@@ -79,7 +82,6 @@ static void start_process (void *file_name_)
   palloc_free_page (file_name);
   if (!success) {
     //printf("%d %d\n",thread_current()->tid, thread_current()->parent->tid);
-      //TODO: use a handle, parse in thread current, thread parent, set current threads' p_info load_success to be false, see if parent contians a process that == currthread's tid
     thread_current()->parent-> load_success=false;
     sema_up(&thread_current()->parent->load_process_sema);
     thread_exit();
@@ -89,6 +91,7 @@ static void start_process (void *file_name_)
     thread_current()->parent->load_success=true;
     sema_up(&thread_current()->parent->load_process_sema);
   }
+
 
   /* Start the user process by simulating a return from an
      interrupt, implemented by intr_exit (in
@@ -120,7 +123,7 @@ int process_wait (tid_t child_tid)
            e = list_next (e))
         {
           struct p_info *f = list_entry (e, struct p_info, elem);
-            // locate the child process
+            // locate the child process that targets child_tid
           if(f->tid == child_tid)
           {
             ch = f;
