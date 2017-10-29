@@ -41,6 +41,7 @@ static void syscall_handler (struct intr_frame *f UNUSED)
 		break;
 
 		case SYS_EXIT:
+//            printf("exit");
 		confirm_user_address(p+1);
 			int status = *(p+1);
 		exit_proc(status);
@@ -278,8 +279,8 @@ void* confirm_user_address(const void *user_address)
         }
     }
     exit_proc(-1);
-//    exit_error();
-    return 0;
+
+    return;
 
 }
 
@@ -289,11 +290,11 @@ void exit_proc(int status)
 
     for (e = list_begin (&thread_current()->parent->child_process); e != list_end (&thread_current()->parent->child_process); e = list_next (e))
     {
-        struct p_info *f = list_entry (e, struct p_info, elem);
-        if(f->tid == thread_current()->tid)
+        struct p_info * target_process = list_entry (e, struct p_info, elem);
+        if(target_process->tid == thread_current()->tid)
         {
-            f->is_over = true;
-            f->return_record = status;
+            target_process->is_over = true;
+            target_process->return_record = status;
         }
     }
 

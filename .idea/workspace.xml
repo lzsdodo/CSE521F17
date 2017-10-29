@@ -12,8 +12,30 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b07499df-61b8-4eab-9a0e-a8a8b6eb0fff" name="Default" comment="">
+    <list default="true" id="b07499df-61b8-4eab-9a0e-a8a8b6eb0fff" name="Default" comment="2 semaphores load/wait done">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/devices/intq.o" afterPath="$PROJECT_DIR$/src/userprog/build/devices/intq.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/devices/serial.o" afterPath="$PROJECT_DIR$/src/userprog/build/devices/serial.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/devices/shutdown.o" afterPath="$PROJECT_DIR$/src/userprog/build/devices/shutdown.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/devices/timer.o" afterPath="$PROJECT_DIR$/src/userprog/build/devices/timer.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/kernel.o" afterPath="$PROJECT_DIR$/src/userprog/build/kernel.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/lib/kernel/debug.o" afterPath="$PROJECT_DIR$/src/userprog/build/lib/kernel/debug.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/threads/init.o" afterPath="$PROJECT_DIR$/src/userprog/build/threads/init.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/threads/interrupt.o" afterPath="$PROJECT_DIR$/src/userprog/build/threads/interrupt.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/threads/intr-stubs.o" afterPath="$PROJECT_DIR$/src/userprog/build/threads/intr-stubs.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/threads/loader.o" afterPath="$PROJECT_DIR$/src/userprog/build/threads/loader.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/threads/start.o" afterPath="$PROJECT_DIR$/src/userprog/build/threads/start.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/threads/switch.o" afterPath="$PROJECT_DIR$/src/userprog/build/threads/switch.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/threads/synch.o" afterPath="$PROJECT_DIR$/src/userprog/build/threads/synch.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/threads/thread.o" afterPath="$PROJECT_DIR$/src/userprog/build/threads/thread.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/userprog/exception.o" afterPath="$PROJECT_DIR$/src/userprog/build/userprog/exception.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/userprog/process.o" afterPath="$PROJECT_DIR$/src/userprog/build/userprog/process.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/userprog/syscall.o" afterPath="$PROJECT_DIR$/src/userprog/build/userprog/syscall.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/userprog/tss.o" afterPath="$PROJECT_DIR$/src/userprog/build/userprog/tss.o" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/threads/thread.h" afterPath="$PROJECT_DIR$/src/threads/thread.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/bochsout.txt" afterPath="$PROJECT_DIR$/src/userprog/build/bochsout.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/build/bochsrc.txt" afterPath="$PROJECT_DIR$/src/userprog/build/bochsrc.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/syscall.c" afterPath="$PROJECT_DIR$/src/userprog/syscall.c" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -25,84 +47,45 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="syscall.c" pinned="false" current-in-tab="true">
+      <file leaf-file-name="syscall.c" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/userprog/syscall.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="666">
-              <caret line="66" column="27" lean-forward="true" selection-start-line="66" selection-start-column="27" selection-end-line="66" selection-end-column="27" />
+            <state relative-caret-position="347">
+              <caret line="31" column="25" lean-forward="false" selection-start-line="31" selection-start-column="25" selection-end-line="31" selection-end-column="25" />
               <folding>
-                <element signature="e#459#555#0" expanded="false" />
-                <element signature="e#4999#6038#0" expanded="false" />
-                <element signature="e#6040#6123#0" expanded="false" />
-                <element signature="e#6126#6404#0" expanded="false" />
-                <element signature="e#6405#7049#0" expanded="false" />
-                <element signature="e#8190#8507#0" expanded="false" />
-                <marker date="1509145472336" expanded="false" signature="770:800" ph="..." />
-                <marker date="1509145472336" expanded="false" signature="821:1807" ph="..." />
-                <marker date="1509145472336" expanded="false" signature="893:1798" ph="..." />
-                <marker date="1509145472336" expanded="false" signature="1856:1953" ph="..." />
-                <marker date="1509145472336" expanded="true" signature="2019:2089" ph="..." />
-                <marker date="1509145472336" expanded="false" signature="2137:2303" ph="..." />
-                <marker date="1509145472336" expanded="false" signature="2430:2685" ph="..." />
-                <marker date="1509145472336" expanded="false" signature="2732:3205" ph="..." />
-                <marker date="1509145472336" expanded="false" signature="3269:3455" ph="..." />
-                <marker date="1509145472336" expanded="false" signature="3514:3658" ph="..." />
-                <marker date="1509145472336" expanded="false" signature="3708:4141" ph="..." />
-                <marker date="1509145472336" expanded="false" signature="4200:4565" ph="..." />
-                <marker date="1509145472336" expanded="false" signature="4619:4756" ph="..." />
-                <marker date="1509145472336" expanded="false" signature="4812:4951" ph="..." />
-                <marker date="1509145472336" expanded="false" signature="6498:6763" ph="..." />
-                <marker date="1509145472336" expanded="false" signature="7822:8188" ph="{...}" />
+                <element signature="e#5029#6068#0" expanded="false" />
+                <element signature="e#6070#6153#0" expanded="false" />
+                <element signature="e#6156#6434#0" expanded="false" />
+                <element signature="e#6435#7058#0" expanded="false" />
+                <element signature="e#7828#8250#0" expanded="false" />
+                <element signature="e#8252#8569#0" expanded="false" />
+                <element signature="e#8572#8963#0" expanded="false" />
+                <marker date="1509235944750" expanded="false" signature="770:800" ph="..." />
+                <marker date="1509235944750" expanded="true" signature="851:1837" ph="..." />
+                <marker date="1509235944750" expanded="false" signature="923:1828" ph="..." />
+                <marker date="1509235944750" expanded="false" signature="1886:1983" ph="..." />
+                <marker date="1509235944750" expanded="true" signature="2049:2119" ph="..." />
+                <marker date="1509235944750" expanded="false" signature="2167:2333" ph="..." />
+                <marker date="1509235944750" expanded="false" signature="2460:2715" ph="..." />
+                <marker date="1509235944750" expanded="false" signature="2762:3235" ph="..." />
+                <marker date="1509235944750" expanded="false" signature="3299:3485" ph="..." />
+                <marker date="1509235944750" expanded="false" signature="3544:3688" ph="..." />
+                <marker date="1509235944750" expanded="false" signature="3738:4171" ph="..." />
+                <marker date="1509235944750" expanded="false" signature="4230:4595" ph="..." />
+                <marker date="1509235944750" expanded="false" signature="4649:4786" ph="..." />
+                <marker date="1509235944750" expanded="false" signature="4842:4981" ph="..." />
+                <marker date="1509235944750" expanded="false" signature="6528:6793" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Make.config" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Make.config">
+      <file leaf-file-name="args.c" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/tests/userprog/args.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="585">
-              <caret line="42" column="27" lean-forward="false" selection-start-line="42" selection-start-column="27" selection-end-line="42" selection-end-column="27" />
+            <state relative-caret-position="575">
+              <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="process.c" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/userprog/process.c">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="552">
-              <caret line="72" column="0" lean-forward="false" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
-              <folding>
-                <element signature="e#633#883#0" expanded="false" />
-                <element signature="e#633#1903#0" expanded="false" />
-                <element signature="e#1905#1980#0" expanded="false" />
-                <element signature="e#3216#3646#0" expanded="false" />
-                <element signature="e#5189#5546#0" expanded="false" />
-                <element signature="e#6193#6615#1" expanded="false" />
-                <element signature="e#6748#6966#1" expanded="false" />
-                <element signature="e#7934#11567#0" expanded="false" />
-                <element signature="e#11662#11775#0" expanded="false" />
-                <element signature="e#11662#13069#0" expanded="false" />
-                <element signature="e#13071#13616#0" expanded="false" />
-                <element signature="e#13071#14945#0" expanded="false" />
-                <element signature="e#16437#16858#0" expanded="false" />
-                <element signature="e#16437#17196#0" expanded="false" />
-                <marker date="1509145472348" expanded="true" signature="2550:2598" ph="..." />
-                <marker date="1509145472348" expanded="true" signature="2552:2598" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="thread.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/threads/thread.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="456">
-              <caret line="78" column="0" lean-forward="false" selection-start-line="78" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
-              <folding>
-                <element signature="e#162#410#1" expanded="false" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -111,7 +94,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>is_active</find>
       <find>chil</find>
       <find>waitingon</find>
       <find>used</find>
@@ -141,6 +123,7 @@
       <find>exit(-1)</find>
       <find>load_process_sema</find>
       <find>child</find>
+      <find>exit_proc(-1)</find>
     </findStrings>
     <replaceStrings>
       <replace>targetLock</replace>
@@ -202,11 +185,12 @@
         <option value="$PROJECT_DIR$/src/tests/userprog/exit.c" />
         <option value="$PROJECT_DIR$/src/userprog/syscall.h" />
         <option value="$PROJECT_DIR$/src/threads/synch.c" />
-        <option value="$PROJECT_DIR$/src/userprog/syscall.c" />
         <option value="$PROJECT_DIR$/src/userprog/process.c" />
-        <option value="$PROJECT_DIR$/src/Make.config" />
         <option value="$PROJECT_DIR$/src/threads/thread.c" />
         <option value="$PROJECT_DIR$/src/threads/thread.h" />
+        <option value="$PROJECT_DIR$/src/tests/userprog/args.c" />
+        <option value="$PROJECT_DIR$/src/Make.config" />
+        <option value="$PROJECT_DIR$/src/userprog/syscall.c" />
       </list>
     </option>
   </component>
@@ -217,11 +201,11 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="220" />
-    <option name="y" value="418" />
-    <option name="width" value="1224" />
-    <option name="height" value="1165" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="396" />
+    <option name="y" value="157" />
+    <option name="width" value="1219" />
+    <option name="height" value="1182" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -251,12 +235,6 @@
               <item name="PintosP2" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="PintosP2" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
-              <item name="PintosP2" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="threads" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -266,7 +244,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///home/os-class/pintos/src/threads/synch.h&#10;timer_ticks&#9;null&#9;null" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.General" />
+    <property name="settings.editor.selected.configurable" value="CPPToolchains" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/userprog" />
     <property name="ignore_missing_gitignore" value="true" />
   </component>
@@ -335,7 +313,10 @@
       <workItem from="1508784085304" duration="5982000" />
       <workItem from="1508912420203" duration="5055000" />
       <workItem from="1508948301848" duration="2867000" />
-      <workItem from="1508951183196" duration="30656000" />
+      <workItem from="1508951183196" duration="30803000" />
+      <workItem from="1509146021382" duration="79000" />
+      <workItem from="1509146251403" duration="2255000" />
+      <workItem from="1509235340634" duration="837000" />
     </task>
     <task id="LOCAL-00001" summary="deleted threads2, userprog2">
       <created>1508284582257</created>
@@ -393,11 +374,18 @@
       <option name="project" value="LOCAL" />
       <updated>1509145621586</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="2 semaphores load/wait done">
+      <created>1509145654220</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1509145654220</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="192298000" />
+    <option name="totallyTimeSpent" value="195616000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -409,17 +397,16 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="53" y="24" width="2507" height="1311" extended-state="6" />
+    <frame x="396" y="157" width="1219" height="1182" extended-state="0" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11377489" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2514919" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32975206" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.11322314" sideWeight="0.4985778" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3636733" sideWeight="0.41487604" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15371901" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15633672" sideWeight="0.4985778" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37383178" sideWeight="0.41487604" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32809916" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15034539" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29256198" sideWeight="0.58512396" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.38112858" sideWeight="0.58512396" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32954085" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -429,6 +416,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15371901" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -582,7 +570,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/userprog/syscall.c</url>
-          <line>308</line>
+          <line>309</line>
           <option name="timeStamp" value="53" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
@@ -594,11 +582,6 @@
           <url>file://$PROJECT_DIR$/src/filesys/filesys.c</url>
           <line>44</line>
           <option name="timeStamp" value="62" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/userprog/syscall.c</url>
-          <line>89</line>
-          <option name="timeStamp" value="63" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/threads/thread.c</url>
@@ -617,7 +600,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/userprog/syscall.c</url>
-          <line>286</line>
+          <line>287</line>
           <option name="timeStamp" value="68" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
@@ -632,7 +615,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/userprog/syscall.c</url>
-          <line>329</line>
+          <line>330</line>
           <option name="timeStamp" value="72" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
@@ -646,16 +629,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/threads2/interrupt.c" />
-    <entry file="file://$PROJECT_DIR$/src/threads2/interrupt.h" />
-    <entry file="file://$PROJECT_DIR$/src/lib/string.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="371">
-          <caret line="213" column="35" lean-forward="false" selection-start-line="213" selection-start-column="34" selection-end-line="213" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/userprog2/exception.c" />
     <entry file="file://$PROJECT_DIR$/src/vm/Makefile">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -807,7 +780,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="138">
           <caret line="6" column="16" lean-forward="false" selection-start-line="6" selection-start-column="16" selection-end-line="6" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -815,7 +787,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="552">
           <caret line="24" column="5" lean-forward="true" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -823,7 +794,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="483">
           <caret line="21" column="3" lean-forward="false" selection-start-line="21" selection-start-column="3" selection-end-line="21" selection-end-column="3" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -831,7 +801,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="92">
           <caret line="4" column="30" lean-forward="false" selection-start-line="4" selection-start-column="30" selection-end-line="4" selection-end-column="30" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -839,7 +808,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="207">
           <caret line="9" column="23" lean-forward="false" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="23" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -847,7 +815,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
           <caret line="41" column="33" lean-forward="false" selection-start-line="41" selection-start-column="33" selection-end-line="41" selection-end-column="33" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -855,7 +822,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="506">
           <caret line="22" column="17" lean-forward="false" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -863,7 +829,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6509">
           <caret line="361" column="61" lean-forward="true" selection-start-line="361" selection-start-column="61" selection-end-line="361" selection-end-column="61" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -871,7 +836,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="276">
           <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -879,7 +843,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="322">
           <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -887,7 +850,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="358">
           <caret line="20" column="0" lean-forward="true" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -895,7 +857,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="529">
           <caret line="23" column="38" lean-forward="false" selection-start-line="23" selection-start-column="38" selection-end-line="23" selection-end-column="38" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -903,53 +864,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-460">
           <caret line="22" column="57" lean-forward="false" selection-start-line="22" selection-start-column="57" selection-end-line="22" selection-end-column="57" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/vm/DESIGNDOC">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/vm/DESIGNDOC" />
     <entry file="file://$PROJECT_DIR$/src/Makefile.build">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="299">
           <caret line="21" column="29" lean-forward="false" selection-start-line="21" selection-start-column="29" selection-end-line="21" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/threads/thread.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="376">
-          <caret line="496" column="37" lean-forward="false" selection-start-line="496" selection-start-column="37" selection-end-line="496" selection-end-column="37" />
-          <folding>
-            <element signature="e#2424#3360#0" expanded="false" />
-            <element signature="e#3799#4256#0" expanded="false" />
-            <element signature="e#4258#4449#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/threads/thread.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
-          <caret line="78" column="0" lean-forward="false" selection-start-line="78" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
-          <folding>
-            <element signature="e#162#410#1" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Make.config">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="42" column="27" lean-forward="false" selection-start-line="42" selection-start-column="27" selection-end-line="42" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -978,34 +900,93 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/threads/thread.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="571">
+          <caret line="110" column="43" lean-forward="false" selection-start-line="110" selection-start-column="43" selection-end-line="110" selection-end-column="43" />
+          <folding>
+            <element signature="e#162#410#1" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/threads/thread.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="491">
+          <caret line="498" column="0" lean-forward="false" selection-start-line="498" selection-start-column="0" selection-end-line="498" selection-end-column="0" />
+          <folding>
+            <element signature="e#2424#3360#0" expanded="false" />
+            <element signature="e#3799#4256#0" expanded="false" />
+            <element signature="e#4258#4449#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/userprog/args-dbl-space.ck">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="12" column="23" lean-forward="false" selection-start-line="12" selection-start-column="23" selection-end-line="12" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/userprog/args-single.ck">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/userprog/build/tests/userprog/args.d">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="69">
+          <caret line="3" column="0" lean-forward="true" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Make.config">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="42" column="27" lean-forward="false" selection-start-line="42" selection-start-column="27" selection-end-line="42" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/userprog/syscall.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="666">
-          <caret line="66" column="27" lean-forward="true" selection-start-line="66" selection-start-column="27" selection-end-line="66" selection-end-column="27" />
+        <state relative-caret-position="347">
+          <caret line="31" column="25" lean-forward="false" selection-start-line="31" selection-start-column="25" selection-end-line="31" selection-end-column="25" />
           <folding>
-            <element signature="e#459#555#0" expanded="false" />
-            <element signature="e#4999#6038#0" expanded="false" />
-            <element signature="e#6040#6123#0" expanded="false" />
-            <element signature="e#6126#6404#0" expanded="false" />
-            <element signature="e#6405#7049#0" expanded="false" />
-            <element signature="e#8190#8507#0" expanded="false" />
-            <marker date="1509145472336" expanded="false" signature="770:800" ph="..." />
-            <marker date="1509145472336" expanded="false" signature="821:1807" ph="..." />
-            <marker date="1509145472336" expanded="false" signature="893:1798" ph="..." />
-            <marker date="1509145472336" expanded="false" signature="1856:1953" ph="..." />
-            <marker date="1509145472336" expanded="true" signature="2019:2089" ph="..." />
-            <marker date="1509145472336" expanded="false" signature="2137:2303" ph="..." />
-            <marker date="1509145472336" expanded="false" signature="2430:2685" ph="..." />
-            <marker date="1509145472336" expanded="false" signature="2732:3205" ph="..." />
-            <marker date="1509145472336" expanded="false" signature="3269:3455" ph="..." />
-            <marker date="1509145472336" expanded="false" signature="3514:3658" ph="..." />
-            <marker date="1509145472336" expanded="false" signature="3708:4141" ph="..." />
-            <marker date="1509145472336" expanded="false" signature="4200:4565" ph="..." />
-            <marker date="1509145472336" expanded="false" signature="4619:4756" ph="..." />
-            <marker date="1509145472336" expanded="false" signature="4812:4951" ph="..." />
-            <marker date="1509145472336" expanded="false" signature="6498:6763" ph="..." />
-            <marker date="1509145472336" expanded="false" signature="7822:8188" ph="{...}" />
+            <element signature="e#5029#6068#0" expanded="false" />
+            <element signature="e#6070#6153#0" expanded="false" />
+            <element signature="e#6156#6434#0" expanded="false" />
+            <element signature="e#6435#7058#0" expanded="false" />
+            <element signature="e#7828#8250#0" expanded="false" />
+            <element signature="e#8252#8569#0" expanded="false" />
+            <element signature="e#8572#8963#0" expanded="false" />
+            <marker date="1509235944750" expanded="false" signature="770:800" ph="..." />
+            <marker date="1509235944750" expanded="true" signature="851:1837" ph="..." />
+            <marker date="1509235944750" expanded="false" signature="923:1828" ph="..." />
+            <marker date="1509235944750" expanded="false" signature="1886:1983" ph="..." />
+            <marker date="1509235944750" expanded="true" signature="2049:2119" ph="..." />
+            <marker date="1509235944750" expanded="false" signature="2167:2333" ph="..." />
+            <marker date="1509235944750" expanded="false" signature="2460:2715" ph="..." />
+            <marker date="1509235944750" expanded="false" signature="2762:3235" ph="..." />
+            <marker date="1509235944750" expanded="false" signature="3299:3485" ph="..." />
+            <marker date="1509235944750" expanded="false" signature="3544:3688" ph="..." />
+            <marker date="1509235944750" expanded="false" signature="3738:4171" ph="..." />
+            <marker date="1509235944750" expanded="false" signature="4230:4595" ph="..." />
+            <marker date="1509235944750" expanded="false" signature="4649:4786" ph="..." />
+            <marker date="1509235944750" expanded="false" signature="4842:4981" ph="..." />
+            <marker date="1509235944750" expanded="false" signature="6528:6793" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/userprog/args.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="575">
+          <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
