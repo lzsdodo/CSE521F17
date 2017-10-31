@@ -29,10 +29,10 @@ extern struct list all_list;
    thread id, or TID_ERROR if the thread cannot be created. */
 tid_t process_execute (const char *file_name)
 {
-  char *fn_copy;
-  char *f_name;
-  tid_t tid;
-  
+    char *fn_copy;
+    tid_t tid;
+    char *f_name;
+
   /* Make a copy of FILE_NAME.
      Otherwise there's a race between the caller and load(). */
   fn_copy = palloc_get_page (0);
@@ -151,22 +151,25 @@ void process_exit (void)
   uint32_t *pd;
 //    if(cur->return_record==-100) exit_proc(-1);
 
-    int exit_output = cur->return_record;
-    printf("%s: exit(%d)\n",cur->name,exit_output);
+    int to_print = cur->return_record;
+    printf("%s: exit(%d)\n",cur->name,to_print);
 
 //    acquire_filesys_lock();
+//    file_close(thread_current()->self);
+//    close_all_files(&thread_current()->process_files);
+//    release_filesys_lock();
+
     file_close(thread_current()->self);
     close_all_files(&thread_current()->process_files);
-//    release_filesys_lock();
+
    pd = cur->pagedir;
 
-    //JZ: I cross this out cuz i think pagedirectory cannot be null.
-//  if (pd != NULL)
-//    {
+  if (pd != NULL)
+  {
       cur->pagedir = NULL;
       pagedir_activate (NULL);
       pagedir_destroy (pd);
-//    }
+   }
 }
 
 /* Sets up the CPU for running user code in the current

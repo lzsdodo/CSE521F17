@@ -270,7 +270,7 @@ void* confirm_user_address(const void *user_address)
 //		return 0;
 //	}
 //	return target_file;
-    if (is_user_vaddr(user_address))
+    if (is_user_vaddr(user_address) )
     {
         void *target_file = pagedir_get_page(thread_current()->pagedir, user_address);
         if (is_kernel_vaddr(target_file))
@@ -303,6 +303,7 @@ void exit_proc(int status)
     if(thread_current()->parent->waiting_for_t == thread_current()->tid)
         sema_up(&thread_current()->parent-> wait_process_sema);
 
+//    printf("%s: exit(%d)\n",thread_current()->name, thread_current()->return_record);
     thread_exit();
 }
 
