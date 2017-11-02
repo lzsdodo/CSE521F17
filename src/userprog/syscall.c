@@ -105,7 +105,6 @@ static void syscall_handler (struct intr_frame *f UNUSED)
             struct file_info* targetFile_info = look_up(*(p+1));
             f->eax = file_length (targetFile_info->target_file);
             break;
-
         /**
          * Reads size bytes from the file open as fd into buffer.
          * Returns the number of bytes actually read (0 at end of file),
@@ -117,7 +116,7 @@ static void syscall_handler (struct intr_frame *f UNUSED)
          *     p+3: unassigned size
          */
 		case SYS_READ:
-        confirm_user_address(p+1);
+                    confirm_user_address(p+1);
             // pass read bad ptr
 		confirm_user_address(*(p+2));
 
@@ -132,10 +131,7 @@ static void syscall_handler (struct intr_frame *f UNUSED)
 			else{ f->eax = file_read (fptr->target_file, *(p+2), *(p+3));}
 		}
 		break;
-
-        // printf and write into file
-		case SYS_WRITE:
-		confirm_user_address(p+1);
+		case SYS_WRITE:confirm_user_address(p+1);
 		confirm_user_address(*(p+2));
         if(*(p+3) <= 0){
             f -> eax = 0;
@@ -161,8 +157,6 @@ static void syscall_handler (struct intr_frame *f UNUSED)
 		}
 		break;
 
-
-
         /**
         * void seek (int fd, unsigned position)
         */
@@ -171,9 +165,10 @@ static void syscall_handler (struct intr_frame *f UNUSED)
 	    	confirm_user_address(p+2);
 		    file_seek(look_up(*(p+1))->target_file,*(p+2));
 		break;
-            /**
-             * unsigned tell (int fd)
-             */
+
+        /**
+         * unsigned tell (int fd)
+         */
 		case SYS_TELL:
 		confirm_user_address(p+1);
 		f->eax = file_tell(look_up(*(p+1))->target_file);
