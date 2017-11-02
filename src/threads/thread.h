@@ -40,26 +40,6 @@ struct thread
     int64_t waketick;
 
 
-//    /**
-//     *
-//     * suggested by TA
-//     * uinit32_t *pagedirec
-//     * struct file* exec
-//     * struct list process_files
-//     * struct thread *parent
-//     * struct list child_list
-//     * struct child
-//     *      semaphore load_sema
-//     *      bool load_bool
-//     *      struct semaphore wait_sema
-//     *      bool waited
-//     *      bool is_over
-//     *      bool parent_alive
-//     *
-//     * /
-
-
-
     uint32_t *pagedir;                  /* Page directory. */
     struct file *self;
     struct list process_files;
@@ -67,12 +47,10 @@ struct thread
     struct list child_process;
     int return_record;
 
-    // TODO 1: from TA's slides, load_success should be in child
     bool load_success;
     //TODO 2: what is this fd_count? why its initialzied to 2 in thread/init.c? can you change it to something in TA's suggested structure
     int fd_count;
 
-    //TODO 3: if you use 2nd sema, 3/76 unpass, solve this.
     // if you want to reverse to 2/76, delete this field, and its initialization.
     struct semaphore load_process_sema;
     struct semaphore wait_process_sema;
@@ -89,6 +67,11 @@ struct thread
        int return_record;
         bool is_over;
         //TODO 4: is_parent_alive
+        struct list_elem elem;
+    };
+    struct file_info {
+        struct file* target_file;
+        int handle;
         struct list_elem elem;
     };
 

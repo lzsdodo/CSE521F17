@@ -187,11 +187,9 @@ tid_t thread_create (const char *name, int priority,
   init_thread (t, name, priority);
   tid = t->tid = allocate_tid ();
 
-
-
   struct p_info* c = malloc(sizeof(*c));
   c->tid = tid;
- c->return_record = t->return_record;
+  c->return_record = t->return_record;
   c->is_over = false;
   list_push_back (&running_thread()->child_process, &c->elem);
 
@@ -214,12 +212,8 @@ tid_t thread_create (const char *name, int priority,
   sf = alloc_frame (t, sizeof *sf);
   sf->eip = switch_entry;
   sf->ebp = 0;
-
   intr_set_level (old_level);
-
-  /* Add to run queue. */
   thread_unblock (t);
-
   return tid;
 }
 

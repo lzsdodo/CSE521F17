@@ -20,15 +20,19 @@
 
 static thread_func start_process NO_RETURN;
 static bool load (const char *cmdline, void (**eip) (void), void **esp);
-
 extern struct list all_list;
+
+static struct p_info* look_up_child_thread(tid_t child_tid);
+static struct list_elem* look_up_elem(tid_t child_tid);
 
 /* Starts a new thread running a user program loaded from
    FILENAME.  The new thread may be scheduled (and may even exit)
    before process_execute() returns.  Returns the new process's
    thread id, or TID_ERROR if the thread cannot be created. */
+// TODO: decide to revise or not
 tid_t process_execute (const char *file_name)
 {
+    struct thread* curr = thread_current();
     char *fn_copy;
     tid_t tid;
     char *f_name;
@@ -36,13 +40,11 @@ tid_t process_execute (const char *file_name)
   /* Make a copy of FILE_NAME.
      Otherwise there's a race between the caller and load(). */
   fn_copy = palloc_get_page (0);
-
-    // if you cannot find the filename in the page directory, return error
-  if (!fn_copy) return TID_ERROR;
-
+  if (!fn_copy) return -1;
   strlcpy (fn_copy, file_name, PGSIZE);
 
   char *save_ptr;
+    /** allocate space for f_name, cannot use it directly for thread creation*/
   f_name = malloc(strlen(file_name)+1);
   strlcpy (f_name, file_name, strlen(file_name)+1);
   f_name = strtok_r (f_name," ",&save_ptr);
@@ -50,22 +52,28 @@ tid_t process_execute (const char *file_name)
   /* Create a child thread to execute FILE_NAME. */
   /*Start process will make this sema avaliable if load successful*/
   tid = thread_create (f_name, PRI_DEFAULT, start_process, fn_copy);
-    //TODO: find the process that has this tid in the child_list of current process. reassign the value
-
-
   free(f_name);
-  if (tid == TID_ERROR) palloc_free_page (fn_copy);
+  if (tid == -1) palloc_free_page (fn_copy);
+    /**modify semaphore*/
+//    if(!sema_try_down(&curr->load_process_sema)){
+        sema_down(&curr->load_process_sema);
+//    }
+    // TODO: resolve this expression
+//    struct p_info* current_process = *(curr -> p_info);
 
-  sema_down(&thread_current()->load_process_sema);
-  if(thread_current()->load_success == false)tid = -1;
+
+  /** this load_success is set in start_process*/
+  if(thread_current()->load_success == false) tid = -1;
 
   return tid;
 }
 
 /* A thread function that loads a user process and starts it
    running. */
+// TODO: Done
 static void start_process (void *file_name_)
 {
+    struct thread* curr = thread_current();
   //printf("In start_process\n");
   char *file_name = file_name_;
   struct intr_frame if_;
@@ -81,13 +89,16 @@ static void start_process (void *file_name_)
   /* If load failed, quit. */
   palloc_free_page (file_name);
   if (!success) {
-    //printf("%d %d\n",thread_current()->tid, thread_current()->parent->tid);
-    thread_current()->parent-> load_success=false;
+//    printf("%d %d\n",thread_current()->tid, thread_current()->parent->tid);
+//    thread_current()->parent-> load_success=false;
 //    sema_up(&thread_current()->parent->load_process_sema);
-    thread_exit();
+      curr ->parent-> load_success=false;
+      process_exit();
   }
-  else { thread_current()->parent->load_success=true; }
-  sema_up(&thread_current()->parent->load_process_sema);
+  else {
+      curr ->parent->load_success=true;
+  }
+  sema_up(&curr->parent->load_process_sema);
 
 
   /* Start the user process by simulating a return from an
@@ -100,6 +111,7 @@ static void start_process (void *file_name_)
   NOT_REACHED ();
 }
 
+
 /* Waits for thread TID to die and returns its exit status.  If
    it was terminated by the kernel (i.e. killed due to an
    exception), returns -1.  If TID is invalid or if it was not a
@@ -109,67 +121,49 @@ static void start_process (void *file_name_)
 
    This function will be implemented in problem 2-2.  For now, it
    does nothing. */
+// TODO: DONE : )
 int process_wait (tid_t child_tid)
 {
-  //printf("Wait : %s %d\n",thread_current()->name, child_tid);
-  struct list_elem *e;
-  struct p_info *ch=NULL;
-  struct list_elem *e1=NULL;
+    struct thread *curr = thread_current();
+    struct p_info *ch=NULL;
+    struct list_elem *currE=NULL;
+    int ans;
+    ch = look_up_child_thread(child_tid);
+    currE = look_up_elem(child_tid);
+     if(ch == NULL) {
+        ans = -1;
+     }
+     else{
+         curr -> waiting_for_t = ch->tid;
+         if(ch -> is_over== false) sema_down(&thread_current()-> wait_process_sema);
+         ans = ch -> return_record;
+       // otherwise it will not pass wait-twice
+         list_remove(currE);
+         free(ch);
+    }
+    return ans;
 
-  for (e = list_begin (&thread_current()->child_process); e != list_end (&thread_current()->child_process);
-           e = list_next (e))
-        {
-          struct p_info *f = list_entry (e, struct p_info, elem);
-            // locate the child process that targets child_tid
-          if(f->tid == child_tid)
-          {
-            ch = f;
-            e1 = e;
-          }
-        }
-
-    // return -1 if there is no such child process
-  if(!ch || !e1) return -1;
-
-  thread_current()->waiting_for_t = ch->tid;
-    
-  if(ch->is_over== false)
-    sema_down(&thread_current()-> wait_process_sema);
-
-  int temp = ch->return_record;
-
-    // otherwise it will not pass wait-twice
-  list_remove(e1);
-  
-  return temp;
 }
 
-/* Free the current process's resources. */
+// TODO: DONE
 void process_exit (void)
 {
-  struct thread *cur = thread_current ();
-  uint32_t *pd;
+      struct thread *curr = thread_current ();
+     uint32_t *pd;
 //    if(cur->return_record==-100) exit_proc(-1);
 
-    int to_print = cur->return_record;
-    printf("%s: exit(%d)\n",cur->name,to_print);
+      printf("%s: exit(%d)\n",curr->name,curr->return_record);
 
 //    acquire_filesys_lock();
 //    file_close(thread_current()->self);
 //    close_all_files(&thread_current()->process_files);
 //    release_filesys_lock();
-
-    file_close(thread_current()->self);
-    close_all_files(&thread_current()->process_files);
-
-   pd = cur->pagedir;
-
-  if (pd != NULL)
-  {
-      cur->pagedir = NULL;
-      pagedir_activate (NULL);
+      file_close(thread_current()->self);
+    // TODO: this part is not performing well
+      close_all_files(&thread_current()->process_files);
+      pd = curr->pagedir;
+      curr->pagedir = NULL;
       pagedir_destroy (pd);
-   }
 }
 
 /* Sets up the CPU for running user code in the current
@@ -180,7 +174,6 @@ void process_activate (void)
   struct thread *t = thread_current ();
   /* Activate thread's page tables. */
   pagedir_activate (t->pagedir);
-
   /* Set thread's kernel stack for use in processing
      interrupts. */
   tss_update ();
@@ -261,7 +254,6 @@ static bool load_segment (struct file *file, off_t ofs, uint8_t *upage,
    Returns true if successful, false otherwise. */
 bool load (const char *file_name, void (**eip) (void), void **esp)
 {
-  //printf("In load\n");
   struct thread *t = thread_current ();
   struct Elf32_Ehdr ehdr;
   struct file *file = NULL;
@@ -285,13 +277,12 @@ bool load (const char *file_name, void (**eip) (void), void **esp)
   fn_cp = strtok_r(fn_cp," ",&save_ptr);
 
   file = filesys_open (fn_cp);
-
   free(fn_cp);
-  //TODO : Free fn_cp
-  
+
   if (file == NULL) 
     {
       printf ("load: %s: open failed\n", file_name);
+        free(file);
       goto done; 
     }
 
@@ -449,8 +440,7 @@ validate_segment (const struct Elf32_Phdr *phdr, struct file *file)
 
    Return true if successful, false if a memory allocation error
    or disk read error occurs. */
-static bool
-load_segment (struct file *file, off_t ofs, uint8_t *upage,
+static bool load_segment (struct file *file, off_t ofs, uint8_t *upage,
               uint32_t read_bytes, uint32_t zero_bytes, bool writable) 
 {
   ASSERT ((read_bytes + zero_bytes) % PGSIZE == 0);
@@ -511,6 +501,7 @@ static bool setup_stack (void **esp, char * file_name)
         palloc_free_page (kpage);
     }
 
+/** argument parsing  */
   char *token, *save_ptr;
   int argc = 0,i;
 
@@ -577,8 +568,7 @@ static bool setup_stack (void **esp, char * file_name)
    with palloc_get_page().
    Returns true on success, false if UPAGE is already mapped or
    if memory allocation fails. */
-static bool
-install_page (void *upage, void *kpage, bool writable)
+static bool install_page (void *upage, void *kpage, bool writable)
 {
   struct thread *t = thread_current ();
 
@@ -586,4 +576,36 @@ install_page (void *upage, void *kpage, bool writable)
      address, then map our page there. */
   return (pagedir_get_page (t->pagedir, upage) == NULL
           && pagedir_set_page (t->pagedir, upage, kpage, writable));
+}
+
+
+
+
+
+
+
+static struct p_info* look_up_child_thread(tid_t child_tid){
+    struct list_elem *e;
+    struct p_info *ch=NULL;
+    for (e = list_begin (&thread_current()->child_process); e != list_end (&thread_current()->child_process); e = list_next (e)) {
+        struct p_info *f = list_entry (e, struct p_info, elem);
+        if(f->tid == child_tid) {
+            ch = f;
+            break;
+        }
+    }
+    return ch;
+}
+static struct list_elem* look_up_elem(tid_t child_tid){
+
+    struct list_elem *e;
+    struct list_elem *targetE = NULL;
+    for (e = list_begin (&thread_current()->child_process); e != list_end (&thread_current()->child_process); e = list_next (e)) {
+        struct p_info *f = list_entry (e, struct p_info, elem);
+        if(f->tid == child_tid) {
+            targetE = e;
+            break;
+        }
+    }
+    return targetE;
 }

@@ -33,8 +33,7 @@ enum child_termination_mode { RECURSE, CRASH };
 
 /* Spawn a recursive copy of ourselves, passing along instructions
    for the child. */
-static pid_t
-spawn_child (int c, enum child_termination_mode mode)
+static pid_t spawn_child (int c, enum child_termination_mode mode)
 {
   char child_cmd[128];
   snprintf (child_cmd, sizeof child_cmd,
@@ -62,8 +61,7 @@ consume_some_resources (void)
 
 /* Consume some resources, then terminate this process
    in some abnormal way.  */
-static int NO_INLINE
-consume_some_resources_and_die (int seed)
+static int NO_INLINE consume_some_resources_and_die (int seed)
 {
   consume_some_resources ();
   random_init (seed);

@@ -11,14 +11,10 @@ static void syscall_handler (struct intr_frame *);
 struct file_info* look_up(int handle);
 void exit_error();
 void* confirm_user_address(const void*);
-
+struct info_p* get_current_process();
 extern bool running;
 
-struct file_info {
-	struct file* target_file;
-	int handle;
-	struct list_elem elem;
-};
+
 
 void syscall_init (void)
 {
@@ -27,7 +23,7 @@ void syscall_init (void)
 
 static void syscall_handler (struct intr_frame *f UNUSED)
 {
-  int * p = f->esp;
+  int* p = f->esp;
 
 	confirm_user_address(p);
 
@@ -36,173 +32,156 @@ static void syscall_handler (struct intr_frame *f UNUSED)
 	switch (system_call)
 	{
         //shut down
-		case SYS_HALT:
-		shutdown_power_off();
+		case SYS_HALT:shutdown_power_off();
 		break;
-
-		case SYS_EXIT:
-//            printf("exit");
-		confirm_user_address(p+1);
-			int status = *(p+1);
-		exit_proc(status);
-//            struct list_elem *e;
-//            // Iterate over current threads' parent's child process List,
-//            for (e = list_begin (&thread_current()->parent->child_process); e != list_end (&thread_current()->parent->child_process); e = list_next (e))
-//            {
-//                struct child *f = list_entry (e, struct child, elem);
-//                if(f->tid == thread_current()->tid)
-//                {
-//                    f->used = true;
-//                    f->return_record = status;
-//                }
-//            }
-//
-//            thread_current()->return_record = status;
-//            // if current thread's parent is waiting on current thread, make the semaphore now obtainable
-//            if(thread_current()->parent->waiting_for_t == thread_current()->tid)
-//                sema_up(&thread_current()->parent->load_process_sema);
-//
-//            thread_exit();
+		case SYS_EXIT:confirm_user_address(p+1);
+            int status = *(p+1);
+		    exit_proc(status);
 		break;
-
-         // execute program
+         /**in: filename in (p+1)
+          * out : return pid or -1
+          */
 		case SYS_EXEC:
-		confirm_user_address(p+1);
 		confirm_user_address(*(p+1));
 		f->eax = exec_proc(*(p+1));
 		break;
-            // wait for child process to finish
+        /** wait a child thread
+         * in: tid at p + 1
+         * out :exit -1 or status change
+         */
 		case SYS_WAIT:
-		confirm_user_address(p+1);
-		f->eax = process_wait(*(p+1));
-		break;
-        // create new file
+            f->eax = process_wait(*(p+1));
+            break;
+        /** create a file
+         * in: filename(p+1), initia_size(p+2)
+         * out : f -> eax = some shit
+         */
 		case SYS_CREATE:
-		confirm_user_address(p+5);
-		confirm_user_address(*(p+4));
-//		acquire_filesys_lock();
-		f->eax = filesys_create(*(p+4),*(p+5));
-//		release_filesys_lock();
+		confirm_user_address(*(p+1));
+  //	confirm_user_address(p+2);
+		f->eax = filesys_create(*(p+1),*(p+2));
 		break;
-
-            // delete file, seems like p + 1 is the place where file is stored.
-            // EZ  XD~~
+        /**
+         * file name im (p+1)
+         *
+         */
 		case SYS_REMOVE:
-		confirm_user_address(p+1);
-		confirm_user_address(*(p+1));
-//		acquire_filesys_lock();
+		  confirm_user_address(*(p+1));
           f -> eax = filesys_remove(*(p+1));
-//		if(filesys_remove(*(p+1))==NULL)
-//			f->eax = false;
-//		else
-//			f->eax = true;
-//		release_filesys_lock();
 		break;
-
-            // open a file
+        /**
+         * in: filename in p
+         * out: return new file if successful, null ptr if failure
+         */
 		case SYS_OPEN:
-		confirm_user_address(p+1);
-		confirm_user_address(*(p+1));
+            // pass open NULL/bad ptr
+            confirm_user_address(*(p+1));
+            struct thread* curr = thread_current();
 
-		acquire_filesys_lock();
-		struct file* fptr = filesys_open (*(p+1));
-		release_filesys_lock();
-		if(fptr==NULL)
-			f->eax = -1;
-		else
-		{
-			struct file_info *pfile = malloc(sizeof(*pfile));
-			pfile->target_file = fptr;
-			pfile->handle = thread_current()->fd_count;
-			thread_current()->fd_count++;
-			list_push_back (&thread_current()->process_files, &pfile->elem);
-			f->eax = pfile->handle;
-
-		}
-		break;
-
-            // close the file
-        case SYS_CLOSE:
-            confirm_user_address(p+1);
+            // TODO: we need lock here
             acquire_filesys_lock();
-            close_file(&thread_current()->process_files,*(p+1));
+            struct file* fptr = filesys_open (*(p+1));
             release_filesys_lock();
+            if(fptr==NULL) f->eax = -1;
+            else {
+                struct file_info *pfile = (struct file_info*)malloc(sizeof(*pfile));
+                pfile->target_file = fptr;
+                pfile->handle = curr->fd_count += 2;
+                list_push_back (&curr->process_files, &pfile->elem);
+                f->eax = pfile->handle;
+            }
+            break;
+        /**
+         * close file according to handler in p+1
+         */
+		case SYS_CLOSE:confirm_user_address(p+1);
+            close_file(&thread_current()->process_files,*(p+1));
+            break;
+        /**
+         * output filesize according to handler in p + 1
+         */
+		case SYS_FILESIZE:
+            confirm_user_address(p+1);
+            struct file_info* targetFile_info = look_up(*(p+1));
+            f->eax = file_length (targetFile_info->target_file);
             break;
 
-            // return size of file
-		case SYS_FILESIZE:
-		confirm_user_address(p+1);
-		acquire_filesys_lock();
-		f->eax = file_length (look_up( *(p+1))->target_file);
-		release_filesys_lock();
+        /**
+         * Reads size bytes from the file open as fd into buffer.
+         * Returns the number of bytes actually read (0 at end of file),
+         * or -1 if the file could not be read (due to a condition other than end of file).
+         * Fd 0 reads from the keyboard using input_getc().
+         *
+         * in: p+1: fd/handler
+         *     p+2: buffer
+         *     p+3: unassigned size
+         */
+		case SYS_READ:
+        confirm_user_address(p+1);
+            // pass read bad ptr
+		confirm_user_address(*(p+2));
+
+		if(*(p+1)==0){
+			uint8_t* buffer = *(p+2);
+			for(int i=0;i<*(p+3);i++) buffer[i] = input_getc();
+			f->eax = *(p+3);
+		}
+		else{
+			struct file_info* fptr = look_up(*(p+1));
+			if(fptr==NULL) f->eax=-1;
+			else{ f->eax = file_read (fptr->target_file, *(p+2), *(p+3));}
+		}
 		break;
 
-            // read the file
-		case SYS_READ:
-		confirm_user_address(p+7);
-		confirm_user_address(*(p+6));
-		if(*(p+5)==0)
-		{
-			int i;
-			uint8_t* buffer = *(p+6);
-			for(i=0;i<*(p+7);i++)
-				buffer[i] = input_getc();
-			f->eax = *(p+7);
-		}
-		else
-		{
-			struct file_info* fptr = look_up( *(p+5));
-			if(fptr==NULL)
-				f->eax=-1;
-			else
-			{
-				acquire_filesys_lock();
-				f->eax = file_read (fptr->target_file, *(p+6), *(p+7));
-				release_filesys_lock();
-			}
-		}
-		break;
         // printf and write into file
 		case SYS_WRITE:
-		confirm_user_address(p+7);
-		confirm_user_address(*(p+6));
-		if(*(p+5)==1)
+		confirm_user_address(p+1);
+		confirm_user_address(*(p+2));
+        if(*(p+3) <= 0){
+            f -> eax = 0;
+            return;
+        }
+
+		if(*(p+1)==1)
 		{
-			putbuf(*(p+6),*(p+7));
-			f->eax = *(p+7);
+			putbuf(*(p+2),*(p+3));
+			f->eax = *(p+3);
 		}
 		else
 		{
-			struct file_info* fptr = look_up(*(p+5));
+			struct file_info* fptr = look_up(*(p+1));
 			if(fptr==NULL)
 				f->eax=-1;
 			else
 			{
-				acquire_filesys_lock();
-				f->eax = file_write (fptr->target_file, *(p+6), *(p+7));
-				release_filesys_lock();
+//				acquire_filesys_lock();
+				f->eax = file_write (fptr->target_file, *(p+2), *(p+3));
+//				release_filesys_lock();
 			}
 		}
 		break;
 
-            // move file pointer
-		case SYS_SEEK:
-		confirm_user_address(p+5);
-		acquire_filesys_lock();
-		file_seek(look_up(*(p+4))->target_file,*(p+5));
-		release_filesys_lock();
-		break;
 
-            // return file pointer
+
+        /**
+        * void seek (int fd, unsigned position)
+        */
+		case SYS_SEEK:
+            confirm_user_address(p+1);
+	    	confirm_user_address(p+2);
+		    file_seek(look_up(*(p+1))->target_file,*(p+2));
+		break;
+            /**
+             * unsigned tell (int fd)
+             */
 		case SYS_TELL:
 		confirm_user_address(p+1);
-		acquire_filesys_lock();
 		f->eax = file_tell(look_up(*(p+1))->target_file);
-		release_filesys_lock();
 		break;
 
 		default:
-		printf("Default %d\n",*p);
+		    printf("I don know how to handle this %d\n",*p);
+            thread_exit();
 	}
 }
 
@@ -215,38 +194,6 @@ static void syscall_handler (struct intr_frame *f UNUSED)
  * @return
  */
 
-int exec_proc(char *file_name)
-{
-	acquire_filesys_lock();
-	// allocate space
-	char * fn_cp = malloc (strlen(file_name)+1);
-	  strlcpy(fn_cp, file_name, strlen(file_name)+1);
-	  
-	  char * save_ptr;
-	  fn_cp = strtok_r(fn_cp," ",&save_ptr);
-
-	// open file with given name
-	 struct file* currFile = filesys_open (fn_cp);
-
-		// if program cannot load the file
-	  if(!currFile)
-	  {
-	  	release_filesys_lock();
-	  	return -1;
-	  }
-	  else
-	  {
-	  	file_close(currFile);
-	  	release_filesys_lock();
-		  // return pid
-	  	return process_execute(file_name);
-	  }
-}
-
-void exit_error(){
-    thread_current() -> return_record = -1;
-    thread_exit();
-}
 
 
 /**
@@ -255,7 +202,7 @@ void exit_error(){
  * Conventionally, a status of 0 indicates success and nonzero values indicate errors.
  * @param status
  */
-// validate a user address, JZ's work
+// validate a user address, JZ
 void* confirm_user_address(const void *user_address)
 {
 //	if (!is_user_vaddr(user_address))
@@ -284,39 +231,69 @@ void* confirm_user_address(const void *user_address)
 
 }
 
+int exec_proc(char *file_name)
+{
+    acquire_filesys_lock();
+    // allocate space
+    char * fn_cp = malloc (strlen(file_name)+1);
+    strlcpy(fn_cp, file_name, strlen(file_name)+1);
+
+    char * save_ptr;
+    fn_cp = strtok_r(fn_cp," ",&save_ptr);
+
+    // open file with given name
+    struct file* currFile = filesys_open (fn_cp);
+
+    // if program cannot load the file
+    if(!currFile)
+    {
+        release_filesys_lock();
+        return -1;
+    }
+    else
+    {
+        file_close(currFile);
+        release_filesys_lock();
+        // return pid
+        return process_execute(file_name);
+    }
+}
+
+void exit_error(){
+    thread_current() -> return_record = -1;
+    thread_exit();
+}
+
+
 void exit_proc(int status)
 {
-    struct list_elem *e;
-
-    for (e = list_begin (&thread_current()->parent->child_process); e != list_end (&thread_current()->parent->child_process); e = list_next (e))
-    {
-        struct p_info * target_process = list_entry (e, struct p_info, elem);
-        if(target_process->tid == thread_current()->tid)
-        {
-            target_process->is_over = true;
-            target_process->return_record = status;
-        }
-    }
+//    struct list_elem *e;
+//    for (e = list_begin (&thread_current()->parent->child_process); e != list_end (&thread_current()->parent->child_process); e = list_next (e))
+//    {
+//        struct p_info * target_process = list_entry (e, struct p_info, elem);
+//        if(target_process->tid == thread_current()->tid)
+//        {
+//            target_process->is_over = true;
+//            target_process->return_record = status;
+//        }
+//    }
+    struct p_info* target = get_current_process();
+    target -> is_over = true;
+    target -> return_record = status;
 
     thread_current()->return_record = status;
     // if current thread's parent is waiting on current thread, make the semaphore now obtainable
     if(thread_current()->parent->waiting_for_t == thread_current()->tid)
         sema_up(&thread_current()->parent-> wait_process_sema);
 
-//    printf("%s: exit(%d)\n",thread_current()->name, thread_current()->return_record);
     thread_exit();
 }
 
 void close_file(struct list* process_files, int handle)
-{
-
-	struct list_elem *e;
-
+{   struct list_elem *e;
 	struct file_info *f;
 
-      for (e = list_begin (process_files); e != list_end (process_files);
-           e = list_next (e))
-        {
+      for (e = list_begin (process_files); e != list_end (process_files); e = list_next (e)) {
           f = list_entry (e, struct file_info, elem);
           if(f->handle == handle)
           {
@@ -324,31 +301,40 @@ void close_file(struct list* process_files, int handle)
           	list_remove(e);
           }
         }
-
     free(f);
 }
 
 void close_all_files(struct list* process_files)
 {
-
 	struct list_elem *e;
-
 	while(!list_empty(process_files))
 	{
 		e = list_pop_front(process_files);
-
 		struct file_info *f = list_entry (e, struct file_info, elem);
-          
 	      	file_close(f->target_file);
 	      	list_remove(e);
 	      	free(f);
-
-
 	}
-
-      
 }
 
+/**
+ * get the current thread's corresponding p_info
+ * @return current thread's p_info*
+ */
+struct info_p* get_current_process(){
+    struct list_elem *e;
+    struct p_info* ans = NULL;
+    for (e = list_begin (&thread_current()->parent->child_process); e != list_end (&thread_current()->parent->child_process); e = list_next (e))
+    {
+        struct p_info * target_process = list_entry (e, struct p_info, elem);
+        if(target_process->tid == thread_current()->tid)
+        {
+            ans = target_process;
+        }
+    }
+
+    return ans;
+}
 
 struct file_info* look_up( int handle)
 {
@@ -364,5 +350,3 @@ struct file_info* look_up( int handle)
     }
     return NULL;
 }
-//TODO 6: create a look_up handle for child
-// look up handle could be used in syscall/ exit process, and process/wait_process.
