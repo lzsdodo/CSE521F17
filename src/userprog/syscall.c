@@ -221,23 +221,23 @@ int exec_proc(char *f_name)
 
 void quit(int status)
 {
-    struct p_info* target = get_current_process();
-    target -> is_over = true;
-    target -> return_record = status;
+    struct thread* curr = thread_current();
+    struct p_info* currPross = get_current_process();
+    currPross -> is_over = true;
+    currPross -> return_record = status;
 
-    thread_current()->return_record = status;
+    curr -> return_record = status;
 
-    if(thread_current()->parent->waiting_for_t == thread_current()->tid && target -> is_parent_over == false){
-        sema_up(&thread_current()->parent-> wait_process_sema);
+    if(curr->parent->waiting_for_t == curr ->tid && currPross -> is_parent_over == false){
+        sema_up(&curr ->parent-> wait_process_sema);
     }
-    else if(target -> is_parent_over == true){
-        free(target);
+    else if(currPross -> is_parent_over == true){
+        free(currPross);
     }
 
 
     thread_exit();
 }
-
 void close_file(struct list* process_files, int handle)
 {   struct list_elem *e;
 	struct file_info *f;
@@ -252,7 +252,6 @@ void close_file(struct list* process_files, int handle)
         }
     free(f);
 }
-
 void close_all_files(struct list* process_files)
 {
 	struct list_elem *e;
@@ -265,7 +264,6 @@ void close_all_files(struct list* process_files)
 	      	free(f);
 	}
 }
-
 
 
 
