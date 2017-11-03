@@ -3,6 +3,6 @@
 
 void syscall_init (void);
 void* confirm_user_address(const void *user_address);
-void exit_proc(int status);
+void quit(int status);
 void exit_error();
 #endif /* userprog/syscall.h */

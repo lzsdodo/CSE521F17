@@ -46,19 +46,17 @@ struct thread
     struct thread* parent;
     struct list child_process;
     int return_record;
-
     bool load_success;
-    //TODO 2: what is this fd_count? why its initialzied to 2 in thread/init.c? can you change it to something in TA's suggested structure
     int fd_count;
 
     // if you want to reverse to 2/76, delete this field, and its initialization.
     struct semaphore load_process_sema;
     struct semaphore wait_process_sema;
 
-// TODO: why do we need a parent alive ?
+
 
     // the threadId that the current thread is waiting on
-    // TODO 5: resolve it to a bool with same functionality, try to put it in child
+
     tid_t waiting_for_t;
 
     struct p_info {
@@ -66,7 +64,7 @@ struct thread
         tid_t tid;
        int return_record;
         bool is_over;
-        //TODO 4: is_parent_alive
+        bool is_parent_over;
         struct list_elem elem;
     };
     struct file_info {
@@ -75,7 +73,6 @@ struct thread
         struct list_elem elem;
     };
 
-    /* Owned by thread.c. */
     unsigned magic;                     /* Detects stack overflow. */
   };
 

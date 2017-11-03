@@ -187,10 +187,12 @@ tid_t thread_create (const char *name, int priority,
   init_thread (t, name, priority);
   tid = t->tid = allocate_tid ();
 
+    //TODO: initialize parent alive here.
   struct p_info* c = malloc(sizeof(*c));
-  c->tid = tid;
-  c->return_record = t->return_record;
-  c->is_over = false;
+      c->tid = tid;
+      c->return_record = t->return_record;
+      c->is_over = false;
+      c->is_parent_over = false;
   list_push_back (&running_thread()->child_process, &c->elem);
 
   /* Prepare thread for first run by initializing its stack.
@@ -282,8 +284,7 @@ thread_current (void)
 }
 
 /* Returns the running thread's tid. */
-tid_t
-thread_tid (void) 
+tid_t thread_tid (void)
 {
   return thread_current ()->tid;
 }
@@ -295,19 +296,8 @@ thread_exit (void)
 {
   ASSERT (!intr_context ());
 
-#ifdef USERPROG
+    /*** added process exit here*/
   process_exit ();
-#endif
-
-  /* Remove thread from all threads list, set our status to dying,
-     and schedule another process.  That process will destroy us
-     when it calls thread_schedule_tail(). */
-
-    while(!list_empty(&thread_current()->child_process)){
-      struct file_info *f = list_entry (list_pop_front(&thread_current()->child_process), struct p_info, elem);
-      free(f);
-    }
-
   intr_disable ();
   list_remove (&thread_current()->allelem);
   thread_current ()->status = THREAD_DYING;
@@ -317,8 +307,7 @@ thread_exit (void)
 
 /* Yields the CPU.  The current thread is not put to sleep and
    may be scheduled again immediately at the scheduler's whim. */
-void
-thread_yield (void) 
+void thread_yield (void)
 {
   struct thread *cur = thread_current ();
   enum intr_level old_level;

@@ -79,7 +79,9 @@ static void start_process (void *file_name_)
   struct intr_frame if_;
   bool success;
 
-  /* Initialize interrupt frame and load executable. */
+
+
+
   memset (&if_, 0, sizeof if_);
   if_.gs = if_.fs = if_.es = if_.ds = if_.ss = SEL_UDSEG;
   if_.cs = SEL_UCSEG;
@@ -89,9 +91,6 @@ static void start_process (void *file_name_)
   /* If load failed, quit. */
   palloc_free_page (file_name);
   if (!success) {
-//    printf("%d %d\n",thread_current()->tid, thread_current()->parent->tid);
-//    thread_current()->parent-> load_success=false;
-//    sema_up(&thread_current()->parent->load_process_sema);
       curr ->parent-> load_success=false;
       process_exit();
   }
@@ -121,27 +120,30 @@ static void start_process (void *file_name_)
 
    This function will be implemented in problem 2-2.  For now, it
    does nothing. */
-// TODO: DONE : )
+// TODO: DONE
 int process_wait (tid_t child_tid)
 {
     struct thread *curr = thread_current();
     struct p_info *ch=NULL;
     struct list_elem *currE=NULL;
-    int ans;
+    int eax;
     ch = look_up_child_thread(child_tid);
     currE = look_up_elem(child_tid);
      if(ch == NULL) {
-        ans = -1;
+        eax = -1;
      }
      else{
-         curr -> waiting_for_t = ch->tid;
-         if(ch -> is_over== false) sema_down(&thread_current()-> wait_process_sema);
-         ans = ch -> return_record;
+         curr -> waiting_for_t = child_tid;
+         if(ch -> is_over== false) {
+             sema_down(&curr-> wait_process_sema);
+         }
+
+         eax = ch -> return_record;
        // otherwise it will not pass wait-twice
          list_remove(currE);
          free(ch);
     }
-    return ans;
+    return eax;
 
 }
 
@@ -149,18 +151,12 @@ int process_wait (tid_t child_tid)
 void process_exit (void)
 {
       struct thread *curr = thread_current ();
-     uint32_t *pd;
-//    if(cur->return_record==-100) exit_proc(-1);
-
+       uint32_t *pd;
       printf("%s: exit(%d)\n",curr->name,curr->return_record);
-
-//    acquire_filesys_lock();
-//    file_close(thread_current()->self);
-//    close_all_files(&thread_current()->process_files);
-//    release_filesys_lock();
-      file_close(thread_current()->self);
+      file_close(curr->self);
     // TODO: this part is not performing well
-      close_all_files(&thread_current()->process_files);
+     close_all_files(&curr->process_files);
+     close_all_process(&curr -> child_process);
       pd = curr->pagedir;
       curr->pagedir = NULL;
       pagedir_destroy (pd);
@@ -377,9 +373,7 @@ bool load (const char *file_name, void (**eip) (void), void **esp)
 }
 
 /* load() helpers. */
-
 static bool install_page (void *upage, void *kpage, bool writable);
-
 /* Checks whether PHDR describes a valid, loadable segment in
    FILE and returns true if so, false otherwise. */
 static bool
@@ -425,7 +419,6 @@ validate_segment (const struct Elf32_Phdr *phdr, struct file *file)
   return true;
 
 }
-
 /* Loads a segment starting at offset OFS in FILE at address
    UPAGE.  In total, READ_BYTES + ZERO_BYTES bytes of virtual
    memory are initialized, as follows:
@@ -483,16 +476,17 @@ static bool load_segment (struct file *file, off_t ofs, uint8_t *upage,
     }
   return true;
 }
-
 /* Create a minimal stack by mapping a zeroed page at the top of
    user virtual memory. */
+
+// TODO: to modify
 static bool setup_stack (void **esp, char * file_name)
 {
   uint8_t *kpage;
   bool success = false;
 
   kpage = palloc_get_page (PAL_USER | PAL_ZERO);
-  if (kpage != NULL) 
+  if (kpage != NULL)
     {
       success = install_page (((uint8_t *) PHYS_BASE) - PGSIZE, kpage, true);
       if (success)
@@ -502,34 +496,34 @@ static bool setup_stack (void **esp, char * file_name)
     }
 
 /** argument parsing  */
-  char *token, *save_ptr;
+    char *token;
+    char *save_ptr;
   int argc = 0,i;
 
   char * copy = malloc(strlen(file_name)+1);
   strlcpy (copy, file_name, strlen(file_name)+1);
 
 
-  for (token = strtok_r (copy, " ", &save_ptr); token != NULL;
-    token = strtok_r (NULL, " ", &save_ptr))
-    argc++;
-
+  for (token = strtok_r (copy, " ", &save_ptr); token != NULL; token = strtok_r (NULL, " ", &save_ptr)){
+      argc++;
+  }
 
   int *argv = calloc(argc,sizeof(int));
 
-  for (token = strtok_r (file_name, " ", &save_ptr),i=0; token != NULL;
-    token = strtok_r (NULL, " ", &save_ptr),i++)
+  for (token = strtok_r (file_name, " ", &save_ptr),i=0; token != NULL; token = strtok_r (NULL, " ", &save_ptr),i++)
     {
       *esp -= strlen(token) + 1;
       memcpy(*esp,token,strlen(token) + 1);
-
       argv[i]=*esp;
     }
+// TODO: split up
 
   while((int)*esp%4!=0)
   {
     *esp-=sizeof(char);
     char x = 0;
     memcpy(*esp,&x,sizeof(char));
+
   }
 
   int zero = 0;
@@ -558,6 +552,8 @@ static bool setup_stack (void **esp, char * file_name)
 
   return success;
 }
+
+
 
 /* Adds a mapping from user virtual address UPAGE to kernel
    virtual address KPAGE to the page table.
@@ -608,4 +604,17 @@ static struct list_elem* look_up_elem(tid_t child_tid){
         }
     }
     return targetE;
+}
+void close_all_process(struct list* child_process) {
+    struct list_elem *e;
+    while (!list_empty(child_process)) {
+        e = list_pop_front(child_process);
+        struct p_info *p = list_entry(e,struct p_info, elem);
+        list_remove(e);
+        if (p->is_over == false)
+            free(p);
+        else {
+            p->is_parent_over = true;
+        }
+    }
 }
