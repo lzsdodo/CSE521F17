@@ -37,7 +37,7 @@ struct thread
 
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
-    int64_t waketick;
+   int64_t waketick;
 
 
     uint32_t *pagedir;                  /* Page directory. */
@@ -45,17 +45,11 @@ struct thread
     struct list process_files;
     struct thread* parent;
     struct list child_process;
-    int return_record;
     bool load_success;
     int fd_count;
 
-    // if you want to reverse to 2/76, delete this field, and its initialization.
     struct semaphore load_process_sema;
     struct semaphore wait_process_sema;
-
-
-
-    // the threadId that the current thread is waiting on
 
     tid_t waiting_for_t;
 
@@ -112,6 +106,6 @@ void thread_set_nice (int);
 int thread_get_recent_cpu (void);
 int thread_get_load_avg (void);
 
-bool cmp_waketick(struct list_elem *first, struct list_elem *second, void *aux);
+//bool cmp_waketick(struct list_elem *first, struct list_elem *second, void *aux);
 
 #endif /* threads/thread.h */

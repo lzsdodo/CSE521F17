@@ -55,12 +55,7 @@ tid_t process_execute (const char *file_name)
   free(f_name);
   if (tid == -1) palloc_free_page (fn_copy);
     /**modify semaphore*/
-//    if(!sema_try_down(&curr->load_process_sema)){
-        sema_down(&curr->load_process_sema);
-//    }
-    // TODO: resolve this expression
-//    struct p_info* current_process = *(curr -> p_info);
-
+  sema_down(&curr->load_process_sema);
 
   /** this load_success is set in start_process*/
   if(thread_current()->load_success == false) tid = -1;
@@ -70,26 +65,19 @@ tid_t process_execute (const char *file_name)
 
 /* A thread function that loads a user process and starts it
    running. */
-// TODO: Done
 static void start_process (void *file_name_)
 {
     struct thread* curr = thread_current();
-  //printf("In start_process\n");
-  char *file_name = file_name_;
   struct intr_frame if_;
   bool success;
-
-
-
-
   memset (&if_, 0, sizeof if_);
   if_.gs = if_.fs = if_.es = if_.ds = if_.ss = SEL_UDSEG;
   if_.cs = SEL_UCSEG;
   if_.eflags = FLAG_IF | FLAG_MBS;
-  success = load (file_name, &if_.eip, &if_.esp);
+  success = load (file_name_, &if_.eip, &if_.esp);
 
   /* If load failed, quit. */
-  palloc_free_page (file_name);
+  palloc_free_page (file_name_);
   if (!success) {
       curr ->parent-> load_success=false;
       process_exit();
@@ -137,9 +125,7 @@ int process_wait (tid_t child_tid)
          if(ch -> is_over== false) {
              sema_down(&curr-> wait_process_sema);
          }
-
          eax = ch -> return_record;
-       // otherwise it will not pass wait-twice
          list_remove(currE);
          free(ch);
     }
@@ -151,15 +137,21 @@ int process_wait (tid_t child_tid)
 void process_exit (void)
 {
       struct thread *curr = thread_current ();
-       uint32_t *pd;
-      printf("%s: exit(%d)\n",curr->name,curr->return_record);
-      file_close(curr->self);
-    // TODO: this part is not performing well
-     close_all_files(&curr->process_files);
-     close_all_process(&curr -> child_process);
+      struct p_info* currProcess = get_current_process();
+      uint32_t *pd;
       pd = curr->pagedir;
-      curr->pagedir = NULL;
-      pagedir_destroy (pd);
+      printf("%s: exit(%d)\n",curr->name,currProcess->return_record);
+      close_all_files(&curr->process_files);
+      close_all_process(&curr -> child_process);
+        if(curr->self){
+            file_close(curr->self);
+        }
+        if(pd != NULL){
+            curr->pagedir = NULL;
+            pagedir_destroy (pd);
+        }
+
+
 }
 
 /* Sets up the CPU for running user code in the current
@@ -362,14 +354,14 @@ bool load (const char *file_name, void (**eip) (void), void **esp)
   *eip = (void (*) (void)) ehdr.e_entry;
   success = true;
 
+    // deny writing to running exe
   file_deny_write(file);
 
-  thread_current()->self = file;
   
  done:
-  /* We arrive here whether the load is successful or not. */
- release_filesys_lock();
-  return success;
+    t->self = file;
+    release_filesys_lock();
+    return success;
 }
 
 /* load() helpers. */
@@ -576,14 +568,11 @@ static bool install_page (void *upage, void *kpage, bool writable)
 
 
 
-
-
-
-
 static struct p_info* look_up_child_thread(tid_t child_tid){
     struct list_elem *e;
     struct p_info *ch=NULL;
-    for (e = list_begin (&thread_current()->child_process); e != list_end (&thread_current()->child_process); e = list_next (e)) {
+    struct thread* curr = thread_current();
+    for (e = list_begin (&curr->child_process); e != list_end (&curr->child_process); e = list_next (e)) {
         struct p_info *f = list_entry (e, struct p_info, elem);
         if(f->tid == child_tid) {
             ch = f;
@@ -605,13 +594,14 @@ static struct list_elem* look_up_elem(tid_t child_tid){
     }
     return targetE;
 }
+
 void close_all_process(struct list* child_process) {
     struct list_elem *e;
     while (!list_empty(child_process)) {
         e = list_pop_front(child_process);
         struct p_info *p = list_entry(e,struct p_info, elem);
         list_remove(e);
-        if (p->is_over == false)
+        if (p->is_over == true)
             free(p);
         else {
             p->is_parent_over = true;

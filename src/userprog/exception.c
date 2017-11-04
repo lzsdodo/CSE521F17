@@ -9,8 +9,11 @@
 /* Number of page faults processed. */
 static long long page_fault_cnt;
 
+
 static void kill (struct intr_frame *);
 static void page_fault (struct intr_frame *);
+void exception_init (void);
+void exception_print_stats (void);
 
 /* Registers handlers for interrupts that can be caused by user
    programs.
@@ -27,8 +30,7 @@ static void page_fault (struct intr_frame *);
 
    Refer to [IA32-v3a] section 5.15 "Exception and Interrupt
    Reference" for a description of each of these exceptions. */
-void
-exception_init (void) 
+void exception_init (void)
 {
   /* These exceptions can be raised explicitly by a user program,
      e.g. via the INT, INT3, INTO, and BOUND instructions.  Thus,
@@ -62,8 +64,7 @@ exception_init (void)
 }
 
 /* Prints exception statistics. */
-void
-exception_print_stats (void) 
+void exception_print_stats (void)
 {
   printf ("Exception: %lld page faults\n", page_fault_cnt);
 }
@@ -104,7 +105,7 @@ static void kill (struct intr_frame *f)
          kernel. */
       printf ("Interrupt %#04x (%s) in unknown segment %04x\n",
              f->vec_no, intr_name (f->vec_no), f->cs);
-      thread_exit ();
+      quit(-1);
     }
 }
 
@@ -119,14 +120,12 @@ static void kill (struct intr_frame *f)
    can find more information about both of these in the
    description of "Interrupt 14--Page Fault Exception (#PF)" in
    [IA32-v3a] section 5.15 "Exception and Interrupt Reference". */
-static void
-page_fault (struct intr_frame *f) 
+static void page_fault (struct intr_frame *f)
 {
   bool not_present;  /* True: not-present page, false: writing r/o page. */
   bool write;        /* True: access was write, false: access was read. */
   bool user;         /* True: access by user, false: access by kernel. */
   void *fault_addr;  /* Fault address. */
-
   /* Obtain faulting address, the virtual address that was
      accessed to cause the fault.  It may point to code or to
      data.  It is not necessarily the address of the instruction
@@ -139,15 +138,12 @@ page_fault (struct intr_frame *f)
   /* Turn interrupts back on (they were only off so that we could
      be assured of reading CR2 before it changed). */
   intr_enable ();
-
   /* Count page faults. */
   page_fault_cnt++;
-
   /* Determine cause. */
   not_present = (f->error_code & PF_P) == 0;
   write = (f->error_code & PF_W) != 0;
   user = (f->error_code & PF_U) != 0;
-
   /* To implement virtual memory, delete the rest of the function
      body, and replace it with code that brings in the page to
      which fault_addr refers. */

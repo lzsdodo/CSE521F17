@@ -128,8 +128,9 @@ static void syscall_handler (struct intr_frame *f UNUSED)
 			else{ f->eax = file_read (fptr->target_file, *(p+2), *(p+3));}
 		}
 		break;
-		case SYS_WRITE:confirm_user_address(p+1);
-		confirm_user_address(*(p+2));
+		case SYS_WRITE:
+            confirm_user_address(p+1);
+		    confirm_user_address(*(p+2));
         if(*(p+3) <= 0){
             f -> eax = 0;
             return;
@@ -192,31 +193,29 @@ void* confirm_user_address(const void *user_address)
 // TODO: review this
 int exec_proc(char *f_name)
 {
+    int eax;
     // we need lock here
     acquire_filesys_lock();
-    // allocate space
     char * fn_cp = malloc (strlen(f_name)+1);
     char * save_ptr;
-
     strlcpy(fn_cp, f_name, strlen(f_name)+1);
     fn_cp = strtok_r(fn_cp," ",&save_ptr);
 
     // open file with given name
     struct file* currFile = filesys_open (fn_cp);
-
     // if program cannot load the file
     if(!currFile)
     {
         release_filesys_lock();
-        return -1;
+        eax =  -1;
     }
     else
     {
         file_close(currFile);
         release_filesys_lock();
-        // return pid
-        return process_execute(f_name);
+        eax = process_execute(f_name);
     }
+    return eax;
 }
 
 void quit(int status)
@@ -226,16 +225,12 @@ void quit(int status)
     currPross -> is_over = true;
     currPross -> return_record = status;
 
-    curr -> return_record = status;
-
     if(curr->parent->waiting_for_t == curr ->tid && currPross -> is_parent_over == false){
         sema_up(&curr ->parent-> wait_process_sema);
     }
     else if(currPross -> is_parent_over == true){
         free(currPross);
     }
-
-
     thread_exit();
 }
 void close_file(struct list* process_files, int handle)

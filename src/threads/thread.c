@@ -186,14 +186,18 @@ tid_t thread_create (const char *name, int priority,
   /* Initialize thread. */
   init_thread (t, name, priority);
   tid = t->tid = allocate_tid ();
+  t->waketick = -100;
 
-    //TODO: initialize parent alive here.
+    /**************************************************
+     * Initialized process_info inside a thread_h
+     *
+     ***************************************************/
   struct p_info* c = malloc(sizeof(*c));
       c->tid = tid;
-      c->return_record = t->return_record;
+      c->return_record = -109;
       c->is_over = false;
       c->is_parent_over = false;
-  list_push_back (&running_thread()->child_process, &c->elem);
+      list_push_back (&running_thread()->child_process, &c->elem);
 
   /* Prepare thread for first run by initializing its stack.
      Do this atomically so intermediate values for the 'stack' 
@@ -296,8 +300,9 @@ thread_exit (void)
 {
   ASSERT (!intr_context ());
 
-    /*** added process exit here*/
-  process_exit ();
+#ifdef USERPROG
+    process_exit ();
+#endif
   intr_disable ();
   list_remove (&thread_current()->allelem);
   thread_current ()->status = THREAD_DYING;
@@ -467,16 +472,13 @@ init_thread (struct thread *t, const char *name, int priority)
   t->status = THREAD_BLOCKED;
   strlcpy (t->name, name, sizeof t->name);
 
-
-
   t->stack = (uint8_t *) t + PGSIZE;
   t->priority = priority;
   t->magic = THREAD_MAGIC;
   list_init (&t->child_process);
   t->parent = running_thread();
   list_init (&t->process_files);
-  t->fd_count=100;
-  t->return_record = -100;
+  t->fd_count=88;
   sema_init(&t->load_process_sema,0);
   sema_init(&t->wait_process_sema,0);
 
@@ -608,11 +610,10 @@ allocate_tid (void)
    Used by switch.S, which can't figure it out on its own. */
 uint32_t thread_stack_ofs = offsetof (struct thread, stack);
 
-bool cmp_waketick(struct list_elem *first, struct list_elem *second, void *aux)
-{
-  struct thread *fthread = list_entry (first, struct thread, elem);
-  struct thread *sthread = list_entry (second, struct thread, elem);
-
-  return fthread->waketick < sthread->waketick;
-
-}
+//bool cmp_waketick(struct list_elem *first, struct list_elem *second, void *aux)
+//{
+//  struct thread *fthread = list_entry (first, struct thread, elem);
+//  struct thread *sthread = list_entry (second, struct thread, elem);
+//  return false;
+//
+//}
