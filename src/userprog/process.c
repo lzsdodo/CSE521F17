@@ -189,6 +189,7 @@ process_exit (void)
     }
 
   /* Destroy the page hash table. */
+  //TODO: page usage in process
   page_exit ();
   
   /* Close executable (and allow writes). */
@@ -319,6 +320,7 @@ load (const char *cmd_line, void (**eip) (void), void **esp)
     goto done;
   process_activate ();
 
+  // TODO: page usage in process
   /* Create page hash table. */
   t->pages = malloc (sizeof *t->pages);
   if (t->pages == NULL)
@@ -340,6 +342,8 @@ load (const char *cmd_line, void (**eip) (void), void **esp)
       printf ("load: %s: open failed\n", file_name);
       goto done; 
     }
+
+  //TODO: page usage in process.c
   file_deny_write (t->bin_file);
 
   /* Read and verify executable header. */
@@ -493,6 +497,8 @@ static bool
 load_segment (struct file *file, off_t ofs, uint8_t *upage,
               uint32_t read_bytes, uint32_t zero_bytes, bool writable) 
 {
+
+  //TODO: page usage in process.c
   ASSERT ((read_bytes + zero_bytes) % PGSIZE == 0);
   ASSERT (pg_ofs (upage) == 0);
   ASSERT (ofs % PGSIZE == 0);

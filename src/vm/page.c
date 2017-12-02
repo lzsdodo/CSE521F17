@@ -19,7 +19,7 @@ static void destroy_page (struct hash_elem *p_, void *aux UNUSED)
 {
   struct page *p = hash_entry (p_, struct page, hash_elem);
   frame_lock (p);
-  if (p->frame) frame_free (p->frame);
+  if (p->frame)frame_free (p->frame);
   free (p);
 }
 

@@ -206,6 +206,7 @@ timer_interrupt (struct intr_frame *args UNUSED)
       if (ticks < t->wakeup_time) 
         break;
       sema_up (&t->timer_sema);
+      thread_yield_to_higher_priority();
       list_pop_front (&wait_list);
     }
 }

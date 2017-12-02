@@ -482,8 +482,7 @@ struct mapping
 /* Returns the file descriptor associated with the given handle.
    Terminates the process if HANDLE is not associated with a
    memory mapping. */
-static struct mapping *
-lookup_mapping (int handle)
+static struct mapping *lookup_mapping (int handle)
 {
   struct thread *cur = thread_current ();
   struct list_elem *e;

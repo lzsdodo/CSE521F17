@@ -7,12 +7,7 @@
 #include "threads/synch.h"
 #include "threads/vaddr.h"
 
-/* The swap device. */
-static struct block *swap_device;
-/* Used swap pages. */
-static struct bitmap *swap_bitmap;
-/* Protects swap_bitmap. */
-static struct lock swap_lock;
+
 
 /* Number of sectors per page. */
 #define PAGE_SECTORS (PGSIZE / BLOCK_SECTOR_SIZE)
@@ -24,12 +19,11 @@ void swap_init (void)
   if (swap_device == NULL)
     {
       printf ("no swap device--swap disabled\n");
-      swap_bitmap = bitmap_create (0);
+      swap_map = bitmap_create (0);
     }
   else
-    swap_bitmap = bitmap_create (block_size (swap_device)
-                                 / PAGE_SECTORS);
-  if (swap_bitmap == NULL)
+    swap_map = bitmap_create (block_size (swap_device) / PAGE_SECTORS);
+  if (swap_map == NULL)
     PANIC ("couldn't create swap bitmap");
   lock_init (&swap_lock);
 }
@@ -47,7 +41,7 @@ void swap_in (struct page *p)
   for (i = 0; i < PAGE_SECTORS; i++)
     block_read (swap_device, p->sector + i,
                 p->frame->base + i * BLOCK_SECTOR_SIZE);
-  bitmap_reset (swap_bitmap, p->sector / PAGE_SECTORS);
+  bitmap_reset (swap_map, p->sector / PAGE_SECTORS);
   p->sector = (block_sector_t) -1;
 }
 
@@ -61,7 +55,7 @@ bool swap_out (struct page *p)
   ASSERT (lock_held_by_current_thread (&p->frame->lock));
 
   lock_acquire (&swap_lock);
-  slot = bitmap_scan_and_flip (swap_bitmap, 0, 1, false);
+  slot = bitmap_scan_and_flip (swap_map, 0, 1, false);
   lock_release (&swap_lock);
   if (slot == BITMAP_ERROR)
     return false;

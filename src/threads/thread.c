@@ -74,7 +74,10 @@ static void *alloc_frame (struct thread *, size_t size);
 static void schedule (void);
 void thread_schedule_tail (struct thread *prev);
 static tid_t allocate_tid (void);
-
+void thread_yield_to_higher_priority (void);
+bool thread_lower_priority (const struct list_elem *a_,
+                            const struct list_elem *b_,
+                            void *aux UNUSED);
 void thread_init (void)
 {
   ASSERT (intr_get_level () == INTR_OFF);
@@ -271,8 +274,7 @@ void thread_block (void)
   schedule ();
 }
 
-bool
-thread_lower_priority (const struct list_elem *a_,
+bool thread_lower_priority (const struct list_elem *a_,
                        const struct list_elem *b_,
                        void *aux UNUSED)
 {
@@ -444,8 +446,7 @@ donated_lower_priority (const struct list_elem *a_,
     return a->priority < b->priority;
 }
 
-void
-thread_recompute_priority (struct thread *t)
+void thread_recompute_priority (struct thread *t)
 {
     int old_priority = t->priority;
     int default_priority = t->normal_priority;

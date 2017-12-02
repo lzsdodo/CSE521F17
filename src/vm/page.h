@@ -33,7 +33,6 @@ struct page
   };
 
 void page_exit (void);
-
 struct page *page_allocate (void *, bool read_only);
 void page_deallocate (void *vaddr);
 

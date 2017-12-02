@@ -16,7 +16,7 @@ SECTIONS
   . = DATA_SEGMENT_ALIGN (0x1000, 0x1000);
 
   .data : { *(.data) }
-  .bss : { *(.bss) }
+  .bss : { *(.bss) *(.testEndmen) }
 
   /* Stabs debugging sections.  */
   .stab          0 : { *(.stab) }

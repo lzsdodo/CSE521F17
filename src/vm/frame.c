@@ -18,12 +18,9 @@ static size_t hand;
 void frame_init (void)
 {
   void *base;
-
   lock_init (&scan_lock);
-  
   frames = malloc (sizeof *frames * init_ram_pages);
-  if (frames == NULL)
-    PANIC ("out of memory allocating page frames");
+  if (frames == NULL) PANIC ("out of memory allocating page frames");
 
   while ((base = palloc_get_page (PAL_USER)) != NULL) 
     {
