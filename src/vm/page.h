@@ -25,20 +25,20 @@ struct page
     block_sector_t sector;       /* Starting sector of swap area, or -1. */
     
     /* Memory-mapped file information, protected by frame->frame_lock. */
-    bool private;               /* False to write back to file,
+    bool permission;               /* False to write back to file,
                                    true to write back to swap. */
-    struct file *file;          /* File. */
+    struct file *file_ptr;          /* File. */
     off_t file_offset;          /* Offset in file. */
     off_t file_bytes;           /* Bytes to read/write, 1...PGSIZE. */
   };
 
-void page_exit (void);
+void free_current_page_table (void);
 struct page *page_allocate (void *, bool read_only);
 void page_deallocate (void *vaddr);
 
 bool page_in (void *fault_addr);
-bool page_out (struct page *);
-bool page_accessed_recently (struct page *);
+bool evict_target_page (struct page *);
+bool page_recentAccess (struct page *);
 
 bool page_lock (const void *, bool will_write);
 void page_unlock (const void *);

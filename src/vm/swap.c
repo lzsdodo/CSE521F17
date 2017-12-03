@@ -69,8 +69,8 @@ bool swap_out (struct page *p)
                  (uint8_t *) p->frame->base + i * BLOCK_SECTOR_SIZE);
   }
 
-  p->private = false;
-  p->file = NULL;
+  p->permission = false;
+  p->file_ptr = NULL;
   p->file_offset = 0;
   p->file_bytes = 0;
 

@@ -54,7 +54,7 @@ Searching into the frame table (usually to find a free frame) is limited to a si
 
 If all frames are occupied, we must determine a good frame to evict. Taking into account caching and locality, our goal is to evict those frames that have been accessed least recently -- the algorithm to do so is implemented in try_frame_alloc_and_lock() in 'frame.c'.
 
-If the frame being searched for has no page associated with it then we immediately acquire that frame. Otherwise, we acquire the first frame that has not been accessed recently. If all of the frames HAVE been accessed recently, then we iterate over each of the frames again. This time, it is very likely that a valid frame will be acquired because the page_accessed_recently() function changes the access status of a frame upon being called. If for whatever reason the second iteration yields no valid frames, then NULL is returned and no frame is evicted.
+If the frame being searched for has no page associated with it then we immediately acquire that frame. Otherwise, we acquire the first frame that has not been accessed recently. If all of the frames HAVE been accessed recently, then we iterate over each of the frames again. This time, it is very likely that a valid frame will be acquired because the page_recentAccess() function changes the access status of a frame upon being called. If for whatever reason the second iteration yields no valid frames, then NULL is returned and no frame is evicted.
 
 >> B2: Explain your heuristic for deciding whether a page fault for an
 >> invalid virtual address should cause the stack to be extended into
@@ -98,7 +98,7 @@ Pages for a new file mapping are only allocated if pages are found that are free
 >> implementation either does or does not share much of the code for
 >> the two situations.
 
-Our code is largely shared between these processes. Any page, regardless of origin, will ultimately be paged out via the same page_out() function in 'page.c'. The only difference is a check to see whether or not the page should be written back out to disk. If the page is marked as private then it should be swapped to the swap partition, otherwise it should be written out to the file on disk. This process was easier than writing separate subsystems for different page types.
+Our code is largely shared between these processes. Any page, regardless of origin, will ultimately be paged out via the same evict_target_page() function in 'page.c'. The only difference is a check to see whether or not the page should be written back out to disk. If the page is marked as private then it should be swapped to the swap partition, otherwise it should be written out to the file on disk. This process was easier than writing separate subsystems for different page types.
 
 			   SURVEY QUESTIONS
 			   ================

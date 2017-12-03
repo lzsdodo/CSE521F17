@@ -72,7 +72,7 @@ static struct frame *try_frame_alloc_and_lock (struct page *page)
           return f;
         } 
 
-      if (page_accessed_recently (f->page)) 
+      if (page_recentAccess (f->page))
         {
           lock_release (&f->lock);
           continue;
@@ -81,7 +81,7 @@ static struct frame *try_frame_alloc_and_lock (struct page *page)
       lock_release (&scan_lock);
       
       /* Evict this frame. */
-      if (!page_out (f->page))
+      if (!evict_target_page (f->page))
         {
           lock_release (&f->lock);
           return NULL;
@@ -100,9 +100,9 @@ static struct frame *try_frame_alloc_and_lock (struct page *page)
    Returns the frame if successful, false on failure. */
 struct frame *frame_alloc_and_lock (struct page *page)
 {
-  size_t try;
+  size_t x;
 
-  for (try = 0; try < 3; try++) 
+  for (x = 0; x < 3; x++)
     {
       struct frame *f = try_frame_alloc_and_lock (page);
       if (f != NULL) 

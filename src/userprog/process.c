@@ -190,7 +190,7 @@ process_exit (void)
 
   /* Destroy the page hash table. */
   //TODO: page usage in process
-  page_exit ();
+  free_current_page_table ();
   
   /* Close executable (and allow writes). */
   file_close (cur->bin_file);
@@ -512,7 +512,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
         return false;
       if (page_read_bytes > 0) 
         {
-          p->file = file;
+          p->file_ptr = file;
           p->file_offset = ofs;
           p->file_bytes = page_read_bytes;
         }
@@ -619,7 +619,7 @@ setup_stack (const char *cmd_line, void **esp)
         {
           bool ok;
           page->read_only = false;
-          page->private = false;
+          page->permission = false;
           ok = init_cmd_line (page->frame->base, page->addr, cmd_line, esp);
           frame_unlock (page->frame);
           return ok;

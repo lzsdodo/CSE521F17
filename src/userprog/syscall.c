@@ -562,8 +562,8 @@ sys_mmap (int handle, void *addr)
           unmap (m);
           return -1;
         }
-      p->private = false;
-      p->file = m->file;
+      p->permission = false;
+      p->file_ptr = m->file;
       p->file_offset = offset;
       p->file_bytes = length >= PGSIZE ? PGSIZE : length;
       offset += p->file_bytes;
