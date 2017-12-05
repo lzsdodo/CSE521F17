@@ -521,7 +521,7 @@ unmap (struct mapping *m)
   /* Finally, deallocate all memory mapped pages (free up the process memory). */
   for(int i = 0; i < m->page_cnt; i++)
   {
-    page_deallocate((void *) ((m->base) + (PGSIZE * i)));
+    clear_page((void *) ((m->base) + (PGSIZE * i)));
   }
 }
 

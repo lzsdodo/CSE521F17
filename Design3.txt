@@ -33,7 +33,7 @@ Not applicable.
 >> A1: In a few paragraphs, describe the existing code for locating the
 >> frame, if any, that contains the data of a given page.
 
-Each page struct has a number of associated members, including the frame struct that contains its physical data. The frame struct contains a pointer to the kernel virtual address holding its data, and a reference to the page that owns it. When the page is initially created, its frame is set to NULL -- it doesn't receive a frame until allocated one via the frame_alloc_and_lock() function in 'frame.c' (called by the do_page_in() function).
+Each page struct has a number of associated members, including the frame struct that contains its physical data. The frame struct contains a pointer to the kernel virtual address holding its data, and a reference to the page that owns it. When the page is initially created, its frame is set to NULL -- it doesn't receive a frame until allocated one via the frame_alloc_and_lock() function in 'frame.c' (called by the page_into_frame() function).
 
 The process of finding a free frame in memory is conducted by frame_alloc_and_lock(). It makes multiple attempts to secure a free region of memory in which to allocate the new frame. If no frame sized piece of memory exists, then an existing frame must be evicted to make room for the new one. Upon finding/creating a new frame, the frame is returned and associated with the page that requested it (p->frame = frame and f->page = page). If for some reason frame_alloc_and_lock() is unable to find an existing frame to evict, NULL is returned and no frame is allocated.
 

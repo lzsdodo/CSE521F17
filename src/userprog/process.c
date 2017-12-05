@@ -190,7 +190,7 @@ process_exit (void)
 
   /* Destroy the page hash table. */
   //TODO: page usage in process
-  free_current_page_table ();
+  free_process_PT ();
   
   /* Close executable (and allow writes). */
   file_close (cur->bin_file);

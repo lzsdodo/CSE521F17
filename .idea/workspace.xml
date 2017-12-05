@@ -11,30 +11,13 @@
   <component name="ChangeListManager">
     <list default="true" id="1aafb88c-6d37-440a-aa29-a9ad2e9ab967" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/devices/shutdown.c" afterPath="$PROJECT_DIR$/src/devices/shutdown.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/devices/timer.c" afterPath="$PROJECT_DIR$/src/devices/timer.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lib/kernel/bitmap.c" afterPath="$PROJECT_DIR$/src/lib/kernel/bitmap.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lib/user/syscall.c" afterPath="$PROJECT_DIR$/src/lib/user/syscall.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/lib/user/user.lds" afterPath="$PROJECT_DIR$/src/lib/user/user.lds" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/misc/bochs-2.2.6-build.sh" afterPath="$PROJECT_DIR$/src/misc/bochs-2.2.6-build.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/threads/init.c" afterPath="$PROJECT_DIR$/src/threads/init.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/threads/interrupt.c" afterPath="$PROJECT_DIR$/src/threads/interrupt.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/threads/synch.c" afterPath="$PROJECT_DIR$/src/threads/synch.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/threads/thread.c" afterPath="$PROJECT_DIR$/src/threads/thread.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/threads/thread.h" afterPath="$PROJECT_DIR$/src/threads/thread.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/exception.c" afterPath="$PROJECT_DIR$/src/userprog/exception.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Design3.txt" afterPath="$PROJECT_DIR$/Design3.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/process.c" afterPath="$PROJECT_DIR$/src/userprog/process.c" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/syscall.c" afterPath="$PROJECT_DIR$/src/userprog/syscall.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/utils/Makefile" afterPath="$PROJECT_DIR$/src/utils/Makefile" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/utils/pintos" afterPath="$PROJECT_DIR$/src/utils/pintos" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/utils/pintos-gdb" afterPath="$PROJECT_DIR$/src/utils/pintos-gdb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/utils/squish-pty.c" afterPath="$PROJECT_DIR$/src/utils/squish-pty.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vm/Make.vars" afterPath="$PROJECT_DIR$/src/vm/Make.vars" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vm/frame.c" afterPath="$PROJECT_DIR$/src/vm/frame.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vm/frame.h" afterPath="$PROJECT_DIR$/src/vm/frame.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vm/page.c" afterPath="$PROJECT_DIR$/src/vm/page.c" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vm/page.h" afterPath="$PROJECT_DIR$/src/vm/page.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vm/swap.c" afterPath="$PROJECT_DIR$/src/vm/swap.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vm/swap.h" afterPath="$PROJECT_DIR$/src/vm/swap.h" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -46,15 +29,39 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="swap.c" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/vm/swap.c">
+      <file leaf-file-name="page.c" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/vm/page.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="690">
-              <caret line="26" column="42" lean-forward="true" selection-start-line="26" selection-start-column="42" selection-end-line="26" selection-end-column="42" />
+            <state relative-caret-position="370">
+              <caret line="262" column="0" lean-forward="true" selection-start-line="262" selection-start-column="0" selection-end-line="262" selection-end-column="0" />
               <folding>
-                <element signature="e#653#1137#0" expanded="false" />
-                <element signature="e#1139#1858#0" expanded="false" />
+                <element signature="e#929#1149#0" expanded="false" />
+                <element signature="e#1151#1350#0" expanded="false" />
+                <element signature="e#1352#1496#0" expanded="false" />
+                <element signature="e#1352#2677#0" expanded="false" />
+                <element signature="e#1930#2412#0" expanded="false" />
+                <element signature="e#2679#2775#0" expanded="false" />
+                <element signature="e#2679#3507#0" expanded="false" />
+                <element signature="e#3509#3605#0" expanded="false" />
+                <element signature="e#3509#4435#0" expanded="false" />
+                <element signature="e#4437#4536#0" expanded="false" />
+                <element signature="e#4708#4910#0" expanded="false" />
+                <element signature="e#5930#6650#0" expanded="false" />
+                <element signature="e#6998#7231#0" expanded="false" />
+                <element signature="e#7233#7545#0" expanded="false" />
+                <element signature="e#7547#7750#0" expanded="false" />
+                <element signature="e#8152#8325#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="page.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/vm/page.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="234">
+              <caret line="13" column="12" lean-forward="false" selection-start-line="13" selection-start-column="12" selection-end-line="13" selection-end-column="12" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -62,34 +69,8 @@
       <file leaf-file-name="frame.c" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/vm/frame.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="14" selection-end-column="19" />
-              <folding>
-                <element signature="e#745#2091#0" expanded="false" />
-                <element signature="e#2094#2551#0" expanded="false" />
-                <element signature="e#2553#2978#0" expanded="false" />
-                <element signature="e#2980#3250#0" expanded="false" />
-                <element signature="e#3252#3471#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="page.h" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/vm/page.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="602">
-              <caret line="31" column="42" lean-forward="false" selection-start-line="31" selection-start-column="42" selection-end-line="31" selection-end-column="42" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="page.c" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/vm/page.c">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="75" column="37" lean-forward="false" selection-start-line="75" selection-start-column="37" selection-end-line="75" selection-end-column="37" />
+            <state relative-caret-position="409">
+              <caret line="107" column="21" lean-forward="true" selection-start-line="107" selection-start-column="21" selection-end-line="107" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -99,27 +80,52 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>swap_init</find>
-      <find>swap_in</find>
-      <find>fix_round</find>
-      <find>ready_list</find>
-      <find>yield_to_higher_priority</find>
-      <find>thread_yield_to_higher_priority (void)</find>
-      <find>thread_lower_priority</find>
-      <find>thread_yield_to_higher_priority</find>
-      <find>thread_recompute_priority</find>
-      <find>block_get_role</find>
-      <find>BLOCK_SWAP</find>
-      <find>swap_bitmap</find>
-      <find>swap_out</find>
-      <find>pg_ofs</find>
-      <find>struct mapping</find>
-      <find>evict</find>
-      <find>file</find>
-      <find>-&gt;file</find>
+      <find>page_allocate</find>
+      <find>ok</find>
+      <find>page_lock</find>
+      <find>too_long_error</find>
+      <find>input_getc</find>
+      <find>page_unlock</find>
+      <find>unmap</find>
+      <find>evict_target</find>
+      <find>-&gt;lock</find>
+      <find>init_ram_pages</find>
+      <find>PAL_USER</find>
+      <find>frame_cnt</find>
+      <find>STACK_MAX</find>
+      <find>block_sector_t</find>
+      <find>memse</find>
+      <find>page_hash</find>
+      <find>look_up_page</find>
+      <find>do_page_in</find>
+      <find>free_current_page_table</find>
+      <find>thread_current</find>
+      <find>hash_destroy</find>
+      <find>destroy_page</find>
+      <find>frame_lock</find>
+      <find>pagedir_set_page</find>
+      <find>page_in</find>
+      <find>hash_insert</find>
+      <find>page_deallocate</find>
+      <find>page_less</find>
+      <find>will_write</find>
+      <find>-&gt;permi</find>
     </findStrings>
     <replaceStrings>
       <replace>swap_map</replace>
+      <replace>file</replace>
+      <replace>free_current_page_table</replace>
+      <replace>evict_target_page</replace>
+      <replace>page_recentAccess</replace>
+      <replace>look_up_page</replace>
+      <replace>search_page</replace>
+      <replace>page_into_frame</replace>
+      <replace>free_process_PT</replace>
+      <replace>page_destructor</replace>
+      <replace>lock_page_frame</replace>
+      <replace>clear_page</replace>
+      <replace>addr_less</replace>
+      <replace>edible</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -144,15 +150,16 @@
         <option value="$PROJECT_DIR$/src/lib/kernel/bitmap.c" />
         <option value="$PROJECT_DIR$/src/lib/user/user.lds" />
         <option value="$PROJECT_DIR$/src/misc/bochs-2.2.6-build.sh" />
-        <option value="$PROJECT_DIR$/src/userprog/exception.c" />
         <option value="$PROJECT_DIR$/src/vm/Make.vars" />
         <option value="$PROJECT_DIR$/src/vm/swap.c" />
         <option value="$PROJECT_DIR$/src/vm/swap.h" />
-        <option value="$PROJECT_DIR$/src/userprog/process.c" />
-        <option value="$PROJECT_DIR$/src/userprog/syscall.c" />
-        <option value="$PROJECT_DIR$/src/vm/frame.c" />
-        <option value="$PROJECT_DIR$/src/vm/page.c" />
         <option value="$PROJECT_DIR$/src/vm/page.h" />
+        <option value="$PROJECT_DIR$/src/userprog/exception.c" />
+        <option value="$PROJECT_DIR$/Design3.txt" />
+        <option value="$PROJECT_DIR$/src/vm/frame.c" />
+        <option value="$PROJECT_DIR$/src/userprog/syscall.c" />
+        <option value="$PROJECT_DIR$/src/userprog/process.c" />
+        <option value="$PROJECT_DIR$/src/vm/page.c" />
       </list>
     </option>
   </component>
@@ -208,7 +215,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Color Scheme Font" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="ignore_missing_gitignore" value="true" />
   </component>
@@ -234,7 +241,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1512172607808</updated>
-      <workItem from="1512172609084" duration="9086000" />
+      <workItem from="1512172609084" duration="31222000" />
     </task>
     <task id="LOCAL-00001" summary="firrst commit">
       <created>1512202882192</created>
@@ -250,34 +257,47 @@
       <option name="project" value="LOCAL" />
       <updated>1512205741104</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="1.2 minor changes">
+      <created>1512256821737</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1512256821737</updated>
+    </task>
+    <task id="LOCAL-00004" summary="1.3 JZ Goes over pages">
+      <created>1512262717527</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1512262717527</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9086000" />
+    <option name="totallyTimeSpent" value="31222000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="53" y="24" width="2507" height="1576" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17106867" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25084746" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32949153" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.094270624" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25084746" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32949153" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24989842" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32949153" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.40065014" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -289,7 +309,9 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="firrst commit" />
     <MESSAGE value="1.1 almost finished furnishing thread.c" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.1 almost finished furnishing thread.c" />
+    <MESSAGE value="1.2 minor changes" />
+    <MESSAGE value="1.3 JZ Goes over pages" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.3 JZ Goes over pages" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -300,12 +322,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/vm/page.c</url>
-          <line>68</line>
+          <line>86</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/vm/page.c</url>
-          <line>197</line>
+          <line>201</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
@@ -318,8 +340,23 @@
           <line>668</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/vm/page.c</url>
+          <line>50</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/vm/page.c</url>
+          <line>277</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/vm/page.c</url>
+          <line>31</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="5" />
+      <option name="time" value="8" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -344,14 +381,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1500">
           <caret line="13" column="0" lean-forward="true" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Design3.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -384,37 +413,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="448" column="0" lean-forward="false" selection-start-line="448" selection-start-column="0" selection-end-line="448" selection-end-column="49" />
-          <folding>
-            <element signature="e#369#428#0" expanded="true" />
-            <element signature="e#2719#3062#0" expanded="false" />
-            <element signature="e#3064#3367#0" expanded="false" />
-            <element signature="e#3369#3394#0" expanded="false" />
-            <element signature="e#3735#4005#0" expanded="false" />
-            <element signature="e#4007#5485#0" expanded="false" />
-            <element signature="e#4177#4223#0" expanded="true" />
-            <element signature="e#5487#5677#0" expanded="false" />
-            <element signature="e#5679#6476#0" expanded="false" />
-            <element signature="e#5679#7639#0" expanded="false" />
-            <element signature="e#7641#8064#0" expanded="false" />
-            <element signature="e#8392#8662#0" expanded="false" />
-            <element signature="e#8664#8778#0" expanded="false" />
-            <element signature="e#8780#9357#0" expanded="false" />
-            <element signature="e#9359#9459#0" expanded="false" />
-            <element signature="e#9621#9656#0" expanded="true" />
-            <element signature="e#9986#10423#0" expanded="false" />
-            <element signature="e#10425#10858#0" expanded="false" />
-            <element signature="e#11286#11543#0" expanded="false" />
-            <element signature="e#12199#12983#0" expanded="false" />
-            <element signature="e#12985#13498#0" expanded="false" />
-            <element signature="e#13504#14370#0" expanded="false" />
-            <element signature="e#15142#15294#0" expanded="false" />
-            <element signature="e#15296#16052#0" expanded="false" />
-            <element signature="e#16054#16393#0" expanded="false" />
-            <element signature="e#17001#18460#0" expanded="false" />
-            <element signature="e#17979#18039#0" expanded="true" />
-            <element signature="e#18462#19124#0" expanded="false" />
-            <element signature="e#19126#19341#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -559,16 +558,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/userprog/exception.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="46" column="0" lean-forward="true" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
-          <folding>
-            <element signature="e#340#2038#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/vm/Make.vars">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -593,44 +582,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/userprog/syscall.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="580">
-          <caret line="484" column="23" lean-forward="false" selection-start-line="484" selection-start-column="23" selection-end-line="484" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/vm/swap.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="690">
           <caret line="23" column="9" lean-forward="true" selection-start-line="23" selection-start-column="9" selection-end-line="23" selection-end-column="9" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/vm/swap.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="690">
-          <caret line="26" column="42" lean-forward="true" selection-start-line="26" selection-start-column="42" selection-end-line="26" selection-end-column="42" />
-          <folding>
-            <element signature="e#653#1137#0" expanded="false" />
-            <element signature="e#1139#1858#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/vm/frame.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="14" selection-end-column="19" />
-          <folding>
-            <element signature="e#745#2091#0" expanded="false" />
-            <element signature="e#2094#2551#0" expanded="false" />
-            <element signature="e#2553#2978#0" expanded="false" />
-            <element signature="e#2980#3250#0" expanded="false" />
-            <element signature="e#3252#3471#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -642,27 +598,86 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/userprog/process.c">
+    <entry file="file://$PROJECT_DIR$/src/userprog/exception.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="503" column="29" lean-forward="true" selection-start-line="503" selection-start-column="29" selection-end-line="503" selection-end-column="29" />
+        <state relative-caret-position="890">
+          <caret line="138" column="18" lean-forward="false" selection-start-line="138" selection-start-column="11" selection-end-line="138" selection-end-column="18" />
+          <folding>
+            <element signature="e#340#2038#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Design3.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="499">
+          <caret line="45" column="0" lean-forward="true" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/vm/page.c">
+    <entry file="file://$PROJECT_DIR$/src/vm/swap.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="75" column="37" lean-forward="false" selection-start-line="75" selection-start-column="37" selection-end-line="75" selection-end-column="37" />
+        <state relative-caret-position="23">
+          <caret line="32" column="11" lean-forward="false" selection-start-line="32" selection-start-column="11" selection-end-line="32" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/userprog/syscall.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="679">
+          <caret line="543" column="22" lean-forward="true" selection-start-line="543" selection-start-column="22" selection-end-line="543" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/userprog/process.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1219">
+          <caret line="344" column="0" lean-forward="false" selection-start-line="344" selection-start-column="0" selection-end-line="344" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/vm/page.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="602">
-          <caret line="31" column="42" lean-forward="false" selection-start-line="31" selection-start-column="42" selection-end-line="31" selection-end-column="42" />
+        <state relative-caret-position="234">
+          <caret line="13" column="12" lean-forward="false" selection-start-line="13" selection-start-column="12" selection-end-line="13" selection-end-column="12" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/vm/frame.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="409">
+          <caret line="107" column="21" lean-forward="true" selection-start-line="107" selection-start-column="21" selection-end-line="107" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/vm/page.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="370">
+          <caret line="262" column="0" lean-forward="true" selection-start-line="262" selection-start-column="0" selection-end-line="262" selection-end-column="0" />
+          <folding>
+            <element signature="e#929#1149#0" expanded="false" />
+            <element signature="e#1151#1350#0" expanded="false" />
+            <element signature="e#1352#1496#0" expanded="false" />
+            <element signature="e#1352#2677#0" expanded="false" />
+            <element signature="e#1930#2412#0" expanded="false" />
+            <element signature="e#2679#2775#0" expanded="false" />
+            <element signature="e#2679#3507#0" expanded="false" />
+            <element signature="e#3509#3605#0" expanded="false" />
+            <element signature="e#3509#4435#0" expanded="false" />
+            <element signature="e#4437#4536#0" expanded="false" />
+            <element signature="e#4708#4910#0" expanded="false" />
+            <element signature="e#5930#6650#0" expanded="false" />
+            <element signature="e#6998#7231#0" expanded="false" />
+            <element signature="e#7233#7545#0" expanded="false" />
+            <element signature="e#7547#7750#0" expanded="false" />
+            <element signature="e#8152#8325#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

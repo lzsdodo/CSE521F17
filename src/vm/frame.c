@@ -118,7 +118,7 @@ struct frame *frame_alloc_and_lock (struct page *page)
 
 /* Locks P's frame into memory, if it has one.
    Upon return, p->frame will not change until P is unlocked. */
-void frame_lock (struct page *p)
+void lock_page_frame (struct page *p)
 {
   /* A frame can be asynchronously removed, but never inserted. */
   struct frame *f = p->frame;
@@ -128,7 +128,7 @@ void frame_lock (struct page *p)
       if (f != p->frame)
         {
           lock_release (&f->lock);
-          ASSERT (p->frame == NULL); 
+//        ASSERT (p->frame == NULL);
         } 
     }
 }

@@ -15,7 +15,7 @@ struct frame
 void frame_init (void);
 
 struct frame *frame_alloc_and_lock (struct page *);
-void frame_lock (struct page *);
+void lock_page_frame (struct page *);
 
 void frame_free (struct frame *);
 void frame_unlock (struct frame *);

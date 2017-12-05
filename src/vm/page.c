@@ -13,26 +13,41 @@
 /* Right now it is 1 megabyte. */
 #define STACK_MAX (1024 * 1024)
 
-//free a page of current process
-static void destroy_page (struct hash_elem *p_, void *aux UNUSED)
+
+static void page_destructor (struct hash_elem *page_hash, void *aux UNUSED);
+void free_process_PT (void);
+static struct page *search_page (const void *address);
+static bool page_into_frame (struct page *p);
+bool page_in (void *fault_addr);
+bool evict_target_page (struct page *p);
+bool page_recentAccess (struct page *p);
+struct page *page_allocate (void *vaddr, bool read_only);
+void clear_page (void *vaddr);
+unsigned page_hash (const struct hash_elem *e, void *aux UNUSED);
+bool page_less (const struct hash_elem *a_, const struct hash_elem *b_, void *aux UNUSED);
+
+
+
+static void page_destructor (struct hash_elem *page_hash, void *aux UNUSED)
 {
-  struct page *p = hash_entry (p_, struct page, hash_elem);
-  frame_lock (p);
+  struct page *p = hash_entry (page_hash, struct page, hash_elem);
+  lock_page_frame (p);
   if (p->frame) frame_free (p->frame);
   free (p);
 }
 
-/* free a page table of current process */
-void free_current_page_table (void)
+//free page table of current process
+void free_process_PT (void)
 {
-  struct hash *curr_PT = thread_current ()->pages;
-  if (curr_PT != NULL) hash_destroy (curr_PT, destroy_page);
+  struct thread *t = thread_current ();
+  struct hash *curr_PT = t->pages;
+  if (curr_PT) hash_destroy (curr_PT, page_destructor);
 }
 
 /* Returns the page containing the given virtual ADDRESS,
    or a null pointer if no such page exists.
    Allocates stack pages as necessary. */
-static struct page *look_up_page (const void *address)
+static struct page *search_page (const void *address)
 {
 
   if (address < PHYS_BASE)
@@ -56,7 +71,7 @@ static struct page *look_up_page (const void *address)
           case, we should allocate one more stack page accordingly.
       */
 
-      //TODO: modify here
+      //TODO: stack overflow + smaller than smallest value
       if ((target_page.addr > PHYS_BASE - STACK_MAX) && ((void *)thread_current()->user_esp - 32 < address))
       {
         return page_allocate (target_page.addr, false);
@@ -68,9 +83,9 @@ static struct page *look_up_page (const void *address)
 
 /* Locks a frame for page P and pages it in.
    Returns true if successful, false on failure. */
-static bool do_page_in (struct page *p)
+static bool page_into_frame (struct page *p)
 {
-  /* Get a frame for the page. */
+
   p->frame = frame_alloc_and_lock (p);
   if (p->frame == NULL) return false;
 
@@ -80,9 +95,9 @@ static bool do_page_in (struct page *p)
       swap_in (p);
     }
 
-  else if (p->file_ptr != NULL)
+  else if (p->file_ptr)
     {
-      /* Get data from file. */
+      // read data from files
       off_t read_bytes = file_read_at (p->file_ptr, p->frame->base,p->file_bytes, p->file_offset);
       off_t zero_bytes = PGSIZE - read_bytes;
 
@@ -94,7 +109,7 @@ static bool do_page_in (struct page *p)
     }
   else
     {
-      /* Provide all-zero page. */
+
       memset (p->frame->base, 0, PGSIZE);
     }
 
@@ -105,31 +120,31 @@ static bool do_page_in (struct page *p)
    Returns true if successful, false on failure. */
 bool page_in (void *fault_addr)
 {
-  struct page *p;
-  bool success;
 
-  /* Can't handle page faults without a hash table. */
-  if (thread_current ()->pages == NULL)
-    return false;
+    bool success;
+    struct thread* curr = thread_current();
+    if (curr -> pages == NULL) return false;
+    struct page *target_page = search_page (fault_addr);
+    if (target_page == NULL) return false;
 
-  p = look_up_page (fault_addr);
-  if (p == NULL)
-    return false;
 
-  frame_lock (p);
-  if (p->frame == NULL)
+    //TODO: really need lock frame?
+  lock_page_frame (target_page);
+
+  if (target_page->frame == NULL)
     {
-      if (!do_page_in (p))
-        return false;
+        bool paged_in = page_into_frame (target_page);
+      if (paged_in == false) return false;
     }
-  ASSERT (lock_held_by_current_thread (&p->frame->lock));
+//  ASSERT (lock_held_by_current_thread (&target_page->frame->lock));
 
-  /* Install frame into page table. */
-  success = pagedir_set_page (thread_current ()->pagedir, p->addr,
-                              p->frame->base, !p->read_only);
+  success = pagedir_set_page (thread_current ()->pagedir,
+                              target_page->addr,
+                              target_page->frame->base,
+                              !target_page->read_only);
 
   /* Release frame. */
-  frame_unlock (p->frame);
+  frame_unlock (target_page->frame);
 
   return success;
 }
@@ -185,52 +200,49 @@ bool evict_target_page (struct page *p)
 
 bool page_recentAccess (struct page *p)
 {
-  ASSERT (p->frame != NULL);
-  ASSERT (lock_held_by_current_thread (&p->frame->lock));
-
+//  ASSERT (p->frame != NULL);
+//  ASSERT (lock_held_by_current_thread (&p->frame->lock));
   uint32_t curr_pd = p ->thread -> pagedir;
-
-  // calling method to determine this
   bool accessed= pagedir_is_accessed (curr_pd, p->addr);
   if (accessed) pagedir_set_accessed (curr_pd, p->addr, false);
   return accessed;
 }
 
-/* Adds a mapping for user virtual address VADDR to the page hash
-   table.  Fails if VADDR is already mapped or if memory
-   allocation fails. */
+//TODO: can examine mapping first?
 struct page *page_allocate (void *vaddr, bool read_only)
 {
-  struct thread *t = thread_current ();
+  struct thread *curr_thread = thread_current ();
   struct page *p = malloc (sizeof *p);
-  if (p != NULL)
+  if (p)
     {
-      p->addr = pg_round_down (vaddr);
-      p->read_only = read_only;
-      p->permission = !read_only;
-      p->frame = NULL;
-      p->sector = (block_sector_t) -1;
-      p->file_ptr = NULL;
-      p->file_offset = 0;
-      p->file_bytes = 0;
-      p->thread = thread_current ();
-      if (hash_insert (t->pages, &p->hash_elem) != NULL)
+        p->thread = curr_thread;
+            p->addr = pg_round_down (vaddr);
+            p->read_only = read_only;
+            p->permission = !read_only;
+            p->frame = NULL;
+            p->sector = (block_sector_t) -1;
+            p->file_ptr = NULL;
+            p->file_offset = 0;
+            p->file_bytes = 0;
+
+
+        struct hash_elem * p_mapping = hash_insert (curr_thread->pages, &p->hash_elem);
+        if (p_mapping)
         {
-          /* Already mapped. */
-          free (p);
-          p = NULL;
+            free (p);
+            p = NULL;
         }
+
     }
   return p;
 }
 
-/* Evicts the page containing address VADDR
-   and removes it from the page table. */
-void page_deallocate (void *vaddr)
+
+void clear_page (void *addr)
 {
-  struct page *p = look_up_page (vaddr);
-  ASSERT (p != NULL);
-  frame_lock (p);
+  struct page *p = search_page (addr);
+//  ASSERT (p != NULL);
+  lock_page_frame (p);
   if (p->frame)
     {
       struct frame *f = p->frame;
@@ -264,15 +276,14 @@ bool page_less (const struct hash_elem *a_, const struct hash_elem *b_, void *au
    Returns true if successful, false on failure. */
 bool page_lock (const void *addr, bool will_write)
 {
-  struct page *p = look_up_page (addr);
-
-
+  struct page *p = search_page (addr);
   if (p == NULL || (p->read_only && will_write)) return false;
 
-  frame_lock (p);
+
+  lock_page_frame (p);
   if (p->frame == NULL){
 
-      bool a1 = do_page_in(p);
+      bool a1 = page_into_frame(p);
       bool a2 = pagedir_set_page (thread_current ()->pagedir, p->addr,p->frame->base, !p->read_only);
       return (a1 && a2);
   }
@@ -282,7 +293,7 @@ bool page_lock (const void *addr, bool will_write)
 /* Unlocks a page locked with page_lock(). */
 void page_unlock (const void *addr)
 {
-  struct page *p = look_up_page (addr);
+  struct page *p = search_page (addr);
   ASSERT (p != NULL);
   frame_unlock (p->frame);
 }

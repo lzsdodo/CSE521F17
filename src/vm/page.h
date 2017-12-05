@@ -17,14 +17,14 @@ struct page
     /* Accessed only in owning process context. */
     struct hash_elem hash_elem; /* struct thread `pages' hash element. */
 
-    /* Set only in owning process context with frame->frame_lock held.
-       Cleared only with scan_lock and frame->frame_lock held. */
+    /* Set only in owning process context with frame->lock_page_frame held.
+       Cleared only with scan_lock and frame->lock_page_frame held. */
     struct frame *frame;        /* Page frame. */
 
-    /* Swap information, protected by frame->frame_lock. */
+    /* Swap information, protected by frame->lock_page_frame. */
     block_sector_t sector;       /* Starting sector of swap area, or -1. */
     
-    /* Memory-mapped file information, protected by frame->frame_lock. */
+    /* Memory-mapped file information, protected by frame->lock_page_frame. */
     bool permission;               /* False to write back to file,
                                    true to write back to swap. */
     struct file *file_ptr;          /* File. */
@@ -32,9 +32,9 @@ struct page
     off_t file_bytes;           /* Bytes to read/write, 1...PGSIZE. */
   };
 
-void free_current_page_table (void);
+void free_process_PT (void);
 struct page *page_allocate (void *, bool read_only);
-void page_deallocate (void *vaddr);
+void clear_page (void *vaddr);
 
 bool page_in (void *fault_addr);
 bool evict_target_page (struct page *);
