@@ -40,7 +40,7 @@ static void page_destructor (struct hash_elem *page_hash, void *aux UNUSED)
 void free_process_PT (void)
 {
   struct thread *t = thread_current ();
-  struct hash *curr_PT = t->pages;
+  struct hash *curr_PT = t->page_table;
   if (curr_PT) hash_destroy (curr_PT, page_destructor);
 }
 
@@ -59,7 +59,7 @@ static struct page_table_entry *search_page (const void *address)
 //        round down to nearest page
     target_pte.addr = (void *) pg_round_down (address);
 
-      e = hash_find (thread_current ()->pages, &target_page.hash_elem);
+      e = hash_find (thread_current()->page_table, &target_page.hash_elem);
       if (e != NULL)
           return hash_entry (e, struct page_table_entry, hash_elem);
 
@@ -230,7 +230,7 @@ struct page_table_entry *page_allocate (void *vaddr, bool read_only)
       pte->file_offset = 0;
       pte->file_bytes = 0;
 
-      struct hash_elem * p_mapping = hash_insert (curr_thread->pages, &pte->hash_elem);
+      struct hash_elem * p_mapping = hash_insert (curr_thread->page_table, &pte->hash_elem);
       if (p_mapping) {
           free (pte);
           pte = NULL;
@@ -253,7 +253,7 @@ void clear_page (void *addr)
       }
       frame_free (f);
   }
-  hash_delete (thread_current()->pages, &pte->hash_elem);
+  hash_delete (thread_current()->page_table, &pte->hash_elem);
   free (pte);
 }
 

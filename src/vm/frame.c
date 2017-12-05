@@ -84,7 +84,7 @@ static struct frame *try_frame_alloc_and_lock (struct page_table_entry *pte)
           return f;
       }
 
-      if (page_recentAccess (f->page)) {
+      if (page_recentAccess (f->pte)) {
           lock_release (&f->lock);
           continue;
       }
@@ -92,7 +92,7 @@ static struct frame *try_frame_alloc_and_lock (struct page_table_entry *pte)
       lock_release (&scan_lock);
 
       /* Evict this frame. */
-      if (!evict_target_page (f->page)) {
+      if (!evict_target_page (f->pte)) {
           lock_release (&f->lock);
           return NULL;
       }
@@ -110,27 +110,23 @@ static struct frame *try_frame_alloc_and_lock (struct page_table_entry *pte)
 
 
 //TODO: remove this method
-struct frame *frame_alloc_and_lock (struct page *page)
-{
-
-    struct frame *f = try_frame_alloc_and_lock (page);
-
+struct frame *frame_alloc_and_lock (struct page_table_entry *pte) {
+  struct frame *f = try_frame_alloc_and_lock (pte);
   return f;
 }
 
 
-void lock_page_frame (struct page *p)
+void lock_page_frame (struct page_table_entry*pte)
 {
 
-  struct frame *f = p->frame;
-  if (f)
-    {
+  struct frame *f = pte->frame;
+
+  if (f) {
       lock_acquire (&f->lock);
-      if (f != p->frame)
-        {
+      if (f != pte->frame) {
           lock_release (&f->lock);
-        }
-    }
+      }
+  }
 }
 
 
@@ -138,7 +134,7 @@ void frame_free (struct frame *f)
 {
 //  ASSERT (lock_held_by_current_thread (&f->lock));
 
-  f->page = NULL;
+  f->pte = NULL;
   lock_release (&f->lock);
 }
 

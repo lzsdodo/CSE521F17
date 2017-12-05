@@ -322,11 +322,11 @@ load (const char *cmd_line, void (**eip) (void), void **esp)
 
   // TODO: page usage in process
  // create PT for current process
-  t->pages = malloc (sizeof *t->pages);
-  if (t->pages == NULL)
+  t->page_table = malloc (sizeof *t->page_table);
+  if (t->page_table == NULL)
     goto done;
 
-  hash_init (t->pages, page_hash, addr_less, NULL);
+  hash_init (t->page_table, page_hash, addr_less, NULL);
 
   /* Extract file_name from command line. */
   while (*cmd_line == ' ')
