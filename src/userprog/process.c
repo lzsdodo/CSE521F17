@@ -321,11 +321,12 @@ load (const char *cmd_line, void (**eip) (void), void **esp)
   process_activate ();
 
   // TODO: page usage in process
-  /* Create page hash table. */
+ // create PT for current process
   t->pages = malloc (sizeof *t->pages);
   if (t->pages == NULL)
     goto done;
-  hash_init (t->pages, page_hash, page_less, NULL);
+
+  hash_init (t->pages, page_hash, addr_less, NULL);
 
   /* Extract file_name from command line. */
   while (*cmd_line == ' ')
@@ -605,24 +606,27 @@ init_cmd_line (uint8_t *kpage, uint8_t *upage, const char *cmd_line,
   return true;
 }
 
-/* Create a minimal stack for T by mapping a page at the
+/*allocate a minimal stack for T by mapping a page at the
    top of user virtual memory.  Fills in the page using CMD_LINE
    and sets *ESP to the stack pointer. */
 static bool
 setup_stack (const char *cmd_line, void **esp) 
 {
-  struct page *page = page_allocate (((uint8_t *) PHYS_BASE) - PGSIZE, false);
-  if (page != NULL) 
+    uint8_t *upage = ((uint8_t *) PHYS_BASE) - PGSIZE;
+  struct page *page = page_allocate (upage, false);
+    bool success;
+
+  if (page)
     {
       page->frame = frame_alloc_and_lock (page);
       if (page->frame != NULL)
         {
-          bool ok;
+
           page->read_only = false;
           page->permission = false;
-          ok = init_cmd_line (page->frame->base, page->addr, cmd_line, esp);
+          success = init_cmd_line (page->frame->base, upage, cmd_line, esp);
           frame_unlock (page->frame);
-          return ok;
+          return success;
         }
     }
   return false;

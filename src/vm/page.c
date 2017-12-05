@@ -24,7 +24,7 @@ bool page_recentAccess (struct page *p);
 struct page *page_allocate (void *vaddr, bool read_only);
 void clear_page (void *vaddr);
 unsigned page_hash (const struct hash_elem *e, void *aux UNUSED);
-bool page_less (const struct hash_elem *a_, const struct hash_elem *b_, void *aux UNUSED);
+bool addr_less (const struct hash_elem *a_, const struct hash_elem *b_, void *aux UNUSED);
 
 
 
@@ -262,7 +262,7 @@ unsigned page_hash (const struct hash_elem *e, void *aux UNUSED)
 }
 
 /* Returns true if page A's address is smaller than B. */
-bool page_less (const struct hash_elem *a_, const struct hash_elem *b_, void *aux UNUSED)
+bool addr_less (const struct hash_elem *a_, const struct hash_elem *b_, void *aux UNUSED)
 {
   const struct page *a = hash_entry (a_, struct page, hash_elem);
   const struct page *b = hash_entry (b_, struct page, hash_elem);
@@ -277,18 +277,26 @@ bool page_less (const struct hash_elem *a_, const struct hash_elem *b_, void *au
 bool page_lock (const void *addr, bool will_write)
 {
   struct page *p = search_page (addr);
+    bool success = true;
   if (p == NULL || (p->read_only && will_write)) return false;
 
+    else{
+          lock_page_frame (p);
+          if (p->frame == NULL){
 
-  lock_page_frame (p);
-  if (p->frame == NULL){
+              bool a1 = page_into_frame(p);
+              bool a2 = pagedir_set_page (thread_current ()->pagedir, p->addr,p->frame->base, !p->read_only);
+              success = a1 && a2;
 
-      bool a1 = page_into_frame(p);
-      bool a2 = pagedir_set_page (thread_current ()->pagedir, p->addr,p->frame->base, !p->read_only);
-      return (a1 && a2);
+          }
+          else
+              success = true;
   }
-  else
-      return true;
+
+    return success;
+
+
+
 }
 /* Unlocks a page locked with page_lock(). */
 void page_unlock (const void *addr)
