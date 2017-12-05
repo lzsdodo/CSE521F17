@@ -572,7 +572,7 @@ init_thread (struct thread *t, const char *name, int priority, tid_t tid)
   t->pages = NULL;
   t->bin_file = NULL;
   list_init (&t->fds);
-  list_init (&t->mappings);
+  list_init (&t->PT);
   t->next_handle = 2;
   t->magic = THREAD_MAGIC;
   list_push_back (&all_list, &t->allelem);

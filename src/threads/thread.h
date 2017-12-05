@@ -63,7 +63,7 @@ struct thread
 
     /* Owned by syscall.c. */
     struct list fds;                    /* List of file descriptors. */
-    struct list mappings;               /* Memory-mapped files. */
+    struct list PT;               /* Memory-mapped files. */
     int next_handle;                    /* Next handle value. */
     void *user_esp;                     /* User's stack pointer. */
 
@@ -85,6 +85,16 @@ struct wait_status
     int exit_code;                      /* Child exit code, if dead. */
     struct semaphore dead;              /* 1=child alive, 0=child dead. */
   };
+
+/* Binds a mapping id to a region of memory and a file. */
+struct mapping
+{
+    struct list_elem elem;      /* List element. */
+    int map_handle;                 /* Mapping id. */
+    struct file *file;          /* File*/
+    uint8_t *base;              /* memory mapping starts here : ) */
+    size_t page_cnt;            /* Number of pages mapped. */
+};
 
 /* If false (default), use round-robin scheduler.
    If true, use multi-level feedback queue scheduler.

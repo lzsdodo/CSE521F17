@@ -81,6 +81,22 @@ static struct page *search_page (const void *address)
   return NULL;
 }
 
+/* Returns a hash value for the page that E refers to. */
+unsigned page_hash (const struct hash_elem *e, void *aux UNUSED)
+{
+    const struct page *p = hash_entry (e, struct page, hash_elem);
+    return ((uintptr_t) p->addr) >> PGBITS;
+}
+
+/* Returns true if page A's address is smaller than B. */
+bool addr_less (const struct hash_elem *a_, const struct hash_elem *b_, void *aux UNUSED)
+{
+    const struct page *a = hash_entry (a_, struct page, hash_elem);
+    const struct page *b = hash_entry (b_, struct page, hash_elem);
+
+    return a->addr < b->addr;
+}
+
 /* Locks a frame for page P and pages it in.
    Returns true if successful, false on failure. */
 static bool page_into_frame (struct page *p)
@@ -254,21 +270,7 @@ void clear_page (void *addr)
   free (p);
 }
 
-/* Returns a hash value for the page that E refers to. */
-unsigned page_hash (const struct hash_elem *e, void *aux UNUSED)
-{
-  const struct page *p = hash_entry (e, struct page, hash_elem);
-  return ((uintptr_t) p->addr) >> PGBITS;
-}
 
-/* Returns true if page A's address is smaller than B. */
-bool addr_less (const struct hash_elem *a_, const struct hash_elem *b_, void *aux UNUSED)
-{
-  const struct page *a = hash_entry (a_, struct page, hash_elem);
-  const struct page *b = hash_entry (b_, struct page, hash_elem);
-
-  return a->addr < b->addr;
-}
 
 /* Tries to lock the page containing ADDR into physical memory.
    If WILL_WRITE is true, the page must be writeable;
@@ -302,6 +304,6 @@ bool page_lock (const void *addr, bool will_write)
 void page_unlock (const void *addr)
 {
   struct page *p = search_page (addr);
-  ASSERT (p != NULL);
+//  ASSERT (p != NULL);
   frame_unlock (p->frame);
 }

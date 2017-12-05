@@ -14,7 +14,7 @@ static size_t frame_cnt;
 static struct lock scan_lock;
 static size_t hand;
 
-/* Initialize the frame manager. */
+
 void frame_init (void)
 {
   void *base;
@@ -123,26 +123,22 @@ struct frame *frame_alloc_and_lock (struct page *page)
   return f;
 }
 
-/* Locks P's frame into memory, if it has one.
-   Upon return, p->frame will not change until P is unlocked. */
+
 void lock_page_frame (struct page *p)
 {
-  /* A frame can be asynchronously removed, but never inserted. */
+
   struct frame *f = p->frame;
-  if (f != NULL) 
+  if (f)
     {
       lock_acquire (&f->lock);
       if (f != p->frame)
         {
           lock_release (&f->lock);
-//        ASSERT (p->frame == NULL);
-        } 
+        }
     }
 }
 
-/* Releases frame F for use by another page.
-   F must be locked for use by the current process.
-   Any data in F is lost. */
+
 void frame_free (struct frame *f)
 {
 //  ASSERT (lock_held_by_current_thread (&f->lock));
@@ -151,8 +147,7 @@ void frame_free (struct frame *f)
   lock_release (&f->lock);
 }
 
-/* Unlocks frame F, allowing it to be evicted.
-   F must be locked for use by the current process. */
+
 void frame_unlock (struct frame *f)
 {
 //  ASSERT (lock_held_by_current_thread (&f->lock));
