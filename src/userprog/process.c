@@ -506,7 +506,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
   while (read_bytes > 0 || zero_bytes > 0) {
       size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
       size_t page_zero_bytes = PGSIZE - page_read_bytes;
-      struct page_table_entry *pte = page_allocate (upage, !writable);
+      struct page_table_entry *pte = pte_allocate (upage, !writable);
 
       if (pte == NULL) return false;
       if (page_read_bytes > 0) {
@@ -609,7 +609,7 @@ static bool
 setup_stack (const char *cmd_line, void **esp)
 {
   uint8_t *upage = ((uint8_t *) PHYS_BASE) - PGSIZE;
-  struct page_table_entry *pte = page_allocate (upage, false);
+  struct page_table_entry *pte = pte_allocate (upage, false);
   bool success;
 
   if (pte) {

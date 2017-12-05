@@ -33,7 +33,7 @@ struct page_table_entry {
 };
 
 void free_process_PT (void);
-struct page *page_allocate (void *, bool read_only);
+struct page_table_entry *pte_allocate (void *, bool read_only);
 void clear_page (void *vaddr);
 
 bool page_in (void *fault_addr);

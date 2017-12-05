@@ -21,7 +21,7 @@ static bool page_into_frame (struct page_table_entry *pte);
 bool page_in (void *fault_addr);
 bool evict_target_page (struct page_table_entry *pte);
 bool page_recentAccess (struct page_table_entry *pte);
-struct page_table_entry *page_allocate (void *vaddr, bool read_only);
+struct page_table_entry *pte_allocate (void *vaddr, bool read_only);
 void clear_page (void *vaddr);
 unsigned page_hash (const struct hash_elem *e, void *aux UNUSED);
 bool addr_less (const struct hash_elem *a_, const struct hash_elem *b_, void *aux UNUSED);
@@ -33,7 +33,7 @@ static void page_destructor (struct hash_elem *page_hash, void *aux UNUSED)
   struct page_table_entry *pte = hash_entry (page_hash, struct page_table_entry, hash_elem);
   lock_page_frame (pte);
   if (pte->frame) frame_free (pte->frame);
-  free (p);
+  free (pte);
 }
 
 //free page table of current process
@@ -59,7 +59,7 @@ static struct page_table_entry *search_page (const void *address)
 //        round down to nearest page
     target_pte.addr = (void *) pg_round_down (address);
 
-      e = hash_find (thread_current()->page_table, &target_page.hash_elem);
+      e = hash_find (thread_current()->page_table, &target_pte.hash_elem);
       if (e != NULL)
           return hash_entry (e, struct page_table_entry, hash_elem);
 
@@ -72,9 +72,8 @@ static struct page_table_entry *search_page (const void *address)
       */
 
       //TODO: stack overflow + smaller than smallest value
-      if ((target_pte.addr > PHYS_BASE - STACK_MAX) &&
-        ((void *)thread_current()->user_esp - 32 < address)) {
-        return page_allocate (target_page.addr, false);
+      if ((target_pte.addr > PHYS_BASE - STACK_MAX) && ((void *)thread_current()->user_esp - 32 < address)) {
+          return pte_allocate (target_pte.addr, false);
       }
     }
 
@@ -117,11 +116,11 @@ static bool page_into_frame (struct page_table_entry *pte)
 
       memset (pte->frame->base + read_bytes, 0, zero_bytes);
       if (read_bytes != pte->file_bytes) {
-        printf ("bytes read (%"PROTd") != bytes requested (%"PROTd")\n",read_bytes, p->file_bytes);
+        printf ("bytes read (%"PROTd") != bytes requested (%"PROTd")\n", read_bytes, pte->file_bytes);
       }
   }
   else {
-    memset (pte->frame->base, 0, PGSIZE);
+      memset (pte->frame->base, 0, PGSIZE);
   }
 
   return true;
@@ -134,7 +133,7 @@ bool page_in (void *fault_addr)
 
     bool success;
     struct thread* curr = thread_current();
-    if (curr -> pages == NULL) return false;
+    if (curr->page_table == NULL) return false;
     struct page_table_entry *target_pte = search_page (fault_addr);
     if (target_pte == NULL) return false;
 
@@ -150,7 +149,7 @@ bool page_in (void *fault_addr)
 //  ASSERT (lock_held_by_current_thread (&target_pte->frame->lock));
 
   success = pagedir_set_page (thread_current()->pagedir, target_pte->addr,
-                              target_pte->frame->base, !target_pate->read_only);
+                              target_pte->frame->base, !target_pte->read_only);
 
   /* Release frame. */
   frame_unlock (target_pte->frame);
@@ -214,7 +213,7 @@ bool page_recentAccess (struct page_table_entry *pte)
 }
 
 //TODO: can examine mapping first?
-struct page_table_entry *page_allocate (void *vaddr, bool read_only)
+struct page_table_entry *pte_allocate (void *vaddr, bool read_only)
 {
   struct thread *curr_thread = thread_current ();
   struct page_table_entry *pte = malloc (sizeof *pte);

@@ -572,7 +572,7 @@ static int sys_mapping (int handle, void *addr)
     lock_release (&fs_lock);
     while (length > 0)
     {
-        struct page_table_entry *pte = page_allocate ((uint8_t *) addr + offset, false);
+        struct page_table_entry *pte = pte_allocate ((uint8_t *) addr + offset, false);
         if (pte == NULL)
         {
             clear_mapping (m);

@@ -116,7 +116,7 @@ struct frame *frame_alloc_and_lock (struct page_table_entry *pte) {
 }
 
 
-void lock_page_frame (struct page_table_entry*pte)
+void lock_page_frame (struct page_table_entry *pte)
 {
 
   struct frame *f = pte->frame;

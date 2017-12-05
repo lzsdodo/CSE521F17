@@ -66,7 +66,7 @@ bool swap_out (struct page_table_entry *pte)
 
   /*  Write out page sectors for each modified block. */
   for (i = 0; i < PAGE_SECTORS; i++) {
-      block_write (swap_device, p->sector + i,
+      block_write (swap_device, pte->sector + i,
                    (uint8_t *) pte->frame->base + i * BLOCK_SECTOR_SIZE);
   }
 
