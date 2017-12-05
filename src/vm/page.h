@@ -7,8 +7,8 @@
 #include "threads/synch.h"
 
 /* Virtual page. */
-struct page 
-  {
+// struct page
+struct page_table_entry {
     /* Immutable members. */
     void *addr;                 /* User virtual address. */
     bool read_only;             /* Read-only page? */
@@ -23,22 +23,22 @@ struct page
 
     /* Swap information, protected by frame->lock_page_frame. */
     block_sector_t sector;       /* Starting sector of swap area, or -1. */
-    
+
     /* Memory-mapped file information, protected by frame->lock_page_frame. */
     bool permission;               /* False to write back to file,
                                    true to write back to swap. */
     struct file *file_ptr;          /* File. */
     off_t file_offset;          /* Offset in file. */
     off_t file_bytes;           /* Bytes to read/write, 1...PGSIZE. */
-  };
+};
 
 void free_process_PT (void);
-struct page *page_allocate (void *, bool read_only);
+struct page_table_entry *pte_allocate (void *, bool read_only);
 void clear_page (void *vaddr);
 
 bool page_in (void *fault_addr);
-bool evict_target_page (struct page *);
-bool page_recentAccess (struct page *);
+bool evict_target_page (struct page_table_entry *);
+bool page_recentAccess (struct page_table_entry *);
 
 bool page_lock (const void *, bool will_write);
 void page_unlock (const void *);
