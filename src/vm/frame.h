@@ -5,17 +5,16 @@
 #include "threads/synch.h"
 
 /* A physical frame. */
-struct frame 
-  {
-    struct lock lock;           /* Prevent simultaneous access. */
-    void *base;                 /* Kernel virtual base address. */
-    struct page *page;          /* Mapped process page, if any. */
+struct frame {
+    struct lock lock;               /* Prevent simultaneous access. */
+    void *base;                     /* Kernel virtual base address. */
+    struct page_table_entry *pte;  /* Mapped process page, if any. */
   };
 
 void frame_init (void);
 
-struct frame *frame_alloc_and_lock (struct page *);
-void lock_page_frame (struct page *);
+struct frame *frame_alloc_and_lock (struct page_table_entry *);
+void lock_page_frame (struct page_table_entry *);
 
 void frame_free (struct frame *);
 void frame_unlock (struct frame *);

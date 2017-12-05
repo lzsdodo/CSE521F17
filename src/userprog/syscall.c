@@ -572,18 +572,18 @@ static int sys_mapping (int handle, void *addr)
     lock_release (&fs_lock);
     while (length > 0)
     {
-        struct page *p = page_allocate ((uint8_t *) addr + offset, false);
-        if (p == NULL)
+        struct page_table_entry *pte = page_allocate ((uint8_t *) addr + offset, false);
+        if (pte == NULL)
         {
             clear_mapping (m);
             return -1;
         }
-        p->permission = false;
-        p->file_ptr = m->file;
-        p->file_offset = offset;
-        p->file_bytes = length >= PGSIZE ? PGSIZE : length;
-        offset += p->file_bytes;
-        length -= p->file_bytes;
+        pte->permission = false;
+        pte->file_ptr = m->file;
+        pte->file_offset = offset;
+        pte->file_bytes = length >= PGSIZE ? PGSIZE : length;
+        offset += pte->file_bytes;
+        length -= pte->file_bytes;
         m->page_cnt++;
     }
 
