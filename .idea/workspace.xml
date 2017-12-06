@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/src/vm/frame.c" line="123" />
+  </component>
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true" buildAllGenerated="false">
     <generated />
   </component>
@@ -9,10 +12,16 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1aafb88c-6d37-440a-aa29-a9ad2e9ab967" name="Default" comment="1.9.1: really Starting to modify Frame_table">
+    <list default="true" id="1aafb88c-6d37-440a-aa29-a9ad2e9ab967" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Design3.txt" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/exception.c" afterPath="$PROJECT_DIR$/src/userprog/exception.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/process.c" afterPath="$PROJECT_DIR$/src/userprog/process.c" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vm/frame.c" afterPath="$PROJECT_DIR$/src/vm/frame.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vm/frame.h" afterPath="$PROJECT_DIR$/src/vm/frame.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vm/page.c" afterPath="$PROJECT_DIR$/src/vm/page.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vm/page.h" afterPath="$PROJECT_DIR$/src/vm/page.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vm/swap.c" afterPath="$PROJECT_DIR$/src/vm/swap.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vm/swap.h" afterPath="$PROJECT_DIR$/src/vm/swap.h" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -24,50 +33,49 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="page.c" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/vm/page.c">
+      <file leaf-file-name="page.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/vm/page.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="206" column="43" lean-forward="false" selection-start-line="206" selection-start-column="43" selection-end-line="206" selection-end-column="43" />
-              <folding>
-                <element signature="e#1529#2265#0" expanded="false" />
-                <element signature="e#7054#7410#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="306">
+              <caret line="17" column="32" lean-forward="false" selection-start-line="17" selection-start-column="32" selection-end-line="17" selection-end-column="32" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="process.c" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/userprog/process.c">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="800">
-              <caret line="618" column="42" lean-forward="false" selection-start-line="617" selection-start-column="12" selection-end-line="618" selection-end-column="42" />
-              <folding>
-                <element signature="e#14207#15772#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="frame.c" pinned="false" current-in-tab="true">
+      <file leaf-file-name="frame.c" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/vm/frame.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="594">
-              <caret line="99" column="25" lean-forward="true" selection-start-line="99" selection-start-column="25" selection-end-line="99" selection-end-column="25" />
+            <state relative-caret-position="306">
+              <caret line="17" column="12" lean-forward="false" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="12" />
               <folding>
-                <element signature="e#4448#4655#0" expanded="false" />
+                <element signature="e#331#766#0" expanded="false" />
+                <element signature="e#769#1325#0" expanded="false" />
+                <element signature="e#1327#2220#0" expanded="false" />
+                <element signature="e#2223#2517#0" expanded="false" />
+                <element signature="e#2519#2756#0" expanded="false" />
+                <element signature="e#2874#2960#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="list.c" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/lib/kernel/list.c">
+      <file leaf-file-name="page.c" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/vm/page.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="728">
-              <caret line="518" column="24" lean-forward="false" selection-start-line="518" selection-start-column="15" selection-end-line="518" selection-end-column="24" />
+            <state relative-caret-position="417">
+              <caret line="172" column="13" lean-forward="true" selection-start-line="172" selection-start-column="13" selection-end-line="172" selection-end-column="13" />
               <folding>
-                <element signature="e#0#17#0" expanded="true" />
+                <element signature="e#959#1663#0" expanded="false" />
+                <element signature="e#1860#2193#0" expanded="false" />
+                <element signature="e#2917#3823#0" expanded="false" />
+                <element signature="e#3825#4050#0" expanded="false" />
+                <element signature="e#4613#4857#0" expanded="false" />
+                <element signature="e#4863#5530#0" expanded="false" />
+                <element signature="e#5533#5642#0" expanded="false" />
+                <element signature="e#5646#5905#0" expanded="false" />
+                <element signature="e#6075#6460#0" expanded="false" />
+                <marker date="1512604266289" expanded="false" signature="5936:6074" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -77,36 +85,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>pg_round_down</find>
-      <find>user_esp</find>
-      <find>page_hash</find>
-      <find>page_into_frame</find>
-      <find>stack growth</find>
-      <find>frame</find>
-      <find>base</find>
-      <find>lock_page_frame</find>
-      <find>frame_unlock</find>
-      <find>frame_lock</find>
-      <find>RU</find>
-      <find>setup_stack</find>
-      <find>PAL_USER</find>
-      <find>palloc_get_page</find>
-      <find>frames</find>
-      <find>hand</find>
-      <find>malloc</find>
-      <find>LRU</find>
-      <find>list_push_front</find>
-      <find>list_size</find>
-      <find>is_interior</find>
-      <find>is_inte</find>
-      <find>printf</find>
-      <find>list_insert</find>
-      <find>list_next</find>
-      <find>else if</find>
-      <find>load_segment</find>
       <find>list_end</find>
       <find>list_begin</find>
       <find>total_frames</find>
+      <find>lock_page_frame</find>
+      <find>list_next</find>
+      <find>load_segment</find>
+      <find>full_PT</find>
+      <find>frame_unlock</find>
+      <find>permission</find>
+      <find>pagedir_clear_page</find>
+      <find>evict_target_page</find>
+      <find>scan_lock</find>
+      <find>hand</find>
+      <find>else if</find>
+      <find>static bool page_into_frame (struct page_table_entry *pte);</find>
+      <find>page_table_entry</find>
+      <find>pagedir_set_page</find>
+      <find>frame_alloc_and_lock</find>
+      <find>swap_in</find>
+      <find>bitmap_reset</find>
+      <find>block_write</find>
+      <find>bitmap_scan_and_flip</find>
+      <find>block_sector_t</find>
+      <find>PAGE_SECTORS</find>
+      <find>bitmap_test</find>
+      <find>swap_device</find>
+      <find>-&gt;frame</find>
+      <find>swap_out</find>
+      <find>insert_PTE_into_currPT</find>
+      <find>pte_allocate</find>
     </findStrings>
     <replaceStrings>
       <replace>swap_map</replace>
@@ -129,6 +137,13 @@
       <replace>full_PT</replace>
       <replace>page_fault_load</replace>
       <replace>total_frames</replace>
+      <replace>SPT</replace>
+      <replace>FT_lock</replace>
+      <replace>spt_entry</replace>
+      <replace>frame_Alloc</replace>
+      <replace>SECTOR_PER_PAGE</replace>
+      <replace>swapping_block</replace>
+      <replace>-&gt;occupied_frame</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -152,20 +167,20 @@
         <option value="$PROJECT_DIR$/src/lib/user/user.lds" />
         <option value="$PROJECT_DIR$/src/misc/bochs-2.2.6-build.sh" />
         <option value="$PROJECT_DIR$/src/vm/Make.vars" />
-        <option value="$PROJECT_DIR$/src/vm/swap.c" />
-        <option value="$PROJECT_DIR$/src/vm/swap.h" />
-        <option value="$PROJECT_DIR$/src/vm/page.h" />
-        <option value="$PROJECT_DIR$/src/threads/thread.h" />
         <option value="$PROJECT_DIR$/src/userprog/syscall.c" />
         <option value="$PROJECT_DIR$/src/threads/pte.h" />
         <option value="$PROJECT_DIR$/src/tests/vm/Grading" />
-        <option value="$PROJECT_DIR$/src/threads/thread.c" />
-        <option value="$PROJECT_DIR$/src/userprog/exception.c" />
-        <option value="$PROJECT_DIR$/src/vm/page.c" />
-        <option value="$PROJECT_DIR$/src/userprog/process.c" />
-        <option value="$PROJECT_DIR$/Design3.txt" />
         <option value="$PROJECT_DIR$/src/vm/frame.h" />
+        <option value="$PROJECT_DIR$/src/threads/thread.c" />
+        <option value="$PROJECT_DIR$/src/threads/thread.h" />
+        <option value="$PROJECT_DIR$/src/userprog/process.c" />
+        <option value="$PROJECT_DIR$/src/userprog/exception.c" />
+        <option value="$PROJECT_DIR$/Design3.txt" />
+        <option value="$PROJECT_DIR$/src/vm/page.h" />
         <option value="$PROJECT_DIR$/src/vm/frame.c" />
+        <option value="$PROJECT_DIR$/src/vm/swap.h" />
+        <option value="$PROJECT_DIR$/src/vm/swap.c" />
+        <option value="$PROJECT_DIR$/src/vm/page.c" />
       </list>
     </option>
   </component>
@@ -212,20 +227,7 @@
               <item name="4_p3Pintos" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
               <item name="4_p3Pintos" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="4_p3Pintos" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
-              <item name="4_p3Pintos" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="kernel" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="4_p3Pintos" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
-              <item name="4_p3Pintos" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="threads" type="462c0819:PsiDirectoryNode" />
+              <item name="vm" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -260,7 +262,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1512172607808</updated>
-      <workItem from="1512172609084" duration="50755000" />
+      <workItem from="1512172609084" duration="59647000" />
     </task>
     <task id="LOCAL-00001" summary="firrst commit">
       <created>1512202882192</created>
@@ -332,11 +334,25 @@
       <option name="project" value="LOCAL" />
       <updated>1512528505350</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="1.10: successfully changed frame table structure">
+      <created>1512532702909</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1512532702909</updated>
+    </task>
+    <task id="LOCAL-00012" summary="1.11: Finished editing the frame part">
+      <created>1512600195070</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1512600195070</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="50755000" />
+    <option name="totallyTimeSpent" value="59647000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="53" y="24" width="2507" height="1576" extended-state="6" />
@@ -378,14 +394,16 @@
     <MESSAGE value="1.8: trying to split frame methods" />
     <MESSAGE value="1.9: Starting to modify Frame_table" />
     <MESSAGE value="1.9.1: really Starting to modify Frame_table" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.9.1: really Starting to modify Frame_table" />
+    <MESSAGE value="1.10: successfully changed frame table structure" />
+    <MESSAGE value="1.11: Finished editing the frame part" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.11: Finished editing the frame part" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/vm/page.c</url>
-          <line>187</line>
+          <line>131</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
@@ -400,7 +418,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/vm/page.c</url>
-          <line>195</line>
+          <line>138</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
@@ -612,22 +630,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/vm/swap.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23">
-          <caret line="32" column="11" lean-forward="false" selection-start-line="32" selection-start-column="11" selection-end-line="32" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/vm/swap.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="23" column="9" lean-forward="false" selection-start-line="23" selection-start-column="9" selection-end-line="23" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/threads/pte.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1440">
@@ -660,24 +662,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/userprog/exception.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="903">
-          <caret line="141" column="5" lean-forward="false" selection-start-line="141" selection-start-column="5" selection-end-line="141" selection-end-column="5" />
-          <folding>
-            <element signature="e#340#2038#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Design3.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
-          <caret line="54" column="7" lean-forward="false" selection-start-line="54" selection-start-column="7" selection-end-line="54" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/threads/malloc.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="260">
@@ -686,36 +670,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/vm/page.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/threads/thread.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="918">
-          <caret line="51" column="29" lean-forward="false" selection-start-line="51" selection-start-column="4" selection-end-line="51" selection-end-column="29" />
-          <folding>
-            <element signature="e#3199#3795#1" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/vm/frame.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="11" column="26" lean-forward="false" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/threads/thread.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="10224">
-          <caret line="571" column="5" lean-forward="false" selection-start-line="571" selection-start-column="5" selection-end-line="571" selection-end-column="5" />
+        <state relative-caret-position="414">
+          <caret line="23" column="0" lean-forward="false" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -725,38 +683,117 @@
         <state relative-caret-position="728">
           <caret line="518" column="24" lean-forward="false" selection-start-line="518" selection-start-column="15" selection-end-line="518" selection-end-column="24" />
           <folding>
-            <element signature="e#0#17#0" expanded="true" />
+            <element signature="e#0#17#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/vm/page.c">
+    <entry file="file://$PROJECT_DIR$/src/threads/thread.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="206" column="43" lean-forward="false" selection-start-line="206" selection-start-column="43" selection-end-line="206" selection-end-column="43" />
+        <state relative-caret-position="325">
+          <caret line="571" column="5" lean-forward="false" selection-start-line="571" selection-start-column="5" selection-end-line="571" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/threads/thread.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="66" column="23" lean-forward="true" selection-start-line="66" selection-start-column="23" selection-end-line="66" selection-end-column="23" />
           <folding>
-            <element signature="e#1529#2265#0" expanded="false" />
-            <element signature="e#7054#7410#0" expanded="false" />
+            <element signature="e#3216#3812#1" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/userprog/exception.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/userprog/exception.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1444">
+          <caret line="174" column="42" lean-forward="false" selection-start-line="174" selection-start-column="42" selection-end-line="174" selection-end-column="42" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/userprog/process.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="800">
-          <caret line="618" column="42" lean-forward="false" selection-start-line="617" selection-start-column="12" selection-end-line="618" selection-end-column="42" />
+        <state relative-caret-position="8821">
+          <caret line="508" column="63" lean-forward="false" selection-start-line="508" selection-start-column="63" selection-end-line="508" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/vm/page.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="17" column="32" lean-forward="false" selection-start-line="17" selection-start-column="32" selection-end-line="17" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Design3.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="325">
+          <caret line="37" column="391" lean-forward="false" selection-start-line="37" selection-start-column="391" selection-end-line="37" selection-end-column="391" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/vm/swap.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="16" column="29" lean-forward="false" selection-start-line="16" selection-start-column="29" selection-end-line="16" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/vm/swap.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
           <folding>
-            <element signature="e#14207#15772#0" expanded="false" />
+            <element signature="e#592#1026#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/vm/frame.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="594">
-          <caret line="99" column="25" lean-forward="true" selection-start-line="99" selection-start-column="25" selection-end-line="99" selection-end-column="25" />
+        <state relative-caret-position="306">
+          <caret line="17" column="12" lean-forward="false" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="12" />
           <folding>
-            <element signature="e#4448#4655#0" expanded="false" />
+            <element signature="e#331#766#0" expanded="false" />
+            <element signature="e#769#1325#0" expanded="false" />
+            <element signature="e#1327#2220#0" expanded="false" />
+            <element signature="e#2223#2517#0" expanded="false" />
+            <element signature="e#2519#2756#0" expanded="false" />
+            <element signature="e#2874#2960#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/vm/page.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="417">
+          <caret line="172" column="13" lean-forward="true" selection-start-line="172" selection-start-column="13" selection-end-line="172" selection-end-column="13" />
+          <folding>
+            <element signature="e#959#1663#0" expanded="false" />
+            <element signature="e#1860#2193#0" expanded="false" />
+            <element signature="e#2917#3823#0" expanded="false" />
+            <element signature="e#3825#4050#0" expanded="false" />
+            <element signature="e#4613#4857#0" expanded="false" />
+            <element signature="e#4863#5530#0" expanded="false" />
+            <element signature="e#5533#5642#0" expanded="false" />
+            <element signature="e#5646#5905#0" expanded="false" />
+            <element signature="e#6075#6460#0" expanded="false" />
+            <marker date="1512604266289" expanded="false" signature="5936:6074" ph="{...}" />
           </folding>
         </state>
       </provider>

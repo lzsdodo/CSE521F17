@@ -7,77 +7,81 @@
 #include "threads/synch.h"
 #include "threads/vaddr.h"
 
+#define SECTOR_PER_PAGE (PGSIZE / BLOCK_SECTOR_SIZE)
 
-
-/* Number of sectors per page. */
-#define PAGE_SECTORS (PGSIZE / BLOCK_SECTOR_SIZE)
-
-/* Sets up swap. */
 void swap_init (void)
 {
-  swap_device = block_get_role (BLOCK_SWAP);
-  if (swap_device == NULL) {
-      printf ("no swap device--swap disabled\n");
-      swap_map = bitmap_create (0);
+  swapping_block = block_get_role (BLOCK_SWAP);
+  if (swapping_block == NULL) {
+      PANIC("no block gg");
+      return;
   }
-  else {
-      swap_map = bitmap_create (block_size (swap_device) / PAGE_SECTORS);
-  }
+    swap_map = bitmap_create (block_size (swapping_block) / SECTOR_PER_PAGE);
 
   if (swap_map == NULL)
       PANIC ("couldn't create swap bitmap");
 
+   bitmap_set_all(swap_map, 0);
   lock_init (&swap_lock);
 }
 
-/* Swaps in page P, which must have a locked frame
-   (and be swapped out). */
+
 void swap_in (struct spt_entry *pte)
 {
-  size_t i;
 
-//  ASSERT (pte->frame != NULL);
-//  ASSERT (lock_held_by_current_thread (&pte->frame->lock));
-//  ASSERT (pte->sector != (block_sector_t) -1);
+    lock_acquire(&swap_lock);
+    if (!swapping_block || !swap_map)
+    {
+        return;
+    }
 
-  for (i = 0; i < PAGE_SECTORS; i++){
-    block_read (swap_device,
+  for (size_t i = 0; i < SECTOR_PER_PAGE; i++){
+
+    block_read (swapping_block,
                 pte->sector + i,
-                pte->frame->base + i * BLOCK_SECTOR_SIZE);
+                pte->occupied_frame->base + i * BLOCK_SECTOR_SIZE);
 
   }
+    lock_release(&swap_lock);
+  bitmap_reset (swap_map, pte->sector / SECTOR_PER_PAGE);
+  pte->sector = -1;
 
-  bitmap_reset (swap_map, pte->sector / PAGE_SECTORS);
-  pte->sector = (block_sector_t) -1;
 }
 
-/* Swaps out page P, which must have a locked frame. */
+
 bool swap_out (struct spt_entry *pte)
 {
-  size_t slot;
-  size_t i;
 
-  ASSERT (pte->frame != NULL);
-  ASSERT (lock_held_by_current_thread (&pte->frame->lock));
+    if (!swapping_block || !swap_map)
+    {
+        PANIC("go back to configure");
+    }
 
-  lock_acquire (&swap_lock);
-  slot = bitmap_scan_and_flip (swap_map, 0, 1, false);
-  lock_release (&swap_lock);
-  if (slot == BITMAP_ERROR)
-      return false;
+    lock_acquire (&swap_lock);
+    size_t free_index = bitmap_scan_and_flip (swap_map, 0, 1, false);
 
-  pte->sector = slot * PAGE_SECTORS;
+    if (free_index == BITMAP_ERROR){
+        PANIC("Swap partition is full!");
+    }
 
-  /*  Write out page sectors for each modified block. */
-  for (i = 0; i < PAGE_SECTORS; i++) {
-      block_write (swap_device, pte->sector + i,
-                   (uint8_t *) pte->frame->base + i * BLOCK_SECTOR_SIZE);
+     pte->sector = free_index * SECTOR_PER_PAGE;
+      pte->permission = false;
+     pte->file_ptr = NULL;
+     pte->file_offset = 0;
+     pte->file_bytes = 0;
+
+//  Write out page sectors for each modified block.
+  for ( size_t i = 0; i < SECTOR_PER_PAGE; i++) {
+      const void *buf =  pte->occupied_frame->base + i * BLOCK_SECTOR_SIZE;
+
+      block_write (swapping_block,
+                   pte->sector + i,
+                   buf);
   }
+    lock_release (&swap_lock);
 
-  pte->permission = false;
-  pte->file_ptr = NULL;
-  pte->file_offset = 0;
-  pte->file_bytes = 0;
 
   return true;
 }
+
+

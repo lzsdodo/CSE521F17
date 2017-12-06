@@ -18,7 +18,6 @@ void page_destructor (struct hash_elem *page_hash, void *aux UNUSED);
 void free_process_PT (void);
 struct spt_entry *search_page (const void *address);
 bool page_into_frame (struct spt_entry *pte);
-//bool page_fault_load (void *fault_addr);
 bool evict_target_page (struct spt_entry *pte);
 bool LRU (struct spt_entry *pte);
 struct spt_entry *pte_allocate (void *vaddr, bool read_only);
@@ -78,26 +77,27 @@ bool addr_less (const struct hash_elem *a_, const struct hash_elem *b_, void *au
 bool page_into_frame (struct spt_entry *pte)
 {
 
-  pte->frame = frame_Alloc (pte);
-  if (pte->frame == NULL) return false;
+  pte->occupied_frame = frame_Alloc (pte);
+  if (pte->occupied_frame == NULL) return false;
 
-  /* Copy data into the frame. */
-  if (pte->sector != (block_sector_t) -1) {
+
+  if (pte->sector !=  -1) {
       swap_in (pte);
   }
+
   else if (pte->file_ptr) {
       // read data from files
       off_t read_bytes = file_read_at (pte->file_ptr,
-                                       pte->frame->base,
+                                       pte->occupied_frame->base,
                                        pte->file_bytes,
                                        pte->file_offset);
       off_t zero_bytes = PGSIZE - read_bytes;
 
-      memset (pte->frame->base + read_bytes, 0, zero_bytes);
+      memset (pte->occupied_frame->base + read_bytes, 0, zero_bytes);
 
   }
   else {
-      memset (pte->frame->base, 0, PGSIZE);
+      memset (pte->occupied_frame->base, 0, PGSIZE);
   }
 
   return true;
@@ -110,8 +110,8 @@ bool evict_target_page (struct spt_entry *pte)
   bool dirty;
   bool evicted = false;
 
-  ASSERT (pte->frame != NULL);
-  ASSERT (lock_held_by_current_thread (&pte->frame->lock));
+  ASSERT (pte->occupied_frame != NULL);
+  ASSERT (lock_held_by_current_thread (&pte->occupied_frame->lock));
 
 
 
@@ -132,11 +132,11 @@ bool evict_target_page (struct spt_entry *pte)
 
       else {
           evicted = file_write_at(pte->file_ptr,
-                                  (const void *) pte->frame->base,
+                                  (const void *) pte->occupied_frame->base,
                                   pte->file_bytes, pte->file_offset);
       }
   }
-  if(evicted == true)  pte->frame = NULL;
+  if(evicted == true)  pte->occupied_frame = NULL;
   return evicted;
 }
 
@@ -159,7 +159,7 @@ struct spt_entry *pte_allocate (void *vaddr, bool read_only)
       pte->addr = pg_round_down (vaddr);
       pte->read_only = read_only;
       pte->permission = !read_only;
-      pte->frame = NULL;
+      pte->occupied_frame = NULL;
       pte->sector = (block_sector_t) -1;
       pte->file_ptr = NULL;
       pte->file_offset = 0;
@@ -200,11 +200,11 @@ bool page_lock (const void *addr, bool will_write)
   }
   else {
       lock_page_frame (pte);
-      if (pte->frame == NULL) {
+      if (pte->occupied_frame == NULL) {
           bool a1 = page_into_frame(pte);
           bool a2 = pagedir_set_page (thread_current()->pagedir,
                                       pte->addr,
-                                      pte->frame->base,
+                                      pte->occupied_frame->base,
                                       !pte->read_only);
           success = a1 && a2;
       }
@@ -228,11 +228,11 @@ void page_destructor (struct hash_elem *page_hash, void *aux UNUSED)
 {
     struct spt_entry *pte = hash_entry (page_hash, struct spt_entry, hash_elem);
     lock_page_frame (pte);
-    if (pte->frame) frame_free (pte->frame);
+    if (pte->occupied_frame) frame_free (pte->occupied_frame);
     free (pte);
 }
 
-//free page table of current process
+
 void free_process_PT (void)
 {
     struct thread *t = thread_current ();
@@ -243,8 +243,8 @@ void clear_page (void *addr)
 {
     struct spt_entry *pte = search_page (addr);
     lock_page_frame (pte);
-    if (pte->frame) {
-        struct frame *f = pte->frame;
+    if (pte->occupied_frame) {
+        struct frame *f = pte->occupied_frame;
         if (pte->file_ptr && !pte->permission) {
             evict_target_page (pte);
         }

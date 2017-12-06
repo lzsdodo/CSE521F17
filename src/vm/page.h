@@ -15,7 +15,7 @@ struct spt_entry {
     struct thread *thread;      /* Owning thread. */
     struct hash_elem hash_elem; /* struct thread `pages' hash element. */
 
-    struct frame *frame;        /* Page frame. */
+    struct frame *occupied_frame;        /* Page frame. */
 
     block_sector_t sector;       /* Starting sector of swap area, or -1. */
 

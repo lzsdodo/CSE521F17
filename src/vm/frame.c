@@ -115,11 +115,11 @@ struct frame *frame_Alloc (struct spt_entry *input_p) {
 
 void lock_page_frame (struct spt_entry *pte)
 {
-    struct frame* f = pte->frame;
+    struct frame* f = pte->occupied_frame;
 
     if (f) {
         lock_acquire (&f->lock);
-//        if (f != pte->frame) {
+//        if (f != pte->occupied_frame) {
 //            lock_release (&f->lock);
 //        }
     }
@@ -127,7 +127,7 @@ void lock_page_frame (struct spt_entry *pte)
 
 
 void frame_unlock (struct spt_entry *pte)
-{ struct frame* f = pte -> frame;
+{ struct frame* f = pte -> occupied_frame;
   lock_release (&f->lock);
 }
 

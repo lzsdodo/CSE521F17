@@ -162,7 +162,7 @@ bool page_fault_load (void *fault_addr)
 
   lock_page_frame (pte);
 
-  if (pte->frame == NULL)
+  if (pte->occupied_frame == NULL)
   {
     bool paged_in = page_into_frame (pte);
     if (paged_in == false) return false;
@@ -171,7 +171,7 @@ bool page_fault_load (void *fault_addr)
 
   success = pagedir_set_page (curr->pagedir,
                               pte->addr,
-                              pte->frame->base,
+                              pte->occupied_frame->base,
                               !pte->read_only);
 
   frame_unlock (pte);

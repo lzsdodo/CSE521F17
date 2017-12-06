@@ -11,13 +11,10 @@
 #include <stdbool.h>
 
 
-/* The swap device. */
-static struct block *swap_device;
-/* Used swap pages. */
+
+static struct block *swapping_block;
 static struct bitmap *swap_map;
-/* Protects swap_map. */
 static struct lock swap_lock;
-struct spt_entry;
 
 void swap_init (void);
 void swap_in (struct spt_entry *pte);

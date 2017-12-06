@@ -616,11 +616,11 @@ setup_stack (const char *cmd_line, void **esp)
   bool success;
 
   if (pte) {
-      pte->frame = frame_Alloc (pte);
-      if (pte->frame != NULL) {
+      pte->occupied_frame = frame_Alloc (pte);
+      if (pte->occupied_frame != NULL) {
           pte->read_only = false;
           pte->permission = false;
-          success = init_cmd_line (pte->frame->base, upage, cmd_line, esp);
+          success = init_cmd_line (pte->occupied_frame->base, upage, cmd_line, esp);
           frame_unlock (pte);
           return success;
       }
