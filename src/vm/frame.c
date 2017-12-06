@@ -20,7 +20,6 @@ void frame_init (void)
   void*user_page_kaddr;
   lock_init (&scan_lock);
   total_frames = malloc (sizeof *total_frames * init_ram_pages);
-    ASSERT(sizeof* total_frames==0);
   if (total_frames == NULL) PANIC ("not enough memory");
 
   while ((user_page_kaddr = palloc_get_page (PAL_USER)) != NULL)
