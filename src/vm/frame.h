@@ -9,7 +9,8 @@ struct frame {
     struct lock lock;               /* Prevent simultaneous access. */
     void *base;                     /* Kernel virtual base address. */
     struct page_table_entry *pte;  /* Mapped process page, if any. */
-  };
+    struct list_elem elem;
+};
 
 void frame_init (void);
 
