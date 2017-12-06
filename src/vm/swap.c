@@ -32,23 +32,27 @@ void swap_init (void)
 
 /* Swaps in page P, which must have a locked frame
    (and be swapped out). */
-void swap_in (struct page_table_entry *pte)
+void swap_in (struct spt_entry *pte)
 {
   size_t i;
 
-  ASSERT (pte->frame != NULL);
-  ASSERT (lock_held_by_current_thread (&pte->frame->lock));
-  ASSERT (pte->sector != (block_sector_t) -1);
+//  ASSERT (pte->frame != NULL);
+//  ASSERT (lock_held_by_current_thread (&pte->frame->lock));
+//  ASSERT (pte->sector != (block_sector_t) -1);
 
-  for (i = 0; i < PAGE_SECTORS; i++)
-      block_read (swap_device, pte->sector + i,
-                  pte->frame->base + i * BLOCK_SECTOR_SIZE);
+  for (i = 0; i < PAGE_SECTORS; i++){
+    block_read (swap_device,
+                pte->sector + i,
+                pte->frame->base + i * BLOCK_SECTOR_SIZE);
+
+  }
+
   bitmap_reset (swap_map, pte->sector / PAGE_SECTORS);
   pte->sector = (block_sector_t) -1;
 }
 
 /* Swaps out page P, which must have a locked frame. */
-bool swap_out (struct page_table_entry *pte)
+bool swap_out (struct spt_entry *pte)
 {
   size_t slot;
   size_t i;

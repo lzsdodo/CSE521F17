@@ -322,11 +322,11 @@ load (const char *cmd_line, void (**eip) (void), void **esp)
 
   // TODO: page usage in process
  // create list_mmap_files for current process
-  t->full_PT = malloc (sizeof *t->full_PT);
-  if (t->full_PT == NULL)
+  t->SPT = malloc (sizeof *t->SPT);
+  if (t->SPT == NULL)
     goto done;
 
-  hash_init (t->full_PT, page_hash, addr_less, NULL);
+  hash_init (t->SPT, page_hash, addr_less, NULL);
 
   /* Extract file_name from command line. */
   while (*cmd_line == ' ')
@@ -505,8 +505,8 @@ static bool load_segment (struct file *file, off_t ofs, uint8_t *upage,
   while (read_bytes > 0 || zero_bytes > 0) {
       size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
       size_t page_zero_bytes = PGSIZE - page_read_bytes;
-      struct page_table_entry *PT_entry = pte_allocate (upage, !writable);
-//    struct page_table_entry* tp =  insert_PTE_into_currPT(PT_entry);
+      struct spt_entry *PT_entry = pte_allocate (upage, !writable);
+//    struct spt_entry* tp =  insert_PTE_into_currPT(PT_entry);
 
       if (PT_entry == NULL) return false;
       if (page_read_bytes > 0) {
@@ -612,16 +612,16 @@ static bool
 setup_stack (const char *cmd_line, void **esp)
 {
   uint8_t *upage = ((uint8_t *) PHYS_BASE) - PGSIZE;
-  struct page_table_entry *pte = pte_allocate (upage, false);
+  struct spt_entry *pte = pte_allocate (upage, false);
   bool success;
 
   if (pte) {
-      pte->frame = frame_alloc_and_lock (pte);
+      pte->frame = frame_Alloc (pte);
       if (pte->frame != NULL) {
           pte->read_only = false;
           pte->permission = false;
           success = init_cmd_line (pte->frame->base, upage, cmd_line, esp);
-          frame_unlock (pte->frame);
+          frame_unlock (pte);
           return success;
       }
   }

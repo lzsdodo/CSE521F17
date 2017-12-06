@@ -569,7 +569,7 @@ init_thread (struct thread *t, const char *name, int priority, tid_t tid)
   list_init (&t->children);
   sema_init (&t->timer_sema, 0);
   t->pagedir = NULL;
-  t->full_PT = NULL;
+  t->SPT = NULL;
   t->bin_file = NULL;
   list_init (&t->fds);
   list_init (&t->list_mmap_files);

@@ -5,13 +5,13 @@
 #include "threads/interrupt.h"
 #include "threads/thread.h"
 #include "vm/page.h"
-
+#include "vm/frame.h"
 /* Number of page faults processed. */
 static long long page_fault_cnt;
 
 static void kill (struct intr_frame *);
 static void page_fault (struct intr_frame *);
-
+bool page_fault_load (void *fault_addr);
 void exception_init (void)
 {
   /* These exceptions can be raised explicitly by a user program,
@@ -148,4 +148,35 @@ page_fault (struct intr_frame *f)
           user ? "user" : "kernel");
   kill (f);
 }
+
+
+// this method swaps in SPT when page fault occurs.
+bool page_fault_load (void *fault_addr)
+{
+
+  bool success;
+  struct thread* curr = thread_current();
+  struct spt_entry *pte = search_page (fault_addr);
+
+  if (curr->SPT == NULL ||pte == NULL) return false;
+
+  lock_page_frame (pte);
+
+  if (pte->frame == NULL)
+  {
+    bool paged_in = page_into_frame (pte);
+    if (paged_in == false) return false;
+  }
+
+
+  success = pagedir_set_page (curr->pagedir,
+                              pte->addr,
+                              pte->frame->base,
+                              !pte->read_only);
+
+  frame_unlock (pte);
+
+  return success;
+}
+
 

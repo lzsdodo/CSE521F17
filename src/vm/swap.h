@@ -17,10 +17,10 @@ static struct block *swap_device;
 static struct bitmap *swap_map;
 /* Protects swap_map. */
 static struct lock swap_lock;
-struct page_table_entry;
+struct spt_entry;
 
 void swap_init (void);
-void swap_in (struct page_table_entry *pte);
-bool swap_out (struct page_table_entry *pte);
+void swap_in (struct spt_entry *pte);
+bool swap_out (struct spt_entry *pte);
 
 #endif /* vm/swap.h */

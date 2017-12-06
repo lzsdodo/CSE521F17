@@ -8,16 +8,16 @@
 struct frame {
     struct lock lock;               /* Prevent simultaneous access. */
     void *base;                     /* Kernel virtual base address. */
-    struct page_table_entry *pte;  /* Mapped process page, if any. */
+    struct spt_entry *pte;  /* Mapped process page, if any. */
     struct list_elem elem;
 };
 
 void frame_init (void);
 
-struct frame *frame_alloc_and_lock (struct page_table_entry *pte);
-void lock_page_frame (struct page_table_entry *pte);
+struct frame *frame_Alloc (struct spt_entry *pte);
+void lock_page_frame (struct spt_entry *pte);
 
 void frame_free (struct frame *f);
-void frame_unlock (struct frame *f);
+void frame_unlock (struct spt_entry *pte);
 
 #endif /* vm/frame.h */
