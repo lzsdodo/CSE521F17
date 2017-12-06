@@ -321,12 +321,12 @@ load (const char *cmd_line, void (**eip) (void), void **esp)
   process_activate ();
 
   // TODO: page usage in process
- // create PT for current process
-  t->page_table = malloc (sizeof *t->page_table);
-  if (t->page_table == NULL)
+ // create list_mmap_files for current process
+  t->full_PT = malloc (sizeof *t->full_PT);
+  if (t->full_PT == NULL)
     goto done;
 
-  hash_init (t->page_table, page_hash, addr_less, NULL);
+  hash_init (t->full_PT, page_hash, addr_less, NULL);
 
   /* Extract file_name from command line. */
   while (*cmd_line == ' ')
@@ -494,11 +494,10 @@ validate_segment (const struct Elf32_Phdr *phdr, struct file *file)
 
    Return true if successful, false if a memory allocation error
    or disk read error occurs. */
-static bool
-load_segment (struct file *file, off_t ofs, uint8_t *upage,
+static bool load_segment (struct file *file, off_t ofs, uint8_t *upage,
               uint32_t read_bytes, uint32_t zero_bytes, bool writable)
 {
-  //TODO: page usage in process.c
+  //Lazy loading here:page is allocated and pushed into current thread's PT.
   ASSERT ((read_bytes + zero_bytes) % PGSIZE == 0);
   ASSERT (pg_ofs (upage) == 0);
   ASSERT (ofs % PGSIZE == 0);
@@ -506,22 +505,28 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
   while (read_bytes > 0 || zero_bytes > 0) {
       size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
       size_t page_zero_bytes = PGSIZE - page_read_bytes;
-      struct page_table_entry *pte = pte_allocate (upage, !writable);
+      struct page_table_entry *PT_entry = pte_allocate (upage, !writable);
+//    struct page_table_entry* tp =  insert_PTE_into_currPT(PT_entry);
 
-      if (pte == NULL) return false;
+      if (PT_entry == NULL) return false;
       if (page_read_bytes > 0) {
-          pte->file_ptr = file;
-          pte->file_offset = ofs;
-          pte->file_bytes = page_read_bytes;
+          PT_entry->file_ptr = file;
+          PT_entry->file_offset = ofs;
+          PT_entry->file_bytes = page_read_bytes;
       }
       read_bytes -= page_read_bytes;
       zero_bytes -= page_zero_bytes;
+
       ofs += page_read_bytes;
       upage += PGSIZE;
   }
 
+
   return true;
 }
+
+
+
 
 /* Reverse the order of the ARGC pointers to char in ARGV. */
 static void
@@ -602,9 +607,7 @@ init_cmd_line (uint8_t *kpage, uint8_t *upage, const char *cmd_line,
   return true;
 }
 
-/*allocate a minimal stack for T by mapping a page at the
-   top of user virtual memory.  Fills in the page using CMD_LINE
-   and sets *ESP to the stack pointer. */
+// allocate minimal stack
 static bool
 setup_stack (const char *cmd_line, void **esp)
 {

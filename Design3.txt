@@ -52,9 +52,9 @@ Searching into the frame table (usually to find a free frame) is limited to a si
 >> B1: When a frame is required but none is free, some frame must be
 >> evicted.  Describe the algorithm used to choose a frame to evict.
 
-If all frames are occupied, we must determine a good frame to evict. Taking into account caching and locality, our goal is to evict those frames that have been accessed least recently -- the algorithm to do so is implemented in try_frame_alloc_and_lock() in 'frame.c'.
+If all total_frames are occupied, we must determine a good frame to evict. Taking into account caching and locality, our goal is to evict those total_frames that have been accessed least recently -- the algorithm to do so is implemented in try_frame_alloc_and_lock() in 'frame.c'.
 
-If the frame being searched for has no page associated with it then we immediately acquire that frame. Otherwise, we acquire the first frame that has not been accessed recently. If all of the frames HAVE been accessed recently, then we iterate over each of the frames again. This time, it is very likely that a valid frame will be acquired because the page_recentAccess() function changes the access status of a frame upon being called. If for whatever reason the second iteration yields no valid frames, then NULL is returned and no frame is evicted.
+If the frame being searched for has no page associated with it then we immediately acquire that frame. Otherwise, we acquire the first frame that has not been accessed recently. If all of the total_frames HAVE been accessed recently, then we iterate over each of the total_frames again. This time, it is very likely that a valid frame will be acquired because the RU() function changes the access status of a frame upon being called. If for whatever reason the second iteration yields no valid total_frames, then NULL is returned and no frame is evicted.
 
 >> B2: Explain your heuristic for deciding whether a page fault for an
 >> invalid virtual address should cause the stack to be extended into

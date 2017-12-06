@@ -136,8 +136,8 @@ page_fault (struct intr_frame *f)
 
   if (user && not_present)
     {
-      if (!page_in (fault_addr))
-        thread_exit ();
+      bool status = page_fault_load(fault_addr);
+      if (status == false) thread_exit ();
       return;
     }
 

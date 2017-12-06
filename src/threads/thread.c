@@ -569,10 +569,10 @@ init_thread (struct thread *t, const char *name, int priority, tid_t tid)
   list_init (&t->children);
   sema_init (&t->timer_sema, 0);
   t->pagedir = NULL;
-  t->page_table = NULL;
+  t->full_PT = NULL;
   t->bin_file = NULL;
   list_init (&t->fds);
-  list_init (&t->PT);
+  list_init (&t->list_mmap_files);
   t->next_handle = 2;
   t->magic = THREAD_MAGIC;
   list_push_back (&all_list, &t->allelem);

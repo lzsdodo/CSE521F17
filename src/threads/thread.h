@@ -58,12 +58,12 @@ struct thread
 
     /* Owned by userprog/process.c. */
     uint32_t *pagedir;                  /* Page directory. */
-    struct hash *page_table;            /* Page table. */
+    struct hash *full_PT;            /* Page table. */
     struct file *bin_file;              /* The binary executable. */
 
     /* Owned by syscall.c. */
     struct list fds;                    /* List of file descriptors. */
-    struct list PT;               /* Memory-mapped files. */
+    struct list list_mmap_files;               /* Memory-mapped files. */
     int next_handle;                    /* Next handle value. */
     void *user_esp;                     /* User's stack pointer. */
 

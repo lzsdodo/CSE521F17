@@ -480,7 +480,7 @@ static struct mapping *lookup_mapping (int handle)
   struct thread *cur = thread_current ();
   struct list_elem *e;
 
-  for (e = list_begin (&cur->PT); e != list_end (&cur->PT); e = list_next (e))
+  for (e = list_begin (&cur->list_mmap_files); e != list_end (&cur->list_mmap_files); e = list_next (e))
     {
       struct mapping *m = list_entry (e, struct mapping, elem);
       if (m->map_handle == handle)
@@ -531,7 +531,7 @@ void  syscall_exit (void)
       free (fd);
     }
 
-  for (e = list_begin (&cur->PT); e != list_end (&cur->PT);
+  for (e = list_begin (&cur->list_mmap_files); e != list_end (&cur->list_mmap_files);
        e = next)
     {
       struct mapping *m = list_entry (e, struct mapping, elem);
@@ -564,7 +564,7 @@ static int sys_mapping (int handle, void *addr)
 
     m->base = addr;
     m->page_cnt = 0;
-    list_push_front (&thread_current ()->PT, &m->elem);
+    list_push_front (&thread_current ()->list_mmap_files, &m->elem);
 
     offset = 0;
     lock_acquire (&fs_lock);

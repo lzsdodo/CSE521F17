@@ -36,9 +36,9 @@ void free_process_PT (void);
 struct page_table_entry *pte_allocate (void *, bool read_only);
 void clear_page (void *vaddr);
 
-bool page_in (void *fault_addr);
+bool page_fault_load (void *fault_addr);
 bool evict_target_page (struct page_table_entry *);
-bool page_recentAccess (struct page_table_entry *);
+bool LRU (struct page_table_entry *);
 
 bool page_lock (const void *, bool will_write);
 void page_unlock (const void *);

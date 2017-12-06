@@ -8,7 +8,7 @@
 #include "threads/synch.h"
 #include "threads/vaddr.h"
 
-static struct frame *frames;
+static struct frame *total_frames;
 static size_t frame_cnt;
 
 static struct lock scan_lock;
@@ -17,89 +17,105 @@ static size_t hand;
 
 void frame_init (void)
 {
-  void *base;
+  void*user_page_kaddr;
   lock_init (&scan_lock);
-  frames = malloc (sizeof *frames * init_ram_pages);
-  if (frames == NULL) PANIC ("out of memory allocating page frames");
+  total_frames = malloc (sizeof *total_frames * init_ram_pages);
+  if (total_frames == NULL) PANIC ("not enough memory");
 
-  while ((base = palloc_get_page (PAL_USER)) != NULL)
+  while ((user_page_kaddr = palloc_get_page (PAL_USER)) != NULL)
+
     {
-      struct frame *f = &frames[frame_cnt++];
-      lock_init (&f->lock);
-      f->base = base;
-      f->pte = NULL;
+        //returns its kernel virtual address.
+         struct frame *f = &total_frames[frame_cnt];
+         lock_init (&f->lock);
+         f->base = user_page_kaddr;
+         f->pte = NULL;
+        frame_cnt++;
     }
 }
 
-//
-//struct frame* find_free_frame(void){
-//    size_t i;
-//    for (i = 0; i < frame_cnt; i++)
-//    {
-//        struct frame *f = &frames[i];
-//        if (!lock_try_acquire (&f->lock)) continue;
-//        if (f->pte == NULL)
-//        {
-//            f->pte = pte;
-//            return f;
-//        }
-//        lock_release (&f->lock);
-//    }
-//}
+
+struct frame* find_free_frame(struct frame*total_frames){
+    size_t i;
+
+    lock_acquire (&scan_lock);
+
+    /* Find a free frame. */
+    for (i = 0; i < frame_cnt; i++) {
+        struct frame *f = &total_frames[i];
+
+        bool acquired = lock_try_acquire (&f->lock);
+
+        if (acquired==false) continue;
+
+        // if you locate an frame which do not contain page
+        if (f->pte == NULL) {
+            lock_release (&scan_lock);
+            return f;
+        }
+        lock_release (&f->lock);
+    }
+
+    return NULL;
+}
+
+struct frame* eviction(struct frame* total_frames){
+
+}
+
 
 /* Tries to allocate and lock a frame for PAGE.
    Returns the frame if successful, false on failure. */
-static struct frame *try_frame_alloc_and_lock (struct page_table_entry *pte)
+static struct frame *try_frame_alloc_and_lock (struct page_table_entry *input_p)
 {
   size_t i;
 
-  lock_acquire (&scan_lock);
+    struct frame* free_f= find_free_frame(total_frames);
+    if(free_f){
+        free_f ->pte = input_p;
+        return free_f;
 
-  /* Find a free frame. */
-  for (i = 0; i < frame_cnt; i++) {
-      struct frame *f = &frames[i];
-
-      if (!lock_try_acquire (&f->lock)) continue;
-
-      if (f->pte == NULL) {
-          f->pte = pte;
-          lock_release (&scan_lock);
-          return f;
-      }
-      lock_release (&f->lock);
-  }
-
-    // evict a frame to get a free frame
-  for (i = 0; i < frame_cnt * 2; i++) {
-      /* Get a frame. */
-      struct frame *f = &frames[hand];
-      if (++hand >= frame_cnt)
-        hand = 0;
-
-      if (!lock_try_acquire (&f->lock)) continue;
-
-      if (f->pte == NULL) {
-          f->pte = pte;
-          lock_release (&scan_lock);
-          return f;
-      }
-
-      if (page_recentAccess (f->pte)) {
-          lock_release (&f->lock);
-          continue;
-      }
-
-      lock_release (&scan_lock);
-
-      /* Evict this frame. */
-      if (!evict_target_page (f->pte)) {
-          lock_release (&f->lock);
-          return NULL;
-      }
-
-      f->pte = pte;
-      return f;
     }
+    else{
+
+        // evict a frame to get a free frame
+        for (i = 0; i < frame_cnt*2; i++) {
+            /* Get a frame. */
+            struct frame *f = &total_frames[hand];
+            if (++hand >= frame_cnt) hand = 0;
+
+            bool acquired = lock_try_acquire (&f->lock);
+
+            if (acquired==false) continue;
+
+//            if (f->pte == NULL) {
+//                f->pte = input_p;
+//                lock_release (&scan_lock);
+//                return f;
+//            }
+
+            if (!LRU (f->pte)) {
+                lock_release (&f->lock);
+                continue;
+            }
+
+            lock_release (&scan_lock);
+
+            /* Evict this frame. */
+            if (!evict_target_page (f->pte)) {
+                lock_release (&f->lock);
+                return NULL;
+            }
+
+            f->pte = input_p;
+            return f;
+        }
+
+    }
+
+
+
+
 
   lock_release (&scan_lock);
   return NULL;
@@ -132,7 +148,6 @@ void lock_page_frame (struct page_table_entry *pte)
 
 void frame_free (struct frame *f)
 {
-//  ASSERT (lock_held_by_current_thread (&f->lock));
 
   f->pte = NULL;
   lock_release (&f->lock);
@@ -141,6 +156,5 @@ void frame_free (struct frame *f)
 
 void frame_unlock (struct frame *f)
 {
-//  ASSERT (lock_held_by_current_thread (&f->lock));
   lock_release (&f->lock);
 }

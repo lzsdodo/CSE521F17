@@ -18,13 +18,14 @@ static void page_destructor (struct hash_elem *page_hash, void *aux UNUSED);
 void free_process_PT (void);
 static struct page_table_entry *search_page (const void *address);
 static bool page_into_frame (struct page_table_entry *pte);
-bool page_in (void *fault_addr);
+bool page_fault_load (void *fault_addr);
 bool evict_target_page (struct page_table_entry *pte);
-bool page_recentAccess (struct page_table_entry *pte);
+bool LRU (struct page_table_entry *pte);
 struct page_table_entry *pte_allocate (void *vaddr, bool read_only);
 void clear_page (void *vaddr);
 unsigned page_hash (const struct hash_elem *e, void *aux UNUSED);
 bool addr_less (const struct hash_elem *a_, const struct hash_elem *b_, void *aux UNUSED);
+struct page_table_entry * insert_PTE_into_currPT(struct page_table_entry *input);
 
 
 
@@ -40,41 +41,35 @@ static void page_destructor (struct hash_elem *page_hash, void *aux UNUSED)
 void free_process_PT (void)
 {
   struct thread *t = thread_current ();
-  struct hash *curr_PT = t->page_table;
+  struct hash *curr_PT = t->full_PT;
   if (curr_PT) hash_destroy (curr_PT, page_destructor);
 }
 
-/* Returns the page containing the given virtual ADDRESS,
-   or a null pointer if no such page exists.
-   Allocates stack pages as necessary. */
 static struct page_table_entry *search_page (const void *address)
 {
 
+    struct page_table_entry target_pte;
+
   if (address < PHYS_BASE)
     {
-      struct page_table_entry target_pte;
-      struct hash_elem *e;
+      size_t addr =  (void *) pg_round_down (address);
 
-      /* Find existing page. */
-//        round down to nearest page
-    target_pte.addr = (void *) pg_round_down (address);
+      target_pte.addr = addr;
 
-      e = hash_find (thread_current()->page_table, &target_pte.hash_elem);
-      if (e != NULL)
-          return hash_entry (e, struct page_table_entry, hash_elem);
+        struct hash_elem *e = hash_find (thread_current()->full_PT, &target_pte.hash_elem);
+        if (e != NULL)  return hash_entry (e, struct page_table_entry, hash_elem);
 
-      /* -We need to determine if the program is attempting to access the stack.
-         -First, we ensure that the address is not beyond the bounds of the stack space (1 MB in this
-          case).
-         -As long as the user is attempting to acsess an address within 32 bytes (determined by the space
-          needed for a PUSHA command) of the stack pointers, we assume that the address is valid. In that
-          case, we should allocate one more stack page accordingly.
-      */
+        else{
 
-      //TODO: stack overflow + smaller than smallest value
-      if ((target_pte.addr > PHYS_BASE - STACK_MAX) && ((void *)thread_current()->user_esp - 32 < address)) {
-          return pte_allocate (target_pte.addr, false);
-      }
+            void* user_stk_ptr = thread_current()->user_esp;
+
+            bool inflow = addr > PHYS_BASE - STACK_MAX ? true : false;
+            bool valid = user_stk_ptr - 32 < address? true:false;
+
+            if(inflow && valid)  return pte_allocate (target_pte.addr, false);
+        };
+
+
     }
 
   return NULL;
@@ -96,8 +91,7 @@ bool addr_less (const struct hash_elem *a_, const struct hash_elem *b_, void *au
     return a->addr < b->addr;
 }
 
-/* Locks a frame for page P and pages it in.
-   Returns true if successful, false on failure. */
+// put a page into frame
 static bool page_into_frame (struct page_table_entry *pte)
 {
 
@@ -110,8 +104,10 @@ static bool page_into_frame (struct page_table_entry *pte)
   }
   else if (pte->file_ptr) {
       // read data from files
-      off_t read_bytes = file_read_at (pte->file_ptr, pte->frame->base,
-                                       pte->file_bytes, pte->file_offset);
+      off_t read_bytes = file_read_at (pte->file_ptr,
+                                       pte->frame->base,
+                                       pte->file_bytes,
+                                       pte->file_offset);
       off_t zero_bytes = PGSIZE - read_bytes;
 
       memset (pte->frame->base + read_bytes, 0, zero_bytes);
@@ -128,31 +124,32 @@ static bool page_into_frame (struct page_table_entry *pte)
 
 /* Faults in the page containing FAULT_ADDR.
    Returns true if successful, false on failure. */
-bool page_in (void *fault_addr)
+bool page_fault_load (void *fault_addr)
 {
 
     bool success;
     struct thread* curr = thread_current();
-    if (curr->page_table == NULL) return false;
-    struct page_table_entry *target_pte = search_page (fault_addr);
-    if (target_pte == NULL) return false;
+    if (curr->full_PT == NULL) return false;
+    struct page_table_entry *pte = search_page (fault_addr);
+    if (pte == NULL) return false;
 
 
     //TODO: really need lock frame?
-  lock_page_frame (target_pte);
+  lock_page_frame (pte);
 
-  if (target_pte->frame == NULL)
+  if (pte->frame == NULL)
     {
-        bool paged_in = page_into_frame (target_pte);
+        bool paged_in = page_into_frame (pte);
       if (paged_in == false) return false;
     }
-//  ASSERT (lock_held_by_current_thread (&target_pte->frame->lock));
 
-  success = pagedir_set_page (thread_current()->pagedir, target_pte->addr,
-                              target_pte->frame->base, !target_pte->read_only);
 
-  /* Release frame. */
-  frame_unlock (target_pte->frame);
+  success = pagedir_set_page (curr->pagedir,
+                              pte->addr,
+                              pte->frame->base,
+                              !pte->read_only);
+
+  frame_unlock (pte->frame);
 
   return success;
 }
@@ -202,17 +199,19 @@ bool evict_target_page (struct page_table_entry *pte)
   return evicted;
 }
 
-bool page_recentAccess (struct page_table_entry *pte)
+bool LRU (struct page_table_entry *pte)
 {
 //  ASSERT (pte->frame != NULL);
 //  ASSERT (lock_held_by_current_thread (&pte->frame->lock));
   uint32_t curr_pd = pte->thread->pagedir;
   bool accessed = pagedir_is_accessed (curr_pd, pte->addr);
   if (accessed) pagedir_set_accessed (curr_pd, pte->addr, false);
-  return accessed;
+  return !accessed;
 }
 
-//TODO: can examine mapping first?
+/**
+ * allocate the vaddr to a page, and push it into page table.
+ */
 struct page_table_entry *pte_allocate (void *vaddr, bool read_only)
 {
   struct thread *curr_thread = thread_current ();
@@ -228,22 +227,32 @@ struct page_table_entry *pte_allocate (void *vaddr, bool read_only)
       pte->file_ptr = NULL;
       pte->file_offset = 0;
       pte->file_bytes = 0;
-
-      struct hash_elem * p_mapping = hash_insert (curr_thread->page_table, &pte->hash_elem);
-      if (p_mapping) {
-          free (pte);
-          pte = NULL;
-      }
   }
 
-  return pte;
+
+    struct page_table_entry *ans = insert_PTE_into_currPT(pte);
+
+
+  return ans;
+}
+
+
+struct page_table_entry * insert_PTE_into_currPT(struct page_table_entry *pte) {
+    struct hash_elem *a = hash_insert(pte->thread->full_PT, &pte->hash_elem);
+
+    if (a == NULL) {
+        return pte;
+    } else {
+        free(pte);
+        return NULL;
+
+    }
 }
 
 
 void clear_page (void *addr)
 {
   struct page_table_entry *pte = search_page (addr);
-//  ASSERT (pte != NULL);
   lock_page_frame (pte);
   if (pte->frame) {
       struct frame *f = pte->frame;
@@ -252,16 +261,11 @@ void clear_page (void *addr)
       }
       frame_free (f);
   }
-  hash_delete (thread_current()->page_table, &pte->hash_elem);
+  hash_delete (thread_current()->full_PT, &pte->hash_elem);
   free (pte);
 }
 
 
-
-/* Tries to lock the page containing ADDR into physical memory.
-   If WILL_WRITE is true, the page must be writeable;
-   otherwise it may be read-only.
-   Returns true if successful, false on failure. */
 bool page_lock (const void *addr, bool will_write)
 {
   struct page_table_entry *pte = search_page (addr);
@@ -286,9 +290,8 @@ bool page_lock (const void *addr, bool will_write)
   return success;
 }
 
-/* Unlocks a page locked with page_lock(). */
+
 void page_unlock (const void *addr) {
     struct page_table_entry *pte = search_page(addr);
-  //  ASSERT (pte != NULL);
     frame_unlock(pte->frame);
 }
