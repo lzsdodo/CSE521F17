@@ -106,25 +106,6 @@ void thread_start (void)
   sema_down (&idle_started);
 }
 
-//void thread_tick (void)
-//{
-//  struct thread *t = thread_current ();
-//  /* Update statistics. */
-//  if (t == idle_thread)
-//    idle_ticks++;
-//#ifdef USERPROG
-//  else if (t->pagedir != NULL)
-//    user_ticks++;
-//#endif
-//  else
-//    kernel_ticks++;
-//
-//  /* Enforce preemption. */
-//  if (++thread_ticks >= TIME_SLICE)
-//    intr_yield_on_return ();
-//}
-
-
 static void
 adjust_recent_cpu (struct thread *t, void *aux)
 {
@@ -559,22 +540,27 @@ init_thread (struct thread *t, const char *name, int priority, tid_t tid)
   ASSERT (name != NULL);
 
   memset (t, 0, sizeof *t);
-  t->tid = tid;
-  t->status = THREAD_BLOCKED;
-  strlcpy (t->name, name, sizeof t->name);
-  t->stack = (uint8_t *) t + PGSIZE;
-  t->priority = priority;
-  t->exit_code = -1;
-  t->wait_status = NULL;
-  list_init (&t->children);
-  sema_init (&t->timer_sema, 0);
-  t->pagedir = NULL;
-  t->SPT = NULL;
-  t->bin_file = NULL;
-  list_init (&t->fds);
-  list_init (&t->list_mmap_files);
-  t->next_handle = 2;
-  t->magic = THREAD_MAGIC;
+    t->tid = tid;
+    t->status = THREAD_BLOCKED;
+    strlcpy (t->name, name, sizeof t->name);
+    t->stack = (uint8_t *) t + PGSIZE;
+     t->priority = priority;
+    t->exit_code = -1;
+    t->magic = THREAD_MAGIC;
+
+     t->wait_status = NULL;
+     list_init (&t->children);
+    sema_init (&t->timer_sema, 0);
+
+    t->pagedir = NULL;
+    t->SPT = NULL;
+     t->bin_file = NULL;
+
+    list_init (&t->fds);
+    list_init (&t->list_mmap_files);
+    list_init (&t->donors);
+    t->next_handle = 2;
+
   list_push_back (&all_list, &t->allelem);
 }
 
