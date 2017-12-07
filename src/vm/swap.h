@@ -1,5 +1,5 @@
 #ifndef VM_SWAP_H
-#define VM_SWAP_H 1
+#define VM_SWAP_H
 #include "vm/swap.h"
 #include <bitmap.h>
 #include <debug.h>

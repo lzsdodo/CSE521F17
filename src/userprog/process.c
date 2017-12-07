@@ -615,7 +615,7 @@ setup_stack (const char *cmd_line, void **esp)
     if (pte) {
         pte->occupied_frame = frame_Alloc (pte);
         kpage = pte -> occupied_frame -> base;
-        if (kpage) {
+        if (install_page (upage, kpage, true)) {
             pte->read_only = false;
             pte->pinned = false;
             success = init_cmd_line (kpage, upage, cmd_line, esp);
