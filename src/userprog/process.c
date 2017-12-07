@@ -23,7 +23,8 @@
 
 static thread_func start_process NO_RETURN;
 static bool load (const char *cmd_line, void (**eip) (void), void **esp);
-
+static bool
+install_page (void *upage, void *kpage, bool writable);
 
 /* Data structure shared between process_execute() in the
    invoking thread and start_process() in the newly invoked
@@ -326,7 +327,6 @@ load (const char *cmd_line, void (**eip) (void), void **esp)
   t->SPT = malloc (sizeof *t->SPT);
   if (t->SPT == NULL)
     goto done;
-
   hash_init (t->SPT, page_hash, addr_less, NULL);
 
   /* Extract file_name from command line. */
@@ -345,8 +345,8 @@ load (const char *cmd_line, void (**eip) (void), void **esp)
       goto done;
     }
 
-  //TODO: page usage in process.c
-  file_deny_write (t->bin_file);
+
+  file_deny_write (file);
 
   /* Read and verify executable header. */
   if (file_read (file, &ehdr, sizeof ehdr) != sizeof ehdr
@@ -400,8 +400,7 @@ load (const char *cmd_line, void (**eip) (void), void **esp)
                   /* Normal segment.
                      Read initial part from disk and zero the rest. */
                   read_bytes = page_offset + phdr.p_filesz;
-                  zero_bytes = (ROUND_UP (page_offset + phdr.p_memsz, PGSIZE)
-                                - read_bytes);
+                  zero_bytes = (ROUND_UP (page_offset + phdr.p_memsz, PGSIZE) - read_bytes);
                 }
               else
                 {
@@ -607,22 +606,37 @@ init_cmd_line (uint8_t *kpage, uint8_t *upage, const char *cmd_line,
 static bool
 setup_stack (const char *cmd_line, void **esp)
 {
-  uint8_t *upage = ((uint8_t *) PHYS_BASE) - PGSIZE;
-  struct spt_entry *pte = pte_allocate (upage, false);
-  bool success;
+    uint8_t *kpage = palloc_get_page (0);
+    bool success = false;
 
-  if (pte) {
-      pte->occupied_frame = frame_Alloc (pte);
-      if (pte->occupied_frame != NULL) {
-          pte->read_only = false;
-          pte->pinned = false;
-          success = init_cmd_line (pte->occupied_frame->base, upage, cmd_line, esp);
-          frame_unlock (pte);
-          return success;
-      }
-  }
+    uint8_t *upage = ((uint8_t *) PHYS_BASE) - PGSIZE;
+    struct spt_entry *pte = pte_allocate (upage, false);
 
-  return false;
+    if (pte) {
+        pte->occupied_frame = frame_Alloc (pte);
+        kpage = pte -> occupied_frame -> base;
+        if (kpage) {
+            pte->read_only = false;
+            pte->pinned = false;
+            success = init_cmd_line (kpage, upage, cmd_line, esp);
+            frame_unlock (pte);
+            return success;
+        }
+    }
+
+
+
+  return success;
 }
 
 
+static bool
+install_page (void *upage, void *kpage, bool writable)
+{
+    struct thread *t = thread_current ();
+
+    /* Verify that there's not already a page at that virtual
+       address, then map our page there. */
+    return (pagedir_get_page (t->pagedir, upage) == NULL
+            && pagedir_set_page (t->pagedir, upage, kpage, writable));
+}
