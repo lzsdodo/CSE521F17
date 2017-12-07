@@ -6,7 +6,7 @@
 
 /* A physical frame. */
 struct frame {
-    struct lock lock;               /* Prevent simultaneous access. */
+    struct lock lock;               /* one access at a time */
     void *base;                     /* Kernel virtual base address. */
     struct spt_entry *pte;  /* Mapped process page, if any. */
     struct list_elem elem;

@@ -24,6 +24,7 @@
 static thread_func start_process NO_RETURN;
 static bool load (const char *cmd_line, void (**eip) (void), void **esp);
 
+
 /* Data structure shared between process_execute() in the
    invoking thread and start_process() in the newly invoked
    thread. */
@@ -320,7 +321,7 @@ load (const char *cmd_line, void (**eip) (void), void **esp)
     goto done;
   process_activate ();
 
-  // TODO: page usage in process
+
  // create list_mmap_files for current process
   t->SPT = malloc (sizeof *t->SPT);
   if (t->SPT == NULL)
@@ -480,40 +481,35 @@ validate_segment (const struct Elf32_Phdr *phdr, struct file *file)
   return true;
 }
 
-/* Loads a segment starting at offset OFS in FILE at address
-   UPAGE.  In total, READ_BYTES + ZERO_BYTES bytes of virtual
-   memory are initialized, as follows:
 
-        - READ_BYTES bytes at UPAGE must be read from FILE
-          starting at offset OFS.
 
-        - ZERO_BYTES bytes at UPAGE + READ_BYTES must be zeroed.
 
-   The pages initialized by this function must be writable by the
-   user process if WRITABLE is true, read-only otherwise.
 
-   Return true if successful, false if a memory allocation error
-   or disk read error occurs. */
-static bool load_segment (struct file *file, off_t ofs, uint8_t *upage,
-              uint32_t read_bytes, uint32_t zero_bytes, bool writable)
+
+static bool load_segment (struct file *file,
+                          off_t ofs,
+                          uint8_t *upage,
+                            uint32_t read_bytes,
+                          uint32_t zero_bytes,
+                          bool writable)
 {
-  //Lazy loading here:page is allocated and pushed into current thread's PT.
+  //Lazy loading here:page is allocated and pushed into current thread's SPT.
   ASSERT ((read_bytes + zero_bytes) % PGSIZE == 0);
   ASSERT (pg_ofs (upage) == 0);
   ASSERT (ofs % PGSIZE == 0);
 
   while (read_bytes > 0 || zero_bytes > 0) {
+
+
       size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
       size_t page_zero_bytes = PGSIZE - page_read_bytes;
-      struct spt_entry *PT_entry = pte_allocate (upage, !writable);
-//    struct spt_entry* tp =  insert_PTE_into_currPT(PT_entry);
 
-      if (PT_entry == NULL) return false;
-      if (page_read_bytes > 0) {
-          PT_entry->file_ptr = file;
-          PT_entry->file_offset = ofs;
-          PT_entry->file_bytes = page_read_bytes;
+
+      if(!add_file_to_SPT(file,ofs,upage,page_read_bytes,page_zero_bytes,writable)){
+          return false;
       }
+
+      //advance
       read_bytes -= page_read_bytes;
       zero_bytes -= page_zero_bytes;
 
@@ -619,7 +615,7 @@ setup_stack (const char *cmd_line, void **esp)
       pte->occupied_frame = frame_Alloc (pte);
       if (pte->occupied_frame != NULL) {
           pte->read_only = false;
-          pte->permission = false;
+          pte->pinned = false;
           success = init_cmd_line (pte->occupied_frame->base, upage, cmd_line, esp);
           frame_unlock (pte);
           return success;
@@ -628,3 +624,5 @@ setup_stack (const char *cmd_line, void **esp)
 
   return false;
 }
+
+

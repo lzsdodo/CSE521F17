@@ -65,7 +65,7 @@ bool swap_out (struct spt_entry *pte)
     }
 
      pte->sector = free_index * SECTOR_PER_PAGE;
-      pte->permission = false;
+      pte->pinned = false;
      pte->file_ptr = NULL;
      pte->file_offset = 0;
      pte->file_bytes = 0;
@@ -83,5 +83,4 @@ bool swap_out (struct spt_entry *pte)
 
   return true;
 }
-
 

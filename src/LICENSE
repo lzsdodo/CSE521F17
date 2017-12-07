@@ -12,7 +12,7 @@ license:
     permit persons to whom the Software is furnished to do so, subject to
     the following conditions:
 
-    The above copyright notice and this permission notice shall be
+    The above copyright notice and this pinned notice shall be
     included in all copies or substantial portions of the Software.
 
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -83,7 +83,7 @@ following license:
  *
  * The name and trademarks of copyright holders may NOT be used in
  * advertising or publicity pertaining to the software without specific,
- * written prior permission. Title to copyright in this software and any
+ * written prior pinned. Title to copyright in this software and any
  * associated documentation will at all times remain with copyright
  * holders. See the file AUTHORS which should have accompanied this software
  * for a list of all copyright holders.

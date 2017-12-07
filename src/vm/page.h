@@ -11,19 +11,15 @@
 struct spt_entry {
 
     void *addr;                 /* User virtual address. */
-
-    struct thread *thread;      /* Owning thread. */
-    struct hash_elem hash_elem; /* struct thread `pages' hash element. */
-
+    struct thread *thread;      /* thread that owns current spt */
     struct frame *occupied_frame;        /* Page frame. */
-
     block_sector_t sector;       /* Starting sector of swap area, or -1. */
-
     bool read_only;             /* Read-only  */
-    bool permission;            /* canno write back when false, if true, allow swap */
+    bool pinned;            /* cannot write back when false, if true, allow swap */
     struct file *file_ptr;          /* File. */
     off_t file_offset;          /* Offset in file. */
     off_t file_bytes;           /* Bytes to read/write, 1...PGSIZE. */
+    struct hash_elem hash_elem; /* struct thread `pages' hash element. */
 };
 
 void free_process_PT (void);

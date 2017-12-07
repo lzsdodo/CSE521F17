@@ -26,7 +26,9 @@ unsigned page_hash (const struct hash_elem *e, void *aux UNUSED);
 bool addr_less (const struct hash_elem *a_, const struct hash_elem *b_, void *aux UNUSED);
 struct spt_entry * insert_PTE_into_currPT(struct spt_entry *input);
 
-
+bool add_file_to_SPT(struct file* file,off_t ofs,uint8_t* upage,uint32_t page_read_bytes,
+                     uint32_t page_zero_bytes,
+                     bool writable);
 
 struct spt_entry *search_page (const void *address)
 {
@@ -50,7 +52,10 @@ struct spt_entry *search_page (const void *address)
             bool valid = user_stk_ptr - 32 < address? true:false;
 
             if(inflow && valid)  return pte_allocate (target_pte.addr, false);
+
+
         };
+
 
 
     }
@@ -58,20 +63,18 @@ struct spt_entry *search_page (const void *address)
   return NULL;
 }
 
-unsigned page_hash (const struct hash_elem *e, void *aux UNUSED)
+
+
+bool LRU (struct spt_entry *pte)
 {
-    const struct spt_entry *pte = hash_entry (e, struct spt_entry, hash_elem);
-    return ((uintptr_t) pte->addr) >> PGBITS;
+    uint32_t curr_pd = pte->thread->pagedir;
+    bool accessed = pagedir_is_accessed (curr_pd, pte->addr);
+    if (accessed) pagedir_set_accessed (curr_pd, pte->addr, false);
+    return !accessed;
 }
 
-//Returns true if page A's address is smaller than B
-bool addr_less (const struct hash_elem *a_, const struct hash_elem *b_, void *aux UNUSED)
-{
-    const struct spt_entry *a = hash_entry (a_, struct spt_entry, hash_elem);
-    const struct spt_entry *b = hash_entry (b_, struct spt_entry, hash_elem);
 
-    return a->addr < b->addr;
-}
+
 
 // put a page into frame
 bool page_into_frame (struct spt_entry *pte)
@@ -110,11 +113,6 @@ bool evict_target_page (struct spt_entry *pte)
   bool dirty;
   bool evicted = false;
 
-  ASSERT (pte->occupied_frame != NULL);
-  ASSERT (lock_held_by_current_thread (&pte->occupied_frame->lock));
-
-
-
     // force page fault
     uint32_t *pd = pte->thread->pagedir;
     void *upage = pte->addr;
@@ -128,7 +126,7 @@ bool evict_target_page (struct spt_entry *pte)
   if (pte->file_ptr == NULL) evicted = swap_out(pte);
 
   else if (dirty == true) {
-      if(pte->permission) evicted = swap_out(pte);
+      if(pte->pinned) evicted = swap_out(pte);
 
       else {
           evicted = file_write_at(pte->file_ptr,
@@ -140,13 +138,6 @@ bool evict_target_page (struct spt_entry *pte)
   return evicted;
 }
 
-bool LRU (struct spt_entry *pte)
-{
-  uint32_t curr_pd = pte->thread->pagedir;
-  bool accessed = pagedir_is_accessed (curr_pd, pte->addr);
-  if (accessed) pagedir_set_accessed (curr_pd, pte->addr, false);
-  return !accessed;
-}
 
 
 struct spt_entry *pte_allocate (void *vaddr, bool read_only)
@@ -158,9 +149,9 @@ struct spt_entry *pte_allocate (void *vaddr, bool read_only)
       pte->thread = curr_thread;
       pte->addr = pg_round_down (vaddr);
       pte->read_only = read_only;
-      pte->permission = !read_only;
+      pte->pinned = !read_only;
       pte->occupied_frame = NULL;
-      pte->sector = (block_sector_t) -1;
+      pte->sector = -1;
       pte->file_ptr = NULL;
       pte->file_offset = 0;
       pte->file_bytes = 0;
@@ -171,19 +162,6 @@ struct spt_entry *pte_allocate (void *vaddr, bool read_only)
 
 
   return ans;
-}
-
-
-struct spt_entry * insert_PTE_into_currPT(struct spt_entry *pte) {
-    struct hash_elem *a = hash_insert(pte->thread->SPT, &pte->hash_elem);
-
-    if (a == NULL) {
-        return pte;
-    } else {
-        free(pte);
-        return NULL;
-
-    }
 }
 
 
@@ -245,11 +223,63 @@ void clear_page (void *addr)
     lock_page_frame (pte);
     if (pte->occupied_frame) {
         struct frame *f = pte->occupied_frame;
-        if (pte->file_ptr && !pte->permission) {
-            evict_target_page (pte);
+        if (pte->file_ptr && !pte->pinned) {
+            bool a = evict_target_page (pte);
         }
         frame_free (f);
     }
     hash_delete (thread_current()->SPT, &pte->hash_elem);
     free (pte);
+}
+
+unsigned page_hash (const struct hash_elem *e, void *aux UNUSED)
+{
+    struct spt_entry *pte = hash_entry (e, struct spt_entry, hash_elem);
+//    return ((uintptr_t) pte->addr) >> PGBITS;
+
+    return hash_int((int) pte->addr);
+}
+
+
+bool addr_less (const struct hash_elem *a_, const struct hash_elem *b_, void *aux UNUSED)
+{
+    const struct spt_entry *a = hash_entry (a_, struct spt_entry, hash_elem);
+    const struct spt_entry *b = hash_entry (b_, struct spt_entry, hash_elem);
+
+    return a->addr < b->addr;
+}
+
+struct spt_entry * insert_PTE_into_currPT(struct spt_entry *pte) {
+    struct hash_elem *a = hash_insert(pte->thread->SPT, &pte->hash_elem);
+
+    if (a == NULL) {
+        return pte;
+    } else {
+        free(pte);
+        return NULL;
+
+    }
+}
+
+
+bool add_file_to_SPT(struct file* file,
+                     off_t ofs,
+                     uint8_t* upage,
+                     uint32_t page_read_bytes,
+                     uint32_t page_zero_bytes,
+                     bool writable){
+
+    struct spt_entry *PT_entry = pte_allocate (upage, !writable);
+
+
+    if (PT_entry == NULL) return false;
+    if (page_read_bytes > 0) {
+        PT_entry->file_ptr = file;
+        PT_entry->file_offset = ofs;
+        PT_entry->file_bytes = page_read_bytes;
+    }
+
+    return true;
+
+
 }

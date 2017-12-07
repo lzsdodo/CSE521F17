@@ -92,6 +92,8 @@ struct mapping
     struct list_elem elem;      /* List element. */
     int map_handle;                 /* Mapping id. */
     struct file *file;          /* File*/
+
+
     uint8_t *base;              /* memory mapping starts here : ) */
     size_t page_cnt;            /* Number of pages mapped. */
 };
