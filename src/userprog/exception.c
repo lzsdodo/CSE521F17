@@ -6,12 +6,18 @@
 #include "threads/thread.h"
 #include "vm/page.h"
 #include "vm/frame.h"
+#include "threads/vaddr.h"
+
 /* Number of page faults processed. */
 static long long page_fault_cnt;
 
 static void kill (struct intr_frame *);
 static void page_fault (struct intr_frame *);
 bool page_fault_load (void *fault_addr);
+struct spt_entry* allocate_spt_for_pagefault(size_t addr, const void* address);
+
+
+
 void exception_init (void)
 {
   /* These exceptions can be raised explicitly by a user program,
@@ -104,8 +110,7 @@ kill (struct intr_frame *f)
    can find more information about both of these in the
    description of "Interrupt 14--Page Fault Exception (#PF)" in
    [IA32-v3a] section 5.15 "Exception and Interrupt Reference". */
-static void
-page_fault (struct intr_frame *f) 
+static void page_fault (struct intr_frame *f)
 {
   bool not_present;  /* True: not-present page, false: writing r/o page. */
   bool write;        /* True: access was write, false: access was read. */
@@ -158,13 +163,17 @@ bool page_fault_load (void *fault_addr)
   struct thread* curr = thread_current();
   struct spt_entry *pte = search_page (fault_addr);
 
+    if(!pte){
+        pte = allocate_spt_for_pagefault(pg_round_down (fault_addr), fault_addr);
+    }
+
   if (curr->SPT == NULL ||pte == NULL) return false;
 
   lock_page_frame (pte);
 
   if (pte->occupied_frame == NULL)
   {
-    bool paged_in = page_into_frame (pte);
+    bool paged_in = put_pte_into_frame (pte);
     if (paged_in == false) return false;
   }
 
@@ -178,5 +187,20 @@ bool page_fault_load (void *fault_addr)
 
   return success;
 }
+
+struct spt_entry* allocate_spt_for_pagefault(size_t addr, const void* address){
+
+    void* user_stk_ptr = thread_current()->user_esp;
+
+    bool inflow = addr > PHYS_BASE - STACK_MAX ? true : false;
+    bool valid = user_stk_ptr - 32 < address? true:false;
+
+
+    if(inflow && valid) {
+        return pte_allocate (addr, false);
+    }
+    return NULL;
+}
+
 
 

@@ -5,7 +5,9 @@
 #include "devices/block.h"
 #include "filesys/off_t.h"
 #include "threads/synch.h"
-
+/* Maximum size of process stack, in bytes. */
+/* Right now it is 1 megabyte. */
+#define STACK_MAX (1024 * 1024)
 /* Virtual page. */
 // struct supplementary page table entry
 struct spt_entry {

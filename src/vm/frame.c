@@ -119,9 +119,7 @@ void lock_page_frame (struct spt_entry *pte)
 
     if (f) {
         lock_acquire (&f->lock);
-//        if (f != pte->occupied_frame) {
-//            lock_release (&f->lock);
-//        }
+
     }
 }
 
