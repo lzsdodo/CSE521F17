@@ -8,6 +8,8 @@
 /* Maximum size of process stack, in bytes. */
 /* Right now it is 1 megabyte. */
 #define STACK_MAX (1024 * 1024)
+#define FILE 0
+#define SWAP 1
 /* Virtual page. */
 // struct supplementary page table entry
 struct spt_entry {
@@ -17,7 +19,7 @@ struct spt_entry {
     struct frame *occupied_frame;        /* Page frame. */
     block_sector_t sector;       /* Starting sector of swap area, or -1. */
     bool read_only;             /* Read-only  */
-    bool pinned;            /* cannot write back when false, if true, allow swap */
+    bool location;          /* 0 to save on swap device, 1 for save on disk */
     struct file *file_ptr;          /* File. */
     off_t file_offset;          /* Offset in file. */
     off_t file_bytes;           /* Bytes to read/write, 1...PGSIZE. */

@@ -581,8 +581,6 @@ static int sys_mapping (int handle, void *addr)
 
     if (m == NULL || addr == NULL || pg_ofs (addr) != 0) return -1;
 
-
-
     m->file = file_reopen (fd->file);
     m->map_handle = thread_current ()->next_handle++;
 
@@ -645,7 +643,7 @@ int add_file_to_mapping(struct file* file,
         clear_mapping (m);
         return -1;
     }
-    pte->pinned = false;
+    pte->location = false;
     pte->file_ptr = file;
     pte->file_offset = ofs;
     pte->file_bytes = page_read_bytes;

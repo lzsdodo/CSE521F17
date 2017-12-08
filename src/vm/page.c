@@ -30,7 +30,6 @@ bool add_file_to_SPT(struct file* file,off_t ofs,uint8_t* upage,uint32_t page_re
 
 struct spt_entry *search_page (const void *address)
 {
-
     struct spt_entry target_pte;
 
   if (address < PHYS_BASE)
@@ -103,21 +102,27 @@ bool evict_target_page (struct spt_entry *pte)
     void *upage = pte->addr;
     pagedir_clear_page(pd,upage);
 
-    if(dirty == false)  ok_to_evicet = true;
     if (pte->file_ptr == NULL) {
         ok_to_evicet = swap_out(pte);
     }
 
-    else if (dirty == true) {
+    else {
+        ASSERT(pte->file_ptr);
+        if(dirty){
+            if(pte->location) ok_to_evicet = swap_out(pte);
+            else {
+                ok_to_evicet = file_write_at(pte->file_ptr,
+                                             pte->occupied_frame->base,
+                                             pte->file_bytes,
+                                             pte->file_offset);
+            }
 
-      if(pte->pinned) ok_to_evicet = swap_out(pte);
+        }
+        else{
+            ok_to_evicet = true;
+        }
 
-      else {
-          ok_to_evicet = file_write_at(pte->file_ptr,
-                                       pte->occupied_frame->base,
-                                       pte->file_bytes,
-                                       pte->file_offset);
-      }
+
   }
 
 
@@ -137,7 +142,7 @@ struct spt_entry *pte_allocate (void *vaddr, bool read_only)
       pte->thread = curr_thread;
       pte->addr = pg_round_down (vaddr);
       pte->read_only = read_only;
-      pte->pinned = !read_only;
+      pte->location = !read_only;
       pte->occupied_frame = NULL;
       pte->sector = -1;
       pte->file_ptr = NULL;
@@ -207,7 +212,7 @@ void clear_page (void *addr)
     lock_page_frame (pte);
     if (pte->occupied_frame) {
         struct frame *f = pte->occupied_frame;
-        if (pte->file_ptr && !pte->pinned) {
+        if (pte->file_ptr && !pte->location) {
             bool a = evict_target_page (pte);
         }
         frame_free (f);
