@@ -59,7 +59,7 @@ struct thread
     /* Owned by userprog/process.c. */
     uint32_t *pagedir;                  /* Page directory. */
     struct hash *SPT;                   /* Supplementary Page table. */
-    struct file *bin_file;              /* The binary executable. */
+    struct file *bin_file;              /* Executable. */
 
     /* Owned by syscall.c. */
     struct list fds;                    /* List of file descriptors. */

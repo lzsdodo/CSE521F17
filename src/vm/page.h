@@ -5,7 +5,11 @@
 #include "devices/block.h"
 #include "filesys/off_t.h"
 #include "threads/synch.h"
-
+/* Maximum size of process stack, in bytes. */
+/* Right now it is 1 megabyte. */
+#define STACK_MAX (1024 * 1024)
+#define FILE 0
+#define SWAP 1
 /* Virtual page. */
 // struct supplementary page table entry
 struct spt_entry {
@@ -15,7 +19,7 @@ struct spt_entry {
     struct frame *occupied_frame;        /* Page frame. */
     block_sector_t sector;       /* Starting sector of swap area, or -1. */
     bool read_only;             /* Read-only  */
-    bool pinned;            /* cannot write back when false, if true, allow swap */
+    bool location;          /* 0 to save on swap device, 1 for save on disk */
     struct file *file_ptr;          /* File. */
     off_t file_offset;          /* Offset in file. */
     off_t file_bytes;           /* Bytes to read/write, 1...PGSIZE. */
@@ -27,7 +31,7 @@ struct spt_entry *pte_allocate (void *, bool read_only);
 void clear_page (void *vaddr);
 bool page_fault_load (void *fault_addr);
 bool evict_target_page (struct spt_entry *);
-bool LRU (struct spt_entry *);
+bool is_LRU (struct spt_entry *);
 bool page_lock (const void *, bool will_write);
 void page_unlock (const void *);
 

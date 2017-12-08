@@ -65,13 +65,14 @@ bool swap_out (struct spt_entry *pte)
     }
 
      pte->sector = free_index * SECTOR_PER_PAGE;
-      pte->pinned = false;
+      pte->location = false;
      pte->file_ptr = NULL;
      pte->file_offset = 0;
      pte->file_bytes = 0;
 
 //  Write out page sectors for each modified block.
-  for ( size_t i = 0; i < SECTOR_PER_PAGE; i++) {
+  for ( size_t i = 0; i < SECTOR_PER_PAGE; i++)
+    {
       const void *buf =  pte->occupied_frame->base + i * BLOCK_SECTOR_SIZE;
 
       block_write (swapping_block,

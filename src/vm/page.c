@@ -9,17 +9,14 @@
 #include "userprog/pagedir.h"
 #include "threads/vaddr.h"
 
-/* Maximum size of process stack, in bytes. */
-/* Right now it is 1 megabyte. */
-#define STACK_MAX (1024 * 1024)
-
+////jajajajajaj
 
 void page_destructor (struct hash_elem *page_hash, void *aux UNUSED);
 void free_process_PT (void);
 struct spt_entry *search_page (const void *address);
-bool page_into_frame (struct spt_entry *pte);
+bool put_pte_into_frame (struct spt_entry *pte);
 bool evict_target_page (struct spt_entry *pte);
-bool LRU (struct spt_entry *pte);
+bool is_LRU (struct spt_entry *pte);
 struct spt_entry *pte_allocate (void *vaddr, bool read_only);
 void clear_page (void *vaddr);
 unsigned page_hash (const struct hash_elem *e, void *aux UNUSED);
@@ -30,9 +27,10 @@ bool add_file_to_SPT(struct file* file,off_t ofs,uint8_t* upage,uint32_t page_re
                      uint32_t page_zero_bytes,
                      bool writable);
 
+
+
 struct spt_entry *search_page (const void *address)
 {
-
     struct spt_entry target_pte;
 
   if (address < PHYS_BASE)
@@ -43,21 +41,6 @@ struct spt_entry *search_page (const void *address)
 
         struct hash_elem *e = hash_find (thread_current()->SPT, &target_pte.hash_elem);
         if (e != NULL)  return hash_entry (e, struct spt_entry, hash_elem);
-
-        else{
-
-            void* user_stk_ptr = thread_current()->user_esp;
-
-            bool inflow = addr > PHYS_BASE - STACK_MAX ? true : false;
-            bool valid = user_stk_ptr - 32 < address? true:false;
-
-            if(inflow && valid)  return pte_allocate (target_pte.addr, false);
-
-
-        };
-
-
-
     }
 
   return NULL;
@@ -65,7 +48,9 @@ struct spt_entry *search_page (const void *address)
 
 
 
-bool LRU (struct spt_entry *pte)
+
+
+bool is_LRU (struct spt_entry *pte)
 {
     uint32_t curr_pd = pte->thread->pagedir;
     bool accessed = pagedir_is_accessed (curr_pd, pte->addr);
@@ -76,8 +61,8 @@ bool LRU (struct spt_entry *pte)
 
 
 
-// put a page into frame
-bool page_into_frame (struct spt_entry *pte)
+
+bool put_pte_into_frame (struct spt_entry *pte)
 {
 
   pte->occupied_frame = frame_Alloc (pte);
@@ -106,39 +91,44 @@ bool page_into_frame (struct spt_entry *pte)
   return true;
 }
 
-
-
 bool evict_target_page (struct spt_entry *pte)
 {
-  bool dirty;
-  bool evicted = false;
+  bool dirty = pagedir_is_dirty (pte->thread->pagedir,  pte->addr);
+  bool ok_to_evicet = false;
 
-    // force page fault
+    // force page fault and clear mapping
     uint32_t *pd = pte->thread->pagedir;
     void *upage = pte->addr;
     pagedir_clear_page(pd,upage);
 
-// set current frame's dirty value
-  dirty = pagedir_is_dirty (pte->thread->pagedir, (const void *) pte->addr);
+    if (pte->file_ptr == NULL) {
+        ok_to_evicet = swap_out(pte);
+    }
 
-  if(dirty == false)  evicted = true;
+    else {
+        ASSERT(pte->file_ptr);
+        if(dirty){
+            if(pte->location) ok_to_evicet = swap_out(pte);
+            else {
+                ok_to_evicet = file_write_at(pte->file_ptr,
+                                             pte->occupied_frame->base,
+                                             pte->file_bytes,
+                                             pte->file_offset);
+            }
 
-  if (pte->file_ptr == NULL) evicted = swap_out(pte);
+        }
+        else{
+            ok_to_evicet = true;
+        }
 
-  else if (dirty == true) {
-      if(pte->pinned) evicted = swap_out(pte);
 
-      else {
-          evicted = file_write_at(pte->file_ptr,
-                                  (const void *) pte->occupied_frame->base,
-                                  pte->file_bytes, pte->file_offset);
-      }
   }
-  if(evicted == true)  pte->occupied_frame = NULL;
-  return evicted;
+
+
+
+  if(ok_to_evicet == true)  pte->occupied_frame = NULL;
+  return ok_to_evicet;
 }
-
-
 
 struct spt_entry *pte_allocate (void *vaddr, bool read_only)
 {
@@ -149,7 +139,7 @@ struct spt_entry *pte_allocate (void *vaddr, bool read_only)
       pte->thread = curr_thread;
       pte->addr = pg_round_down (vaddr);
       pte->read_only = read_only;
-      pte->pinned = !read_only;
+      pte->location = !read_only;
       pte->occupied_frame = NULL;
       pte->sector = -1;
       pte->file_ptr = NULL;
@@ -164,10 +154,6 @@ struct spt_entry *pte_allocate (void *vaddr, bool read_only)
   return ans;
 }
 
-
-
-
-
 bool page_lock (const void *addr, bool will_write)
 {
   struct spt_entry *pte = search_page (addr);
@@ -179,7 +165,7 @@ bool page_lock (const void *addr, bool will_write)
   else {
       lock_page_frame (pte);
       if (pte->occupied_frame == NULL) {
-          bool a1 = page_into_frame(pte);
+          bool a1 = put_pte_into_frame(pte);
           bool a2 = pagedir_set_page (thread_current()->pagedir,
                                       pte->addr,
                                       pte->occupied_frame->base,
@@ -194,13 +180,10 @@ bool page_lock (const void *addr, bool will_write)
   return success;
 }
 
-
 void page_unlock (const void *addr) {
     struct spt_entry *pte = search_page(addr);
     frame_unlock(pte);
 }
-
-
 
 void page_destructor (struct hash_elem *page_hash, void *aux UNUSED)
 {
@@ -223,7 +206,7 @@ void clear_page (void *addr)
     lock_page_frame (pte);
     if (pte->occupied_frame) {
         struct frame *f = pte->occupied_frame;
-        if (pte->file_ptr && !pte->pinned) {
+        if (pte->file_ptr && !pte->location) {
             bool a = evict_target_page (pte);
         }
         frame_free (f);
@@ -235,8 +218,6 @@ void clear_page (void *addr)
 unsigned page_hash (const struct hash_elem *e, void *aux UNUSED)
 {
     struct spt_entry *pte = hash_entry (e, struct spt_entry, hash_elem);
-//    return ((uintptr_t) pte->addr) >> PGBITS;
-
     return hash_int((int) pte->addr);
 }
 
