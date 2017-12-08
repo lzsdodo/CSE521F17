@@ -152,10 +152,6 @@ struct spt_entry *pte_allocate (void *vaddr, bool read_only)
   return ans;
 }
 
-
-
-
-
 bool page_lock (const void *addr, bool will_write)
 {
   struct spt_entry *pte = search_page (addr);
