@@ -11,11 +11,6 @@
   <component name="ChangeListManager">
     <list default="true" id="1aafb88c-6d37-440a-aa29-a9ad2e9ab967" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/exception.c" afterPath="$PROJECT_DIR$/src/userprog/exception.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/process.h" afterPath="$PROJECT_DIR$/src/userprog/process.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vm/frame.c" afterPath="$PROJECT_DIR$/src/vm/frame.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vm/page.c" afterPath="$PROJECT_DIR$/src/vm/page.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vm/page.h" afterPath="$PROJECT_DIR$/src/vm/page.h" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -389,11 +384,18 @@
       <option name="project" value="LOCAL" />
       <updated>1512636516871</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="1.15: somehow i cannot test it">
+      <created>1512691717066</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1512691717066</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="83765000" />
+    <option name="totallyTimeSpent" value="83807000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="127" y="416" width="2217" height="1164" extended-state="0" />
@@ -441,7 +443,8 @@
     <MESSAGE value="1.12: you can upload this" />
     <MESSAGE value="1.13: almost done" />
     <MESSAGE value="1.14: almost done II" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.14: almost done II" />
+    <MESSAGE value="1.15: somehow i cannot test it" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.15: somehow i cannot test it" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
