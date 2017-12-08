@@ -31,7 +31,7 @@ struct spt_entry *pte_allocate (void *, bool read_only);
 void clear_page (void *vaddr);
 bool page_fault_load (void *fault_addr);
 bool evict_target_page (struct spt_entry *);
-bool LRU (struct spt_entry *);
+bool is_LRU (struct spt_entry *);
 bool page_lock (const void *, bool will_write);
 void page_unlock (const void *);
 

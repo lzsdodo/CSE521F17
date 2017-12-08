@@ -76,19 +76,6 @@ sema_try_down (struct semaphore *sema)
 }
 
 
-//void
-//sema_up (struct semaphore *sema)
-//{
-//  enum intr_level old_level;
-//
-//  ASSERT (sema != NULL);
-//
-//  old_level = intr_disable ();
-//  if (!list_empty (&sema->waiters))
-//    thread_unblock (list_entry (list_pop_front (&sema->waiters),struct thread, elem));
-//  sema->value++;
-//  intr_set_level (old_level);
-//}
 
 void sema_up (struct semaphore *sema)
 {
@@ -183,39 +170,6 @@ lock_acquire (struct lock *lock)
   lock->holder = thread_current ();
 }
 
-//TODO: replace the lock_acquire
-//void
-//lock_acquire (struct lock *lock)
-//{
-//    enum intr_level old_level;
-//
-//    ASSERT (lock != NULL);
-//    ASSERT (!intr_context ());
-//    ASSERT (!lock_held_by_current_thread (lock));
-//
-//    old_level = intr_disable ();
-//
-//    if (lock->holder != NULL)
-//    {
-//        /* Donate our priority to the thread holding the lock.
-//           First, update the data structures. */
-//        struct thread *donor = thread_current ();
-//        donor->want_lock = lock;
-//        donor->donee = lock->holder;
-//        list_push_back (&lock->holder->donors, &donor->donor_elem);
-//
-//        /* Now implement the priority donation itself
-//           by recomputing the donee's priority
-//           and cascading the donation as far as necessary. */
-//        if (donor->donee != NULL)
-//            thread_recompute_priority (donor->donee);
-//    }
-//
-//    sema_down (&lock->semaphore);
-//    lock->holder = thread_current ();
-//    intr_set_level (old_level);
-//}
-
 
 bool
 lock_try_acquire (struct lock *lock)
@@ -230,6 +184,8 @@ lock_try_acquire (struct lock *lock)
     lock->holder = thread_current ();
   return success;
 }
+
+
 
 /* Releases LOCK, which must be owned by the current thread.
 

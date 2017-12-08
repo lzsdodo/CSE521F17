@@ -11,12 +11,11 @@
   <component name="ChangeListManager">
     <list default="true" id="1aafb88c-6d37-440a-aa29-a9ad2e9ab967" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/LICENSE" afterPath="$PROJECT_DIR$/src/LICENSE" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/process.c" afterPath="$PROJECT_DIR$/src/userprog/process.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/userprog/syscall.c" afterPath="$PROJECT_DIR$/src/userprog/syscall.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/threads/synch.c" afterPath="$PROJECT_DIR$/src/threads/synch.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/threads/thread.h" afterPath="$PROJECT_DIR$/src/threads/thread.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vm/frame.c" afterPath="$PROJECT_DIR$/src/vm/frame.c" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vm/page.c" afterPath="$PROJECT_DIR$/src/vm/page.c" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vm/page.h" afterPath="$PROJECT_DIR$/src/vm/page.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/vm/swap.c" afterPath="$PROJECT_DIR$/src/vm/swap.c" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -27,65 +26,10 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="page.c" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/vm/page.c">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="317">
-              <caret line="105" column="37" lean-forward="false" selection-start-line="105" selection-start-column="37" selection-end-line="105" selection-end-column="37" />
-              <folding>
-                <element signature="e#1424#1657#0" expanded="false" />
-                <element signature="e#1663#2359#0" expanded="false" />
-                <element signature="e#3290#3828#0" expanded="false" />
-                <element signature="e#3830#4500#0" expanded="false" />
-                <element signature="e#4503#4612#0" expanded="false" />
-                <element signature="e#4616#4875#0" expanded="false" />
-                <element signature="e#4878#5044#0" expanded="false" />
-                <element signature="e#5045#5437#0" expanded="false" />
-                <element signature="e#5439#5618#0" expanded="false" />
-                <element signature="e#6150#6677#0" expanded="false" />
-                <marker date="1512707393558" expanded="false" signature="5711:5901" ph="{...}" />
-                <marker date="1512707393558" expanded="false" signature="5968:6147" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="page.h" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/vm/page.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="594">
-              <caret line="22" column="36" lean-forward="false" selection-start-line="22" selection-start-column="36" selection-end-line="22" selection-end-column="36" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="swap.c" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/vm/swap.c">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="837">
-              <caret line="63" column="33" lean-forward="false" selection-start-line="63" selection-start-column="33" selection-end-line="63" selection-end-column="33" />
-              <folding>
-                <element signature="e#231#589#0" expanded="false" />
-                <element signature="e#592#1026#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>sys_munmap</find>
-      <find>page_cnt</find>
-      <find>copy_in</find>
-      <find>clear_page</find>
-      <find>sys_read</find>
-      <find>copy_in_string</find>
-      <find>bin_file</find>
-      <find>frame_Alloc</find>
       <find>palloc_get_page</find>
       <find>init_cmd_line</find>
       <find>VM_SWAP_H</find>
@@ -108,9 +52,16 @@
       <find>pinned</find>
       <find>p</find>
       <find>location</find>
+      <find>LRU</find>
+      <find>is_LRU</find>
+      <find>lock_try_acquire</find>
+      <find>FT_lock</find>
+      <find>lock_release</find>
+      <find>sema_try_</find>
+      <find>sema_try_down</find>
+      <find>lower_priority</find>
     </findStrings>
     <replaceStrings>
-      <replace>swap_map</replace>
       <replace>file</replace>
       <replace>free_current_page_table</replace>
       <replace>evict_target_page</replace>
@@ -140,6 +91,7 @@
       <replace>pinned</replace>
       <replace>put_pte_into_frame</replace>
       <replace>location</replace>
+      <replace>is_LRU</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -156,7 +108,6 @@
         <option value="$PROJECT_DIR$/src/threads/fixed_point.h.cpp" />
         <option value="$PROJECT_DIR$/src/threads/init.c" />
         <option value="$PROJECT_DIR$/src/threads/interrupt.c" />
-        <option value="$PROJECT_DIR$/src/threads/synch.c" />
         <option value="$PROJECT_DIR$/src/lib/user/syscall.c" />
         <option value="$PROJECT_DIR$/src/utils/Makefile" />
         <option value="$PROJECT_DIR$/src/utils/squish-pty.c" />
@@ -172,18 +123,19 @@
         <option value="$PROJECT_DIR$/src/tests/vm/Grading" />
         <option value="$PROJECT_DIR$/src/threads/thread.c" />
         <option value="$PROJECT_DIR$/Design3.txt" />
-        <option value="$PROJECT_DIR$/src/threads/thread.h" />
         <option value="$PROJECT_DIR$/src/vm/frame.h" />
         <option value="$PROJECT_DIR$/src/userprog/process.c" />
         <option value="$PROJECT_DIR$/src/vm/swap.h" />
-        <option value="$PROJECT_DIR$/src/vm/frame.c" />
         <option value="$PROJECT_DIR$/src/userprog/exception.c" />
         <option value="$PROJECT_DIR$/src/userprog/process.h" />
         <option value="$PROJECT_DIR$/src/vm/swap.c" />
         <option value="$PROJECT_DIR$/src/userprog/syscall.c" />
-        <option value="$PROJECT_DIR$/src/vm/page.c" />
         <option value="$PROJECT_DIR$/src/LICENSE" />
         <option value="$PROJECT_DIR$/src/vm/page.h" />
+        <option value="$PROJECT_DIR$/src/vm/page.c" />
+        <option value="$PROJECT_DIR$/src/threads/synch.c" />
+        <option value="$PROJECT_DIR$/src/vm/frame.c" />
+        <option value="$PROJECT_DIR$/src/threads/thread.h" />
       </list>
     </option>
   </component>
@@ -230,7 +182,7 @@
               <item name="4_p3Pintos" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
               <item name="4_p3Pintos" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="userprog" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="4_p3Pintos" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
@@ -397,11 +349,25 @@
       <option name="project" value="LOCAL" />
       <updated>1512692073258</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="1.17: you can upload it">
+      <created>1512707881056</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1512707881056</updated>
+    </task>
+    <task id="LOCAL-00019" summary="1.17: you can upload it">
+      <created>1512707997108</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1512707997108</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="92347000" />
+    <option name="totallyTimeSpent" value="95184000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="53" y="24" width="2507" height="1576" extended-state="6" />
@@ -462,7 +428,8 @@
     <MESSAGE value="1.14: almost done II" />
     <MESSAGE value="1.15: somehow i cannot test it" />
     <MESSAGE value="1.16: I can test it now" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.16: I can test it now" />
+    <MESSAGE value="1.17: you can upload it" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.17: you can upload it" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -484,31 +451,30 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/vm/page.c</url>
-          <line>52</line>
+          <line>53</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/vm/page.c</url>
-          <line>224</line>
+          <line>218</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/vm/page.c</url>
+          <line>203</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/vm/frame.c</url>
+          <line>114</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="21" />
+      <option name="time" value="25" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/vm/swap.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="86" column="0" lean-forward="false" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
-          <folding>
-            <element signature="e#231#589#0" expanded="false" />
-            <element signature="e#592#1026#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/userprog/exception.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="789">
@@ -522,18 +488,19 @@
         <state relative-caret-position="485">
           <caret line="89" column="0" lean-forward="true" selection-start-line="89" selection-start-column="0" selection-end-line="89" selection-end-column="0" />
           <folding>
-            <element signature="e#1424#1657#0" expanded="false" />
-            <element signature="e#1663#2359#0" expanded="false" />
-            <element signature="e#3290#3828#0" expanded="false" />
-            <element signature="e#3830#4500#0" expanded="false" />
-            <element signature="e#4503#4612#0" expanded="false" />
-            <element signature="e#4616#4875#0" expanded="false" />
-            <element signature="e#4878#5044#0" expanded="false" />
-            <element signature="e#5045#5437#0" expanded="false" />
-            <element signature="e#5439#5618#0" expanded="false" />
-            <element signature="e#6150#6677#0" expanded="false" />
-            <marker date="1512707393558" expanded="false" signature="5711:5901" ph="{...}" />
-            <marker date="1512707393558" expanded="false" signature="5968:6147" ph="{...}" />
+            <element signature="e#1443#1679#0" expanded="false" />
+            <element signature="e#1685#2381#0" expanded="false" />
+            <element signature="e#2383#3324#0" expanded="false" />
+            <element signature="e#3326#3864#0" expanded="false" />
+            <element signature="e#3866#4536#0" expanded="false" />
+            <element signature="e#4538#4647#0" expanded="false" />
+            <element signature="e#4649#4908#0" expanded="false" />
+            <element signature="e#4911#5077#0" expanded="false" />
+            <element signature="e#5078#5470#0" expanded="false" />
+            <element signature="e#5472#5651#0" expanded="false" />
+            <element signature="e#5654#5934#0" expanded="false" />
+            <element signature="e#6183#6710#0" expanded="false" />
+            <marker date="1512716061644" expanded="false" signature="6001:6180" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -568,13 +535,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/threads/synch.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="605">
-          <caret line="185" column="33" lean-forward="false" selection-start-line="185" selection-start-column="33" selection-end-line="185" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/threads/init.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="544">
@@ -596,31 +556,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/Makefile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/pintos">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="872">
-          <caret line="944" column="1" lean-forward="false" selection-start-line="944" selection-start-column="1" selection-end-line="944" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/utils/pintos-gdb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="3" column="60" lean-forward="false" selection-start-line="3" selection-start-column="60" selection-end-line="3" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/squish-pty.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-9778">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -752,31 +691,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/tests/Make.tests">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="40" column="32" lean-forward="false" selection-start-line="40" selection-start-column="32" selection-end-line="40" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/tests/make-grade">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/tests/tests.pm">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="18">
           <caret line="27" column="20" lean-forward="true" selection-start-line="27" selection-start-column="20" selection-end-line="27" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/threads/thread.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="558">
-          <caret line="73" column="38" lean-forward="true" selection-start-line="73" selection-start-column="38" selection-end-line="73" selection-end-column="38" />
         </state>
       </provider>
     </entry>
@@ -787,37 +705,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/userprog/process.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="645">
-          <caret line="557" column="34" lean-forward="false" selection-start-line="557" selection-start-column="34" selection-end-line="557" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/vm/swap.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="18">
           <caret line="1" column="17" lean-forward="false" selection-start-line="1" selection-start-column="17" selection-end-line="1" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/userprog/process.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/vm/frame.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="127" column="0" lean-forward="false" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
-          <folding>
-            <element signature="e#331#766#0" expanded="false" />
-            <element signature="e#769#1325#0" expanded="false" />
-            <element signature="e#1327#2220#0" expanded="false" />
-            <element signature="e#2223#2517#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -845,23 +736,32 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/vm/page.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1053">
+          <caret line="39" column="0" lean-forward="true" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/vm/page.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="317">
-          <caret line="105" column="37" lean-forward="false" selection-start-line="105" selection-start-column="37" selection-end-line="105" selection-end-column="37" />
+        <state relative-caret-position="114">
+          <caret line="59" column="0" lean-forward="true" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
           <folding>
-            <element signature="e#1424#1657#0" expanded="false" />
-            <element signature="e#1663#2359#0" expanded="false" />
-            <element signature="e#3290#3828#0" expanded="false" />
-            <element signature="e#3830#4500#0" expanded="false" />
-            <element signature="e#4503#4612#0" expanded="false" />
-            <element signature="e#4616#4875#0" expanded="false" />
-            <element signature="e#4878#5044#0" expanded="false" />
-            <element signature="e#5045#5437#0" expanded="false" />
-            <element signature="e#5439#5618#0" expanded="false" />
-            <element signature="e#6150#6677#0" expanded="false" />
-            <marker date="1512707393558" expanded="false" signature="5711:5901" ph="{...}" />
-            <marker date="1512707393558" expanded="false" signature="5968:6147" ph="{...}" />
+            <element signature="e#1443#1679#0" expanded="false" />
+            <element signature="e#1685#2381#0" expanded="false" />
+            <element signature="e#2383#3324#0" expanded="false" />
+            <element signature="e#3326#3864#0" expanded="false" />
+            <element signature="e#3866#4536#0" expanded="false" />
+            <element signature="e#4538#4647#0" expanded="false" />
+            <element signature="e#4649#4908#0" expanded="false" />
+            <element signature="e#4911#5077#0" expanded="false" />
+            <element signature="e#5078#5470#0" expanded="false" />
+            <element signature="e#5472#5651#0" expanded="false" />
+            <element signature="e#5654#5934#0" expanded="false" />
+            <element signature="e#6183#6710#0" expanded="false" />
+            <marker date="1512716061644" expanded="false" signature="6001:6180" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -877,11 +777,104 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/vm/page.h">
+    <entry file="file://$PROJECT_DIR$/src/userprog/process.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="594">
-          <caret line="22" column="36" lean-forward="false" selection-start-line="22" selection-start-column="36" selection-end-line="22" selection-end-column="36" />
+        <state relative-caret-position="135">
+          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/vm/frame.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1198">
+          <caret line="88" column="18" lean-forward="false" selection-start-line="88" selection-start-column="18" selection-end-line="88" selection-end-column="18" />
+          <folding>
+            <element signature="e#331#768#0" expanded="false" />
+            <element signature="e#771#1327#0" expanded="false" />
+            <element signature="e#2211#2505#0" expanded="false" />
+            <element signature="e#2507#2652#0" expanded="false" />
+            <element signature="e#2654#2767#0" expanded="false" />
+            <element signature="e#2769#2855#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/threads/synch.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1358">
+          <caret line="208" column="47" lean-forward="false" selection-start-line="208" selection-start-column="47" selection-end-line="208" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/threads/thread.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-719">
+          <caret line="67" column="54" lean-forward="true" selection-start-line="67" selection-start-column="54" selection-end-line="67" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/utils/Makefile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="486">
+          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/utils/pintos">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9450">
+          <caret line="944" column="1" lean-forward="false" selection-start-line="944" selection-start-column="1" selection-end-line="944" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/utils/squish-pty.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4212">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/make-grade">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2393">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/Make.tests">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="855">
+          <caret line="48" column="43" lean-forward="false" selection-start-line="48" selection-start-column="43" selection-end-line="48" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/threads/synch.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="334">
+          <caret line="15" column="5" lean-forward="false" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/userprog/process.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="13986">
+          <caret line="545" column="0" lean-forward="false" selection-start-line="545" selection-start-column="0" selection-end-line="545" selection-end-column="0" />
+          <folding>
+            <element signature="e#14159#15079#0" expanded="false" />
+            <element signature="e#15326#15920#0" expanded="false" />
+            <element signature="e#15922#17416#0" expanded="false" />
+            <element signature="e#17418#18083#0" expanded="false" />
+            <element signature="e#18086#18433#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

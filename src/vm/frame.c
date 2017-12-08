@@ -18,7 +18,7 @@ static struct lock FT_lock;
 void frame_init (void)
 {
   void*user_page_kaddr;
-  lock_init (&FT_lock);
+    lock_init (&FT_lock);
     list_init (&frame_list);
 
 
@@ -64,22 +64,19 @@ struct frame* find_free_frame(void){
 struct frame* evict(struct spt_entry *input_p) {
     struct list_elem *e = e = list_begin(&frame_list);
     struct frame *fp;
+    // use a clock algorithm here.
     for (int i = 0; i < frame_cnt * 2; i++) {
         fp = list_entry(e,struct frame, elem);
         if (e == list_end(&frame_list)) e = list_begin(&frame_list);
         e = list_next(e);
 
         bool acquired = lock_try_acquire(&fp->lock);
-        if (acquired == false) continue;
-
-        if (!LRU(fp->pte)) {
-            lock_release(&fp->lock);
+        if (acquired ==false || !is_LRU(fp->pte)) {
+            if(acquired == true)lock_release(&fp->lock);
             continue;
         }
+
         lock_release(&FT_lock);
-
-        /* Evict this page and get a free frame */
-
         bool success = evict_target_page(fp->pte);
 
         if (!success) {
@@ -90,6 +87,8 @@ struct frame* evict(struct spt_entry *input_p) {
 
         fp->pte = input_p;
         return fp;
+
+
     }
     lock_release (&FT_lock);
     return NULL;
@@ -113,8 +112,7 @@ struct frame *frame_Alloc (struct spt_entry *input_p) {
     }
 }
 
-void lock_page_frame (struct spt_entry *pte)
-{
+void lock_page_frame (struct spt_entry *pte) {
     struct frame* f = pte->occupied_frame;
 
     if (f) {
@@ -123,14 +121,11 @@ void lock_page_frame (struct spt_entry *pte)
     }
 }
 
-
-void frame_unlock (struct spt_entry *pte)
-{ struct frame* f = pte -> occupied_frame;
+void frame_unlock (struct spt_entry *pte) { struct frame* f = pte -> occupied_frame;
   lock_release (&f->lock);
 }
 
-void frame_free (struct frame *f)
-{
+void frame_free (struct frame *f) {
 
     f->pte = NULL;
     lock_release (&f->lock);

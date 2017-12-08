@@ -16,7 +16,7 @@ void free_process_PT (void);
 struct spt_entry *search_page (const void *address);
 bool put_pte_into_frame (struct spt_entry *pte);
 bool evict_target_page (struct spt_entry *pte);
-bool LRU (struct spt_entry *pte);
+bool is_LRU (struct spt_entry *pte);
 struct spt_entry *pte_allocate (void *vaddr, bool read_only);
 void clear_page (void *vaddr);
 unsigned page_hash (const struct hash_elem *e, void *aux UNUSED);
@@ -50,7 +50,7 @@ struct spt_entry *search_page (const void *address)
 
 
 
-bool LRU (struct spt_entry *pte)
+bool is_LRU (struct spt_entry *pte)
 {
     uint32_t curr_pd = pte->thread->pagedir;
     bool accessed = pagedir_is_accessed (curr_pd, pte->addr);
@@ -91,14 +91,12 @@ bool put_pte_into_frame (struct spt_entry *pte)
   return true;
 }
 
-
-
 bool evict_target_page (struct spt_entry *pte)
 {
   bool dirty = pagedir_is_dirty (pte->thread->pagedir,  pte->addr);
   bool ok_to_evicet = false;
 
-    // force page fault
+    // force page fault and clear mapping
     uint32_t *pd = pte->thread->pagedir;
     void *upage = pte->addr;
     pagedir_clear_page(pd,upage);
@@ -131,8 +129,6 @@ bool evict_target_page (struct spt_entry *pte)
   if(ok_to_evicet == true)  pte->occupied_frame = NULL;
   return ok_to_evicet;
 }
-
-
 
 struct spt_entry *pte_allocate (void *vaddr, bool read_only)
 {
@@ -184,13 +180,10 @@ bool page_lock (const void *addr, bool will_write)
   return success;
 }
 
-
 void page_unlock (const void *addr) {
     struct spt_entry *pte = search_page(addr);
     frame_unlock(pte);
 }
-
-
 
 void page_destructor (struct hash_elem *page_hash, void *aux UNUSED)
 {
