@@ -1,0 +1,2 @@
+CMakeLists.txt not found in /home/os-class/CLionProjects/4_p3Pintos
+CMake executable is incorrect
